@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="lingo-gateway" />
+        <module name="lingo-mbg" />
+        <module name="lingo-user" />
+        <module name="lingo-video" />
+        <module name="lingo-search" />
+        <module name="lingo-common" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="lingo-common" options="-parameters" />
+      <module name="lingo-gateway" options="-parameters" />
+      <module name="lingo-mbg" options="-parameters" />
+      <module name="lingo-search" options="-parameters" />
+      <module name="lingo-user" options="-parameters" />
+      <module name="lingo-video" options="-parameters" />
+      <module name="lingotube" options="-parameters" />
+    </option>
+  </component>
+</project>

@@ -25,22 +25,42 @@
     </modules>
 
     <properties>
+        <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <org.projectlombok.version>1.18.20</org.projectlombok.version>
         <spring-cloud.version>2021.0.3</spring-cloud.version>
         <spring-cloud-alibaba.version>2021.0.4.0</spring-cloud-alibaba.version>
-        <mybatis-plus.version>3.4.3</mybatis-plus.version>
-        <hutool.version>5.8.11</hutool.version>
         <mysql.version>5.1.47</mysql.version>
+        <durid.version>1.2.14</durid.version>
+        <mybatis-plus.version>3.5.2</mybatis-plus.version>
+        <mybatis-plus-generator.version>3.5.3</mybatis-plus-generator.version>
+        <velocity-engine.version>2.3</velocity-engine.version>
+        <knife4j.version>3.0.3</knife4j.version>
+        <org.projectlombok.version>1.18.20</org.projectlombok.version>
+        <hutool.version>5.8.11</hutool.version>
     </properties>
+
+    <dependencies>
+        <!-- lombok -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${org.projectlombok.version}</version>
+        </dependency>
+        <!-- 单元测试 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 
     <!-- 对依赖包进行管理 -->
     <dependencyManagement>
         <dependencies>
-            <!--spring cloud-->
+            <!-- spring cloud -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -48,7 +68,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!--spring cloud alibaba-->
+            <!-- spring cloud alibaba -->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
@@ -62,13 +82,36 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
             </dependency>
-            <!-- mybatis plus 管理 -->
+            <!-- mybatis-plus管理 -->
             <dependency>
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
-            <!--hutool工具包-->
+            <!-- mybatis-plus生成器 -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatis-plus-generator.version}</version>
+            </dependency>
+            <!-- velocity模板引擎 -->
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+                <version>${velocity-engine.version}</version>
+            </dependency>
+            <!--Knife4j API文档生产工具-->
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-micro-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <version>${knife4j.version}</version>
+            </dependency>
+            <!-- hutool工具包 -->
             <dependency>
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
@@ -76,21 +119,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <dependencies>
-        <!-- lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${org.projectlombok.version}</version>
-        </dependency>
-        <!--单元测试-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 
     <build>
         <pluginManagement>

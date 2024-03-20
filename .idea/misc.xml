@@ -11,9 +11,8 @@
       <list>
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/lingo-search/pom.xml" />
-        <option value="$PROJECT_DIR$/lingo-video/pom.xml" />
-        <option value="$PROJECT_DIR$/lingo-user/pom.xml" />
         <option value="$PROJECT_DIR$/lingo-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/lingo-video/pom.xml" />
       </list>
     </option>
   </component>

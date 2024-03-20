@@ -1,2 +1,29 @@
 server:
   port: 8081
+
+spring:
+  application:
+    name: hm-service
+  profiles:
+    active: dev
+  datasource:
+    url: jdbc:mysql://${hm.db.host}:3306/lingotube?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: ${hm.db.pw}
+
+knife4j:
+  enable: true
+  openapi:
+    title: lingotube接口文档
+    description: "lingotube文档"
+    email: zhanghuyi@itcast.cn
+    concat: Moncoder
+    url: https://www.itcast.cn
+    version: v1.0.0
+    group:
+      default:
+        group-name: default
+        api-rule: package
+        api-rule-resources:
+          - com.moncoder.lingo.user.controller

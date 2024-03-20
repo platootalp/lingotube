@@ -37,7 +37,7 @@
         <mybatis-plus.version>3.5.2</mybatis-plus.version>
         <mybatis-plus-generator.version>3.5.3</mybatis-plus-generator.version>
         <velocity-engine.version>2.3</velocity-engine.version>
-        <knife4j.version>3.0.3</knife4j.version>
+        <knife4j.version>4.1.0</knife4j.version>
         <org.projectlombok.version>1.18.20</org.projectlombok.version>
         <hutool.version>5.8.11</hutool.version>
     </properties>
@@ -103,12 +103,7 @@
             <!--Knife4j API文档生产工具-->
             <dependency>
                 <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-micro-spring-boot-starter</artifactId>
-                <version>${knife4j.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.github.xiaoymin</groupId>
-                <artifactId>knife4j-spring-boot-starter</artifactId>
+                <artifactId>knife4j-openapi2-spring-boot-starter</artifactId>
                 <version>${knife4j.version}</version>
             </dependency>
             <!-- hutool工具包 -->

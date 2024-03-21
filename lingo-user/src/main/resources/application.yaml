@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: hm-service
+    name: lingo-user
   profiles:
     active: dev
   datasource:
@@ -11,6 +11,17 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: ${hm.db.pw}
+  redis:
+    host: 192.168.10.100
+    port: 6379
+    password: root
+    timeout: 3000ms # 读取超时设置为5秒
+    connect-timeout: 5000ms # 连接超时设置为3秒
+    lettuce:
+      pool:
+        max-active: 8
+        min-idle: 2
+        max-wait: 1000ms
 
 knife4j:
   enable: true

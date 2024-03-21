@@ -7,4 +7,5 @@ package com.moncoder.lingo.common.config;
  * @date 2024/3/20 16:38
  */
 public class RedisConfig {
+
 }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 /**
  * @author Moncoder
  * @version 1.0
- * @description TODO 全局异常处理器
+ * @description 全局异常处理器
  * @date 2024/3/21 10:49
  */
 @Slf4j

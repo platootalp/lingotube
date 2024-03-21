@@ -3,7 +3,7 @@ package com.moncoder.lingo.user.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.entity.UmsUserVideoBrowseHistory;
 import com.moncoder.lingo.mapper.UmsUserVideoBrowseHistoryMapper;
-import com.moncoder.lingo.service.IUmsUserVideoBrowseHistoryService;
+import com.moncoder.lingo.user.service.IUmsUserVideoBrowseHistoryService;
 import org.springframework.stereotype.Service;
 
 /**

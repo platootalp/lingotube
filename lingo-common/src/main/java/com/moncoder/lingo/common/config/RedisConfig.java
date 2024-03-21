@@ -28,7 +28,7 @@ public class RedisConfig {
         RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
         // 创建一个json的序列化对象
-       RedisSerializer jackson2JsonRedisSerializer = redisSerializer();
+        RedisSerializer jackson2JsonRedisSerializer = redisSerializer();
         // 设置value的序列化方式json
         redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
         // 设置key序列化方式String
@@ -55,7 +55,7 @@ public class RedisConfig {
     }
 
     @Bean
-    public IRedisService<String,Object> redisService(){
-        return new RedisServiceImpl<>();
+    public IRedisService redisService() {
+        return new RedisServiceImpl();
     }
 }

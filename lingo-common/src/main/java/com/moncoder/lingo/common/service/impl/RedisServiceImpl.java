@@ -12,43 +12,43 @@ import java.util.concurrent.TimeUnit;
  * @description Redis操作封装实现类
  * @date 2024/3/21 13:25
  */
-public class RedisServiceImpl<K, V> implements IRedisService<K, V> {
+public class RedisServiceImpl implements IRedisService {
 
     @Autowired
-    private RedisTemplate<K, V> redisTemplate;
+    private RedisTemplate<String, Object> redisTemplate;
 
     @Override
-    public void set(K key, V value) {
+    public void set(String key, Object value) {
         redisTemplate.opsForValue().set(key, value);
     }
 
     @Override
-    public void set(K key, V value, long time) {
+    public void set(String key, Object value, long time) {
         redisTemplate.opsForValue().set(key, value, time, TimeUnit.SECONDS);
     }
 
     @Override
-    public V get(K key) {
+    public Object get(String key) {
         return redisTemplate.opsForValue().get(key);
     }
 
     @Override
-    public Boolean delete(K key) {
+    public Boolean delete(String key) {
         return redisTemplate.delete(key);
     }
 
     @Override
-    public Boolean hasKey(K key) {
+    public Boolean hasKey(String key) {
         return redisTemplate.hasKey(key);
     }
 
     @Override
-    public void setExpire(K key, long time, TimeUnit timeUnit) {
-        redisTemplate.expire(key, time, timeUnit);
+    public void expire(String key, long time) {
+        redisTemplate.expire(key, time, TimeUnit.SECONDS);
     }
 
     @Override
-    public Long getExpire(K key) {
+    public Long getExpire(String key) {
         return redisTemplate.getExpire(key);
     }
 

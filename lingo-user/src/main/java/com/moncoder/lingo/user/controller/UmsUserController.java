@@ -4,9 +4,9 @@ import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.service.IUmsUserService;
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -21,10 +21,17 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "用户管理")
 public class UmsUserController {
 
+    @Autowired
     private IUmsUserService userService;
 
-    @GetMapping("/register")
-    public Result register(UserRegisterDTO userRegisterDTO){
-        userService.register(userRegisterDTO);
+    @GetMapping("/{phone}")
+    public Result<String> sendCode(@PathVariable String phone){
+        return Result.success(userService.sendCode(phone));
+    }
+
+    @ApiOperation("用户注册")
+    @PostMapping("/register")
+    public Result<String> register(@RequestBody UserRegisterDTO userRegisterDTO){
+        return Result.success(userService.register(userRegisterDTO));
     }
 }

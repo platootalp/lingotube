@@ -3,7 +3,7 @@ package com.moncoder.lingo.user.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.entity.UmsRole;
 import com.moncoder.lingo.mapper.UmsRoleMapper;
-import com.moncoder.lingo.service.IUmsRoleService;
+import com.moncoder.lingo.user.service.IUmsRoleService;
 import org.springframework.stereotype.Service;
 
 /**

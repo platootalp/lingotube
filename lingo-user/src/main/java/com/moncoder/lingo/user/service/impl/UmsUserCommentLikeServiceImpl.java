@@ -3,7 +3,7 @@ package com.moncoder.lingo.user.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.entity.UmsUserCommentLike;
 import com.moncoder.lingo.mapper.UmsUserCommentLikeMapper;
-import com.moncoder.lingo.service.IUmsUserCommentLikeService;
+import com.moncoder.lingo.user.service.IUmsUserCommentLikeService;
 import org.springframework.stereotype.Service;
 
 /**

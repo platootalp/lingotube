@@ -1,7 +1,7 @@
 package com.moncoder.lingo.video.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.moncoder.lingo.entity.VmsVideoSubtitles;
+import com.moncoder.lingo.entity.VmsVideoSubtitle;
 
 /**
  * <p>
@@ -11,6 +11,6 @@ import com.moncoder.lingo.entity.VmsVideoSubtitles;
  * @author moncoder
  * @since 2024-03-20 14:59:05
  */
-public interface IVmsVideoSubtitlesService extends IService<VmsVideoSubtitles> {
+public interface IVmsVideoSubtitleService extends IService<VmsVideoSubtitle> {
 
 }

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: lingo-video # 服务名称
+    name: lingo-gateway # 服务名称
   profiles:
     active: dev
   cloud:

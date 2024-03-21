@@ -19,9 +19,11 @@
         <module>lingo-mbg</module>
         <module>lingo-common</module>
         <module>lingo-gateway</module>
+        <module>lingo-auth</module>
         <module>lingo-user</module>
         <module>lingo-video</module>
         <module>lingo-search</module>
+        <module>lingo-auth</module>
     </modules>
 
     <properties>

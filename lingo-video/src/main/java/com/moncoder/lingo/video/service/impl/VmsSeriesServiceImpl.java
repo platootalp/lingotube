@@ -3,7 +3,7 @@ package com.moncoder.lingo.video.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.entity.VmsSeries;
 import com.moncoder.lingo.mapper.VmsSeriesMapper;
-import com.moncoder.lingo.service.IVmsSeriesService;
+import com.moncoder.lingo.video.service.IVmsSeriesService;
 import org.springframework.stereotype.Service;
 
 /**

@@ -2,10 +2,6 @@ server:
   port: 8081
 
 spring:
-  application:
-    name: lingo-user
-  profiles:
-    active: dev
   datasource:
     url: jdbc:mysql://${hm.db.host}:3306/lingotube?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
     driver-class-name: com.mysql.jdbc.Driver

@@ -1,11 +1,15 @@
 package com.moncoder.lingo.user.service.impl;
 
 import cn.hutool.core.util.PhoneUtil;
+import cn.hutool.core.util.RandomUtil;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
 import com.alibaba.nacos.shaded.org.checkerframework.checker.units.qual.A;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.common.constant.UserConstant;
+import com.moncoder.lingo.common.exception.ApiException;
+import com.moncoder.lingo.common.exception.IllegalParaException;
 import com.moncoder.lingo.common.service.IRedisService;
 import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.mapper.UmsUserMapper;
@@ -40,33 +44,51 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
 
     @Override
     public String sendCode(String phone) {
-        return null;
+        // 1.参数校验
+        if (StrUtil.isEmpty(phone)) {
+            throw new IllegalParaException("手机号不能为空");
+        }
+        // 2.手机号格式验证
+        if (!PhoneUtil.isPhone(phone)) {
+            throw new IllegalParaException("手机格式不正确！");
+        }
+        // 3.60s内不重复发送验证码
+        Boolean hasCode = redisService.hasKey(UserConstant.UMS_USER_CODE + phone);
+        if (hasCode) {
+            throw new ApiException("验证码已发送！");
+        }
+        // 4.生成6位验证码
+        String code = RandomUtil.randomNumbers(6);
+        // 5.将验证码存入redis
+        redisService.set(UserConstant.UMS_USER_CODE + phone, code, UserConstant.UMS_USER_CODE_EXPIRE);
+        return code;
     }
 
     @Override
     public Boolean register(UserRegisterDTO userRegisterDTO) {
         // 1.参数校验
-        if(userRegisterDTO == null){
-            return false;
+        if (userRegisterDTO == null) {
+            throw new NullPointerException("实体不能为null！");
         }
         // 2.手机号格式验证
         String phone = userRegisterDTO.getPhone();
-        if(!PhoneUtil.isPhone(phone)){
+        if (!PhoneUtil.isPhone(phone)) {
+            throw new IllegalParaException("手机格式不正确！");
         }
         // 3.判断电话是否已经被注册
         List<UmsUser> list = lambdaQuery().eq(UmsUser::getPhone, phone).list();
-        if(list.size() > 0){
-            return false;
+        if (list.size() > 0) {
+            throw new ApiException("手机号已经被注册了！");
         }
         // 4.判断验证码是否正确
         String code = userRegisterDTO.getCode();
-        String authCode = (String)redisService.get(UserConstant.UMS_USER_CODE + phone);
-        if(!code.equals(authCode)){
-            return false;
+        String authCode = (String) redisService.get(UserConstant.UMS_USER_CODE + phone);
+        if (!code.equals(authCode)) {
+            throw new ApiException("验证码错误！");
         }
         // 5.进行注册
         UmsUser umsUser = new UmsUser();
-        BeanUtils.copyProperties(userRegisterDTO,umsUser);
+        BeanUtils.copyProperties(userRegisterDTO, umsUser);
         umsUser.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
         umsUser.setGender((byte) 0);
         umsUser.setNickname("linger");

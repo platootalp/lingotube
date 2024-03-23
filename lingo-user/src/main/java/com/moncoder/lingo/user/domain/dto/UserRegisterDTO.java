@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -20,17 +21,17 @@ import java.time.LocalDate;
 public class UserRegisterDTO {
 
 
-    @NotNull
-    @ApiModelProperty("手机号")
+    @NotEmpty
+    @ApiModelProperty(value = "手机号", required = true)
     private String phone;
-    @NotNull
-    @ApiModelProperty("验证码")
+    @NotEmpty
+    @ApiModelProperty(value = "验证码", required = true)
     private String code;
-    @NotNull
-    @ApiModelProperty("用户名")
+    @NotEmpty
+    @ApiModelProperty(value = "用户名", required = true)
     private String username;
-    @NotNull
-    @ApiModelProperty("密码（加密存储）")
+    @NotEmpty
+    @ApiModelProperty(value = "密码（加密存储）", required = true)
     private String password;
 
 }

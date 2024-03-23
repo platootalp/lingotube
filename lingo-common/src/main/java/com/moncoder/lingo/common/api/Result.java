@@ -33,7 +33,15 @@ public class Result<T> {
      * @return
      */
     public static <T> Result<T> success(){
-        return new Result<>(ResultCode.SUCCESS.getMessage(), ResultCode.SUCCESS.getCode(), null);
+        return Result.success(ResultCode.SUCCESS.getMessage(),null);
+    }
+
+    /**
+     * 请求成功无数据
+     * @return
+     */
+    public static <T> Result<T> success(T data){
+        return Result.success(ResultCode.SUCCESS.getMessage(),data);
     }
 
     /**
@@ -42,8 +50,8 @@ public class Result<T> {
      * @param <T>
      * @return
      */
-    public static <T> Result<T> success(T data){
-        return new Result<>(ResultCode.SUCCESS.getMessage(), ResultCode.SUCCESS.getCode(), data);
+    public static <T> Result<T> success(String message, T data){
+        return new Result<>(message, ResultCode.SUCCESS.getCode(), data);
     }
 
     /**

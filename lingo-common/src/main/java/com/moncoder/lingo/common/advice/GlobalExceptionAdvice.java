@@ -2,6 +2,7 @@ package com.moncoder.lingo.common.advice;
 
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.common.exception.ApiException;
+import com.moncoder.lingo.common.exception.IllegalParaException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -18,13 +19,22 @@ public class GlobalExceptionAdvice {
 
     @ExceptionHandler(ApiException.class)
     public Result<String> handleApiException(ApiException e){
-        log.error("发生API异常->{}",e.getMessage());
-        return Result.failed("内部异常");
+        String message = e.getMessage();
+        log.error("发生API异常->{}",message);
+        return Result.failed(message);
+    }
+
+    @ExceptionHandler(IllegalParaException.class)
+    public Result<String> handleInvalidParaException(IllegalParaException e){
+        String message = e.getMessage();
+        log.error("发生非法参数异常->{}",message);
+        return Result.failed(message);
     }
 
     @ExceptionHandler(Exception.class)
     public Result<String> handleOtherException(Exception e){
-        log.error("发生未知异常->{}",e.getMessage());
-        return Result.failed("位置异常");
+        String message = e.getMessage();
+        log.error("发生未知异常->{}",message);
+        return Result.failed("请求失败！");
     }
 }

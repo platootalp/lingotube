@@ -12,4 +12,9 @@ public interface UserConstant {
      * 注册登录验证码前缀
      */
     String UMS_USER_CODE = "ums:user:code:";
+
+    /**
+     * 注册登录验证码过期时间（秒）
+     */
+    Integer UMS_USER_CODE_EXPIRE = 60;
 }

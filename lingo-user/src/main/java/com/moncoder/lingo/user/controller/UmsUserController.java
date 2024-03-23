@@ -5,6 +5,7 @@ import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.service.IUmsUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +27,11 @@ public class UmsUserController {
     @Autowired
     private IUmsUserService userService;
 
+    @ApiOperation("发送验证码")
     @GetMapping("/{phone}")
     public Result<String> sendCode(@PathVariable String phone){
-        return Result.success(userService.sendCode(phone));
+        String data = userService.sendCode(phone);
+        return Result.success(data);
     }
 
     @ApiOperation("用户注册")

@@ -1,4 +1,4 @@
-package com.moncoder.lingo.user.service;
+package com.moncoder.lingo.admin.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.entity.UmsRole;

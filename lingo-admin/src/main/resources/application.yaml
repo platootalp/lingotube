@@ -1,0 +1,44 @@
+server:
+  port: 8083
+
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  datasource:
+    url: jdbc:mysql://${hm.db.host}:3306/lingotube??useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: ${hm.db.pw}
+  redis:
+    host: 192.168.10.100
+    port: 6379
+    password: root
+    timeout: 5s # 读取超时设置为5秒
+    connect-timeout: 3s # 连接超时设置为3秒
+    lettuce:
+      pool:
+        # 连接池中最小的空闲链接 默认为0
+        min-idle: 0
+        # 连接池中最大的空闲连接 默认为 8
+        max-idle: 8
+        # 连接池中最大数据库链接数 默认为8
+        max-active: 8
+        # 连接池最大阻塞等待时间 负值表示没有限制
+        max-wait: 1000ms
+
+knife4j:
+  enable: true
+  openapi:
+    title: lingotube后台管理
+    description: "lingotube文档"
+    email: zhanghuyi@itcast.cn
+    concat: Moncoder
+    url: https://www.itcast.cn
+    version: v1.0.0
+    group:
+      default:
+        group-name: default
+        api-rule: package
+        api-rule-resources:
+          - com.moncoder.lingo.admin.controller

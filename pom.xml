@@ -21,6 +21,7 @@
         <module>lingo-gateway</module>
         <module>lingo-user</module>
         <module>lingo-video</module>
+        <module>lingo-admin</module>
         <module>lingo-search</module>
     </modules>
 

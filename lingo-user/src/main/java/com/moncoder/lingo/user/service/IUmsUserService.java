@@ -26,6 +26,6 @@ public interface IUmsUserService extends IService<UmsUser> {
      * @param userRegisterDTO
      * @return
      */
-    String register(UserRegisterDTO userRegisterDTO);
+    Boolean register(UserRegisterDTO userRegisterDTO);
 
 }

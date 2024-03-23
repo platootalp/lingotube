@@ -2,8 +2,11 @@ server:
   port: 8081
 
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
-    url: jdbc:mysql://${hm.db.host}:3306/lingotube?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://${hm.db.host}:3306/lingotube??useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: ${hm.db.pw}

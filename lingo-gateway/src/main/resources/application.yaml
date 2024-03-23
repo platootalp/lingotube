@@ -1,2 +1,59 @@
 server:
   port: 8080
+
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true #使用小写service-id
+      routes: #配置路由路径
+        - id: lingo-auth
+          uri: lb://lingo-auth
+          predicates:
+            - Path=/lingo-auth/**
+          filters:
+            - StripPrefix=1
+        - id: lingo-user
+            uri: lb://lingo-user
+            predicates:
+              - Path=/lingo-user/**
+            filters:
+              - StripPrefix=1
+        - id: lingo-video
+            uri: lb://lingo-video
+            predicates:
+              - Path=/lingo-video/**
+            filters:
+              - StripPrefix=1
+        - id: lingo-search
+          uri: lb://lingo-search
+          predicates:
+            - Path=/lingo-search/**
+          filters:
+            - StripPrefix=1
+
+security:
+  white:
+    urls:
+      - /swagger-ui/
+      - /swagger-resources/**
+      - /**/v2/api-docs
+      - /**/*.html
+      - /**/*.js
+      - /**/*.css
+      - /**/*.png
+      - /**/*.map
+      - /favicon.ico
+      - /actuator/**
+      - /druid/**
+      - /user/login
+      - /user/register
+      - /user/info
+      - /user/logout
+
+
+
+

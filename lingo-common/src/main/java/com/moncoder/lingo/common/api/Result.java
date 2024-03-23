@@ -75,12 +75,32 @@ public class Result<T> {
     }
 
     /**
+     * 未登录
+     * @param <T>
+     * @return
+     */
+    public static <T> Result<T> unauthorized(String message){
+        return new Result<>(message,
+                ResultCode.UNAUTHORIZED.getCode(), null);
+    }
+
+    /**
      * 未授权
      * @param <T>
      * @return
      */
     public static <T> Result<T> forbidden(){
         return new Result<>(ResultCode.FORBIDDEN.getMessage(),
+                ResultCode.FORBIDDEN.getCode(), null);
+    }
+
+    /**
+     * 未授权
+     * @param <T>
+     * @return
+     */
+    public static <T> Result<T> forbidden(String message){
+        return new Result<>(message,
                 ResultCode.FORBIDDEN.getCode(), null);
     }
 }

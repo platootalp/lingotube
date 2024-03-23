@@ -8,6 +8,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 /**
  * <p>
  *  前端控制器
@@ -31,7 +33,11 @@ public class UmsUserController {
 
     @ApiOperation("用户注册")
     @PostMapping("/register")
-    public Result<String> register(@RequestBody UserRegisterDTO userRegisterDTO){
-        return Result.success(userService.register(userRegisterDTO));
+    public Result<String> register(@RequestBody @Valid UserRegisterDTO userRegisterDTO){
+        Boolean flag = userService.register(userRegisterDTO);
+        if(!flag){
+            return Result.failed("注册失败！");
+        }
+        return Result.success("注册成功！");
     }
 }

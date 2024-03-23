@@ -1,152 +1,112 @@
-15:42:17:351  INFO 7748 --- [main] c.m.lingo.user.LingoUserApplication      : The following 1 profile is active: "dev"
-15:42:17:862  WARN 7748 --- [main] o.m.s.mapper.ClassPathMapperScanner      : No MyBatis mapper was found in '[com.moncoder.lingo.user]' package. Please check your configuration.
-15:42:17:911  INFO 7748 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=26848281-2a9c-39ca-ab41-68b6f0cc2b97
-15:42:18:124  INFO 7748 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
-15:42:18:130  INFO 7748 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-15:42:18:131  INFO 7748 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.75]
-15:42:18:204  INFO 7748 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-15:42:18:204  INFO 7748 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 841 ms
-15:42:18:251  WARN 7748 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'umsRoleServiceImpl': Unsatisfied dependency expressed through field 'baseMapper'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.moncoder.lingo.mapper.UmsRoleMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
-15:42:18:252  INFO 7748 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-15:42:18:262  INFO 7748 --- [main] ConditionEvaluationReportLoggingListener : 
+11:24:40:025  INFO 4936 --- [main] c.m.lingo.user.LingoUserApplication      : The following 1 profile is active: "dev"
+11:24:40:704  INFO 4936 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+11:24:40:712  INFO 4936 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+11:24:40:728  INFO 4936 --- [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 6 ms. Found 0 Redis repository interfaces.
+11:24:40:882  INFO 4936 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=19cc7a44-a6f1-3384-9b57-529d3685a149
+11:24:41:129  INFO 4936 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
+11:24:41:129  INFO 4936 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+11:24:41:129  INFO 4936 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.83]
+11:24:41:216  INFO 4936 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+11:24:41:216  INFO 4936 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1175 ms
+11:24:42:398  INFO 4936 --- [main] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 1 endpoint(s) beneath base path '/actuator'
+11:24:42:602  INFO 4936 --- [main] pertySourcedRequestMappingHandlerMapping : Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2ControllerWebMvc#getDocumentation(String, HttpServletRequest)]
+11:24:43:158  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [RpcClientFactory] create a new rpc client of 8925de2b-c03d-449c-b3e7-5580d176a952
+11:24:43:158  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [8925de2b-c03d-449c-b3e7-5580d176a952] RpcClient init label, labels = {module=naming, source=sdk}
+11:24:43:166  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [8925de2b-c03d-449c-b3e7-5580d176a952] RpcClient init, ServerListFactory = com.alibaba.nacos.client.naming.core.ServerListManager
+11:24:43:166  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [8925de2b-c03d-449c-b3e7-5580d176a952] Registry connection listener to current client:com.alibaba.nacos.client.naming.remote.gprc.redo.NamingGrpcRedoService
+11:24:43:166  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [8925de2b-c03d-449c-b3e7-5580d176a952] Register server push request handler:com.alibaba.nacos.client.naming.remote.gprc.NamingPushRequestHandler
+11:24:43:166  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [8925de2b-c03d-449c-b3e7-5580d176a952] Try to connect to server on start up, server: {serverIp = '192.168.10.100', server main port = 8848}
+11:24:43:282  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [8925de2b-c03d-449c-b3e7-5580d176a952] Success to connect to server [192.168.10.100:8848] on start up, connectionId = 1711164283173_192.168.10.1_57017
+11:24:43:282  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [8925de2b-c03d-449c-b3e7-5580d176a952] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+11:24:43:282  INFO 4936 --- [com.alibaba.nacos.client.remote.worker] com.alibaba.nacos.common.remote.client   : [8925de2b-c03d-449c-b3e7-5580d176a952] Notify connected event to listeners.
+11:24:43:282  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [8925de2b-c03d-449c-b3e7-5580d176a952] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$474/0x0000000800fc23f8
+11:24:43:318  INFO 4936 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port(s): 8081 (http) with context path ''
+11:24:43:318  INFO 4936 --- [main] c.a.c.n.registry.NacosServiceRegistry    : nacos registry, DEFAULT_GROUP lingo-user 192.168.33.1:8081 register finished
+11:24:43:592  INFO 4936 --- [main] d.s.w.p.DocumentationPluginsBootstrapper : Documentation plugins bootstrapped
+11:24:43:599  INFO 4936 --- [main] d.s.w.p.DocumentationPluginsBootstrapper : Found 1 custom documentation plugin(s)
+11:24:43:599  WARN 4936 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Failed to start bean 'documentationPluginsBootstrapper'; nested exception is java.lang.NullPointerException: Cannot invoke "org.springframework.web.servlet.mvc.condition.PatternsRequestCondition.getPatterns()" because "this.condition" is null
+11:24:43:599  INFO 4936 --- [main] c.a.c.n.registry.NacosServiceRegistry    : De-registering from Nacos Server now...
+11:24:43:599  INFO 4936 --- [main] c.a.c.n.registry.NacosServiceRegistry    : De-registration finished.
+11:24:43:874  INFO 4936 --- [nacos-grpc-client-executor-7] com.alibaba.nacos.common.remote.client   : [8925de2b-c03d-449c-b3e7-5580d176a952] Receive server push request, request = NotifySubscriberRequest, requestId = 174
+11:24:43:874  INFO 4936 --- [nacos-grpc-client-executor-7] com.alibaba.nacos.common.remote.client   : [8925de2b-c03d-449c-b3e7-5580d176a952] Ack server push request, request = NotifySubscriberRequest, requestId = 174
+11:24:44:264  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : Shutdown rpc client, set status to shutdown
+11:24:44:264  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : Shutdown client event executor java.util.concurrent.ScheduledThreadPoolExecutor@1f7b1d6a[Running, pool size = 2, active threads = 2, queued tasks = 0, completed tasks = 0]
+11:24:44:264  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : Close current connection 1711164283173_192.168.10.1_57017
+11:24:44:264  INFO 4936 --- [nacos-grpc-client-executor-8] c.a.n.c.remote.client.grpc.GrpcClient    : [1711164283173_192.168.10.1_57017]Ignore complete event,isRunning:false,isAbandon=false
+11:24:44:270  INFO 4936 --- [main] c.a.n.c.remote.client.grpc.GrpcClient    : Shutdown grpc executor java.util.concurrent.ThreadPoolExecutor@12c30824[Running, pool size = 9, active threads = 0, queued tasks = 0, completed tasks = 9]
+11:24:44:270  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [RpcClientFactory] create a new rpc client of ef999572-6378-49f1-a9bb-06a3f644d0fe
+11:24:44:270  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [ef999572-6378-49f1-a9bb-06a3f644d0fe] RpcClient init label, labels = {module=naming, source=sdk}
+11:24:44:270  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [ef999572-6378-49f1-a9bb-06a3f644d0fe] RpcClient init, ServerListFactory = com.alibaba.nacos.client.naming.core.ServerListManager
+11:24:44:270  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [ef999572-6378-49f1-a9bb-06a3f644d0fe] Registry connection listener to current client:com.alibaba.nacos.client.naming.remote.gprc.redo.NamingGrpcRedoService
+11:24:44:270  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [ef999572-6378-49f1-a9bb-06a3f644d0fe] Register server push request handler:com.alibaba.nacos.client.naming.remote.gprc.NamingPushRequestHandler
+11:24:44:270  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [ef999572-6378-49f1-a9bb-06a3f644d0fe] Try to connect to server on start up, server: {serverIp = '192.168.10.100', server main port = 8848}
+11:24:44:391  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [ef999572-6378-49f1-a9bb-06a3f644d0fe] Success to connect to server [192.168.10.100:8848] on start up, connectionId = 1711164284280_192.168.10.1_57018
+11:24:44:391  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [ef999572-6378-49f1-a9bb-06a3f644d0fe] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$ConnectResetRequestHandler
+11:24:44:391  INFO 4936 --- [com.alibaba.nacos.client.remote.worker] com.alibaba.nacos.common.remote.client   : [ef999572-6378-49f1-a9bb-06a3f644d0fe] Notify connected event to listeners.
+11:24:44:391  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : [ef999572-6378-49f1-a9bb-06a3f644d0fe] Register server push request handler:com.alibaba.nacos.common.remote.client.RpcClient$$Lambda$474/0x0000000800fc23f8
+11:24:44:724  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : Shutdown rpc client, set status to shutdown
+11:24:44:724  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : Shutdown client event executor java.util.concurrent.ScheduledThreadPoolExecutor@7d12fb85[Running, pool size = 2, active threads = 2, queued tasks = 0, completed tasks = 0]
+11:24:44:724  INFO 4936 --- [main] com.alibaba.nacos.common.remote.client   : Close current connection 1711164284280_192.168.10.1_57018
+11:24:44:724  INFO 4936 --- [main] c.a.n.c.remote.client.grpc.GrpcClient    : Shutdown grpc executor java.util.concurrent.ThreadPoolExecutor@71db6703[Running, pool size = 4, active threads = 0, queued tasks = 0, completed tasks = 4]
+11:24:44:724  INFO 4936 --- [grpc-nio-worker-ELG-1-6] c.a.n.s.i.g.i.AbstractClientStream       : Received trailers on closed stream:
+ Metadata(content-type=application/grpc)
+ {2}
+11:24:44:754  INFO 4936 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
+11:24:44:768  INFO 4936 --- [main] ConditionEvaluationReportLoggingListener : 
 
 Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
-15:42:18:283 ERROR 7748 --- [main] o.s.boot.SpringApplication               : Application run failed
+11:24:44:790 ERROR 4936 --- [main] o.s.boot.SpringApplication               : Application run failed
 
-org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'umsRoleServiceImpl': Unsatisfied dependency expressed through field 'baseMapper'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.moncoder.lingo.mapper.UmsRoleMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:660) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:640) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1431) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:955) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:920) ~[spring-context-5.3.27.jar:5.3.27]
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583) ~[spring-context-5.3.27.jar:5.3.27]
-	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147) ~[spring-boot-2.7.12.jar:2.7.12]
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:731) ~[spring-boot-2.7.12.jar:2.7.12]
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408) ~[spring-boot-2.7.12.jar:2.7.12]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307) ~[spring-boot-2.7.12.jar:2.7.12]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303) ~[spring-boot-2.7.12.jar:2.7.12]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292) ~[spring-boot-2.7.12.jar:2.7.12]
+org.springframework.context.ApplicationContextException: Failed to start bean 'documentationPluginsBootstrapper'; nested exception is java.lang.NullPointerException: Cannot invoke "org.springframework.web.servlet.mvc.condition.PatternsRequestCondition.getPatterns()" because "this.condition" is null
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:182) ~[spring-context-5.3.31.jar:5.3.31]
+	at org.springframework.context.support.DefaultLifecycleProcessor.access$200(DefaultLifecycleProcessor.java:54) ~[spring-context-5.3.31.jar:5.3.31]
+	at org.springframework.context.support.DefaultLifecycleProcessor$LifecycleGroup.start(DefaultLifecycleProcessor.java:357) ~[spring-context-5.3.31.jar:5.3.31]
+	at java.base/java.lang.Iterable.forEach(Iterable.java:75) ~[na:na]
+	at org.springframework.context.support.DefaultLifecycleProcessor.startBeans(DefaultLifecycleProcessor.java:156) ~[spring-context-5.3.31.jar:5.3.31]
+	at org.springframework.context.support.DefaultLifecycleProcessor.onRefresh(DefaultLifecycleProcessor.java:124) ~[spring-context-5.3.31.jar:5.3.31]
+	at org.springframework.context.support.AbstractApplicationContext.finishRefresh(AbstractApplicationContext.java:946) ~[spring-context-5.3.31.jar:5.3.31]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:594) ~[spring-context-5.3.31.jar:5.3.31]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147) ~[spring-boot-2.7.18.jar:2.7.18]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:732) ~[spring-boot-2.7.18.jar:2.7.18]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:409) ~[spring-boot-2.7.18.jar:2.7.18]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:308) ~[spring-boot-2.7.18.jar:2.7.18]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1300) ~[spring-boot-2.7.18.jar:2.7.18]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1289) ~[spring-boot-2.7.18.jar:2.7.18]
 	at com.moncoder.lingo.user.LingoUserApplication.main(LingoUserApplication.java:10) ~[classes/:na]
-Caused by: org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.moncoder.lingo.mapper.UmsRoleMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.raiseNoMatchingBeanFound(DefaultListableBeanFactory.java:1801) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1357) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:657) ~[spring-beans-5.3.27.jar:5.3.27]
-	... 20 common frames omitted
+Caused by: java.lang.NullPointerException: Cannot invoke "org.springframework.web.servlet.mvc.condition.PatternsRequestCondition.getPatterns()" because "this.condition" is null
+	at springfox.documentation.spring.web.WebMvcPatternsRequestConditionWrapper.getPatterns(WebMvcPatternsRequestConditionWrapper.java:56) ~[springfox-spring-webmvc-2.10.5.jar:null]
+	at springfox.documentation.RequestHandler.sortedPaths(RequestHandler.java:112) ~[springfox-core-2.10.5.jar:null]
+	at springfox.documentation.spi.service.contexts.Orderings.lambda$byPatternsCondition$3(Orderings.java:89) ~[springfox-spi-2.10.5.jar:null]
+	at java.base/java.util.Comparator.lambda$comparing$77a9974f$1(Comparator.java:473) ~[na:na]
+	at java.base/java.util.TimSort.countRunAndMakeAscending(TimSort.java:355) ~[na:na]
+	at java.base/java.util.TimSort.sort(TimSort.java:220) ~[na:na]
+	at java.base/java.util.Arrays.sort(Arrays.java:1307) ~[na:na]
+	at java.base/java.util.ArrayList.sort(ArrayList.java:1721) ~[na:na]
+	at java.base/java.util.stream.SortedOps$RefSortingSink.end(SortedOps.java:392) ~[na:na]
+	at java.base/java.util.stream.Sink$ChainedReference.end(Sink.java:258) ~[na:na]
+	at java.base/java.util.stream.Sink$ChainedReference.end(Sink.java:258) ~[na:na]
+	at java.base/java.util.stream.Sink$ChainedReference.end(Sink.java:258) ~[na:na]
+	at java.base/java.util.stream.Sink$ChainedReference.end(Sink.java:258) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:510) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499) ~[na:na]
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682) ~[na:na]
+	at springfox.documentation.spring.web.plugins.WebMvcRequestHandlerProvider.requestHandlers(WebMvcRequestHandlerProvider.java:76) ~[springfox-spring-webmvc-2.10.5.jar:null]
+	at java.base/java.util.stream.ReferencePipeline$3$1.accept(ReferencePipeline.java:197) ~[na:na]
+	at java.base/java.util.ArrayList$ArrayListSpliterator.forEachRemaining(ArrayList.java:1625) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:509) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:499) ~[na:na]
+	at java.base/java.util.stream.ReduceOps$ReduceOp.evaluateSequential(ReduceOps.java:921) ~[na:na]
+	at java.base/java.util.stream.AbstractPipeline.evaluate(AbstractPipeline.java:234) ~[na:na]
+	at java.base/java.util.stream.ReferencePipeline.collect(ReferencePipeline.java:682) ~[na:na]
+	at springfox.documentation.spring.web.plugins.AbstractDocumentationPluginsBootstrapper.defaultContextBuilder(AbstractDocumentationPluginsBootstrapper.java:108) ~[springfox-spring-web-2.10.5.jar:null]
+	at springfox.documentation.spring.web.plugins.AbstractDocumentationPluginsBootstrapper.buildContext(AbstractDocumentationPluginsBootstrapper.java:92) ~[springfox-spring-web-2.10.5.jar:null]
+	at springfox.documentation.spring.web.plugins.AbstractDocumentationPluginsBootstrapper.bootstrapDocumentationPlugins(AbstractDocumentationPluginsBootstrapper.java:83) ~[springfox-spring-web-2.10.5.jar:null]
+	at springfox.documentation.spring.web.plugins.DocumentationPluginsBootstrapper.start(DocumentationPluginsBootstrapper.java:94) ~[springfox-spring-web-2.10.5.jar:null]
+	at org.springframework.context.support.DefaultLifecycleProcessor.doStart(DefaultLifecycleProcessor.java:179) ~[spring-context-5.3.31.jar:5.3.31]
+	... 14 common frames omitted
 
-15:42:18:285  WARN 7748 --- [Thread-5] c.a.nacos.common.notify.NotifyCenter     : [NotifyCenter] Start destroying Publisher
-15:42:18:285  WARN 7748 --- [Thread-1] c.a.n.common.http.HttpClientBeanHolder   : [HttpClientBeanHolder] Start destroying common HttpClient
-15:42:18:285  WARN 7748 --- [Thread-5] c.a.nacos.common.notify.NotifyCenter     : [NotifyCenter] Destruction of the end
-15:42:18:285  WARN 7748 --- [Thread-1] c.a.n.common.http.HttpClientBeanHolder   : [HttpClientBeanHolder] Destruction of the end
-15:47:11:980  INFO 9428 --- [main] c.m.lingo.user.LingoUserApplication      : The following 1 profile is active: "dev"
-15:47:12:849  INFO 9428 --- [main] o.s.cloud.context.scope.GenericScope     : BeanFactory id=03241206-c494-3f14-a613-5001b1274040
-15:47:13:185  INFO 9428 --- [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port(s): 8081 (http)
-15:47:13:195  INFO 9428 --- [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
-15:47:13:195  INFO 9428 --- [main] org.apache.catalina.core.StandardEngine  : Starting Servlet engine: [Apache Tomcat/9.0.75]
-15:47:13:317  INFO 9428 --- [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
-15:47:13:317  INFO 9428 --- [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1323 ms
-15:47:13:504  WARN 9428 --- [main] ConfigServletWebServerApplicationContext : Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'umsRoleServiceImpl': Unsatisfied dependency expressed through field 'baseMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'umsRoleMapper' defined in file [E:\project\Java\now\lingotube\lingo-mbg\target\classes\com\moncoder\lingo\mapper\UmsRoleMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [com/baomidou/mybatisplus/autoconfigure/MybatisPlusAutoConfiguration.class]: Unsatisfied dependency expressed through method 'sqlSessionFactory' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception; nested exception is java.lang.IllegalStateException: Cannot load driver class: com.mysql.cj.jdbc.Driver
-15:47:13:505  INFO 9428 --- [main] o.apache.catalina.core.StandardService   : Stopping service [Tomcat]
-15:47:13:522  INFO 9428 --- [main] ConditionEvaluationReportLoggingListener : 
-
-Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
-15:47:13:554 ERROR 9428 --- [main] o.s.boot.SpringApplication               : Application run failed
-
-org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'umsRoleServiceImpl': Unsatisfied dependency expressed through field 'baseMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'umsRoleMapper' defined in file [E:\project\Java\now\lingotube\lingo-mbg\target\classes\com\moncoder\lingo\mapper\UmsRoleMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [com/baomidou/mybatisplus/autoconfigure/MybatisPlusAutoConfiguration.class]: Unsatisfied dependency expressed through method 'sqlSessionFactory' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception; nested exception is java.lang.IllegalStateException: Cannot load driver class: com.mysql.cj.jdbc.Driver
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:660) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:640) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:119) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessProperties(AutowiredAnnotationBeanPostProcessor.java:399) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1431) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:955) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:920) ~[spring-context-5.3.27.jar:5.3.27]
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583) ~[spring-context-5.3.27.jar:5.3.27]
-	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:147) ~[spring-boot-2.7.12.jar:2.7.12]
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:731) ~[spring-boot-2.7.12.jar:2.7.12]
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:408) ~[spring-boot-2.7.12.jar:2.7.12]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:307) ~[spring-boot-2.7.12.jar:2.7.12]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1303) ~[spring-boot-2.7.12.jar:2.7.12]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1292) ~[spring-boot-2.7.12.jar:2.7.12]
-	at com.moncoder.lingo.user.LingoUserApplication.main(LingoUserApplication.java:10) ~[classes/:na]
-Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'umsRoleMapper' defined in file [E:\project\Java\now\lingotube\lingo-mbg\target\classes\com\moncoder\lingo\mapper\UmsRoleMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [com/baomidou/mybatisplus/autoconfigure/MybatisPlusAutoConfiguration.class]: Unsatisfied dependency expressed through method 'sqlSessionFactory' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception; nested exception is java.lang.IllegalStateException: Cannot load driver class: com.mysql.cj.jdbc.Driver
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireByType(AbstractAutowireCapableBeanFactory.java:1534) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1417) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:619) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.resolveFieldValue(AutowiredAnnotationBeanPostProcessor.java:657) ~[spring-beans-5.3.27.jar:5.3.27]
-	... 20 common frames omitted
-Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [com/baomidou/mybatisplus/autoconfigure/MybatisPlusAutoConfiguration.class]: Unsatisfied dependency expressed through method 'sqlSessionFactory' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception; nested exception is java.lang.IllegalStateException: Cannot load driver class: com.mysql.cj.jdbc.Driver
-	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:800) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:541) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1352) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1195) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:582) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireByType(AbstractAutowireCapableBeanFactory.java:1519) ~[spring-beans-5.3.27.jar:5.3.27]
-	... 31 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception; nested exception is java.lang.IllegalStateException: Cannot load driver class: com.mysql.cj.jdbc.Driver
-	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:658) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:638) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1352) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1195) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:582) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:542) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:276) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1391) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1311) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:887) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:791) ~[spring-beans-5.3.27.jar:5.3.27]
-	... 44 common frames omitted
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception; nested exception is java.lang.IllegalStateException: Cannot load driver class: com.mysql.cj.jdbc.Driver
-	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:185) ~[spring-beans-5.3.27.jar:5.3.27]
-	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[spring-beans-5.3.27.jar:5.3.27]
-	... 58 common frames omitted
-Caused by: java.lang.IllegalStateException: Cannot load driver class: com.mysql.cj.jdbc.Driver
-	at org.springframework.util.Assert.state(Assert.java:97) ~[spring-core-5.3.27.jar:5.3.27]
-	at org.springframework.boot.autoconfigure.jdbc.DataSourceProperties.determineDriverClassName(DataSourceProperties.java:175) ~[spring-boot-autoconfigure-2.7.12.jar:2.7.12]
-	at org.springframework.boot.autoconfigure.jdbc.DataSourceProperties.initializeDataSourceBuilder(DataSourceProperties.java:125) ~[spring-boot-autoconfigure-2.7.12.jar:2.7.12]
-	at org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration.createDataSource(DataSourceConfiguration.java:48) ~[spring-boot-autoconfigure-2.7.12.jar:2.7.12]
-	at org.springframework.boot.autoconfigure.jdbc.DataSourceConfiguration$Hikari.dataSource(DataSourceConfiguration.java:90) ~[spring-boot-autoconfigure-2.7.12.jar:2.7.12]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:na]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[na:na]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[na:na]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:568) ~[na:na]
-	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:154) ~[spring-beans-5.3.27.jar:5.3.27]
-	... 59 common frames omitted
-
-15:47:13:557  WARN 9428 --- [Thread-1] c.a.n.common.http.HttpClientBeanHolder   : [HttpClientBeanHolder] Start destroying common HttpClient
-15:47:13:557  WARN 9428 --- [Thread-5] c.a.nacos.common.notify.NotifyCenter     : [NotifyCenter] Start destroying Publisher
-15:47:13:558  WARN 9428 --- [Thread-5] c.a.nacos.common.notify.NotifyCenter     : [NotifyCenter] Destruction of the end
-15:47:13:558  WARN 9428 --- [Thread-1] c.a.n.common.http.HttpClientBeanHolder   : [HttpClientBeanHolder] Destruction of the end
+11:24:45:741  WARN 4936 --- [Thread-5] c.a.nacos.common.notify.NotifyCenter     : [NotifyCenter] Start destroying Publisher
+11:24:45:741  WARN 4936 --- [Thread-1] c.a.n.common.http.HttpClientBeanHolder   : [HttpClientBeanHolder] Start destroying common HttpClient
+11:24:45:741  WARN 4936 --- [Thread-5] c.a.nacos.common.notify.NotifyCenter     : [NotifyCenter] Destruction of the end

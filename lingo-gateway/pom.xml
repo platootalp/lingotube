@@ -15,6 +15,18 @@
     <description>网关模块</description>
 
     <dependencies>
+        <!-- spring cloud gateway基于webflux,与springmvc不兼容 -->
+        <dependency>
+            <groupId>com.moncoder</groupId>
+            <artifactId>lingo-common</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-web</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
         <!--nacos 服务注册发现-->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -39,6 +51,15 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
+        <!--SpringSecurity管理-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
         </dependency>
     </dependencies>
 

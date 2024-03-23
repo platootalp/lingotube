@@ -12,11 +12,11 @@
         <module name="lingo-user" />
         <module name="lingo-search" />
         <module name="lingo-video" />
-        <module name="lingo-auth" />
         <module name="lingo-common" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="lingo-auth" target="17" />
       <module name="wrapper" target="1.5" />
     </bytecodeTargetLevel>
   </component>

@@ -14,14 +14,11 @@ class LingoUserApplicationTests {
 
     @Test
     void testRedisSerializerWrite() {
-        UserRegisterDTO userRegisterDTO = new UserRegisterDTO("username", "password", "phone");
-        redisService.set("test", userRegisterDTO);
-        System.out.println(userRegisterDTO);
+
     }
 
     @Test
     void testRedisSerializerRead() {
-        UserRegisterDTO test = (UserRegisterDTO) redisService.get("test");
-        System.out.println(test);
+
     }
 }

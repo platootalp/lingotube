@@ -28,8 +28,8 @@ public class UserRegisterDTO {
     @ApiModelProperty(value = "验证码", required = true)
     private String code;
     @NotEmpty
-    @ApiModelProperty(value = "用户名", required = true)
-    private String username;
+    @ApiModelProperty(value = "昵称", required = true)
+    private String nickname;
     @NotEmpty
     @ApiModelProperty(value = "密码（加密存储）", required = true)
     private String password;

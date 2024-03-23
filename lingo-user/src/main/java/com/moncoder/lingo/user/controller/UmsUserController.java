@@ -43,4 +43,5 @@ public class UmsUserController {
         }
         return Result.success("注册成功！");
     }
+
 }

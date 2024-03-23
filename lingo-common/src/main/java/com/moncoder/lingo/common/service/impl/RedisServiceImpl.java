@@ -52,5 +52,10 @@ public class RedisServiceImpl implements IRedisService {
         return redisTemplate.getExpire(key);
     }
 
+    @Override
+    public Long incr(String key, long delta) {
+        return redisTemplate.opsForValue().increment(key,delta);
+    }
+
 
 }

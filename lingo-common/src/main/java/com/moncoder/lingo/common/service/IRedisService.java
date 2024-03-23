@@ -67,4 +67,11 @@ public interface IRedisService {
      */
     Long getExpire(String key);
 
+    /**
+     * 键值增加
+     * @param key
+     * @param delta 增加的数值
+     */
+    Long incr(String key, long delta);
+
 }

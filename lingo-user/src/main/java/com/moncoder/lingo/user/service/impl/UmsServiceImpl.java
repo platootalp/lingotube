@@ -7,6 +7,7 @@ import cn.hutool.crypto.SecureUtil;
 import com.alibaba.nacos.shaded.org.checkerframework.checker.units.qual.A;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moncoder.lingo.common.constant.SystemConstant;
 import com.moncoder.lingo.common.constant.UserConstant;
 import com.moncoder.lingo.common.exception.ApiException;
 import com.moncoder.lingo.common.exception.IllegalParaException;
@@ -15,6 +16,7 @@ import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.mapper.UmsUserMapper;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.service.IUmsUserService;
+import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +84,7 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
         }
         // 4.判断验证码是否正确
         String code = userRegisterDTO.getCode();
+        log.debug(code);
         String authCode = (String) redisService.get(UserConstant.UMS_USER_CODE + phone);
         if (!code.equals(authCode)) {
             throw new ApiException("验证码错误！");
@@ -91,7 +94,11 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
         BeanUtils.copyProperties(userRegisterDTO, umsUser);
         umsUser.setPassword(passwordEncoder.encode(userRegisterDTO.getPassword()));
         umsUser.setGender((byte) 0);
-        umsUser.setNickname("linger");
+        // 6.获取系统注册用户数量
+        String key = SystemConstant.LINGO_USER_COUNT;
+        Integer userCount = (Integer) redisService.get(key);// Long会报错
+        redisService.incr(key,1L);
+        umsUser.setUsername(userCount + UserConstant.UMS_USER_USERNAME_SUFFIX);
         return save(umsUser);
     }
 }

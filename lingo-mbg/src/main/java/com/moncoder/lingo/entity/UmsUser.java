@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -57,4 +59,10 @@ public class UmsUser implements Serializable {
 
     @ApiModelProperty("帐号启用状态：0->禁用；1->启用")
     private Byte status;
+
+    @ApiModelProperty("创建时间")
+    private LocalDateTime createdTime;
+
+    @ApiModelProperty("更新时间")
+    private LocalDateTime updatedTime;
 }

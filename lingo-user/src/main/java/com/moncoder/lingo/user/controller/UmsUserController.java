@@ -2,14 +2,16 @@ package com.moncoder.lingo.user.controller;
 
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
+import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 import com.moncoder.lingo.user.service.IUmsUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -29,7 +31,7 @@ public class UmsUserController {
 
     @ApiOperation("发送验证码")
     @GetMapping("/{phone}")
-    public Result<String> sendCode(@PathVariable String phone){
+    public Result<String> sendCode(@PathVariable @NotEmpty String phone){
         String data = userService.sendCode(phone);
         return Result.success(data);
     }
@@ -44,4 +46,10 @@ public class UmsUserController {
         return Result.success("注册成功！");
     }
 
+    @ApiOperation("获取当前用户信息")
+    @GetMapping("/info/{id}")
+    public Result<UserInfoVO> getUserInfo(@PathVariable @NotNull Integer id){
+        UserInfoVO userInfoVo = userService.getInfo(id);
+        return Result.success(userInfoVo);
+    }
 }

@@ -49,12 +49,16 @@ public class UmsUser implements Serializable {
     @ApiModelProperty("性别：0->未知；1->男；2->女")
     private Byte gender;
 
+    @ApiModelProperty("生日")
     private LocalDate birthday;
 
+    @ApiModelProperty("邮箱")
     private String email;
 
+    @ApiModelProperty("手机号")
     private String phone;
 
+    @ApiModelProperty("地址")
     private String address;
 
     @ApiModelProperty("帐号启用状态：0->禁用；1->启用")

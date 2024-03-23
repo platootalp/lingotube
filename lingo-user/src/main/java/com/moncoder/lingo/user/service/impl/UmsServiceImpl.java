@@ -15,6 +15,7 @@ import com.moncoder.lingo.common.service.IRedisService;
 import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.mapper.UmsUserMapper;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
+import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 import com.moncoder.lingo.user.service.IUmsUserService;
 import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
@@ -100,5 +101,16 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
         redisService.incr(key,1L);
         umsUser.setUsername(userCount + UserConstant.UMS_USER_USERNAME_SUFFIX);
         return save(umsUser);
+    }
+
+    @Override
+    public UserInfoVO getInfo(Integer id) {
+        if(id == null){
+            return null;
+        }
+        UmsUser user = lambdaQuery().eq(UmsUser::getId, id).one();
+        UserInfoVO userInfoVO = new UserInfoVO();
+        BeanUtils.copyProperties(user,userInfoVO);
+        return userInfoVO;
     }
 }

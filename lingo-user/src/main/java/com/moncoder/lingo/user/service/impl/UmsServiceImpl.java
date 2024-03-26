@@ -1,5 +1,6 @@
 package com.moncoder.lingo.user.service.impl;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.PhoneUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
@@ -15,6 +16,7 @@ import com.moncoder.lingo.common.service.IRedisService;
 import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.mapper.UmsUserMapper;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
+import com.moncoder.lingo.user.domain.dto.UserUpdateInfoDTO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 import com.moncoder.lingo.user.service.IUmsUserService;
 import io.swagger.models.auth.In;
@@ -25,6 +27,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -45,6 +49,7 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    // TODO 修改为发送短信
     @Override
     public String sendCode(String phone) {
         // 1.参数校验
@@ -71,7 +76,7 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     public Boolean register(UserRegisterDTO userRegisterDTO) {
         // 1.参数校验
         if (userRegisterDTO == null) {
-            throw new NullPointerException("实体不能为null！");
+            throw new NullPointerException("参数不能为null！");
         }
         // 2.手机号格式验证
         String phone = userRegisterDTO.getPhone();
@@ -113,4 +118,26 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
         BeanUtils.copyProperties(user,userInfoVO);
         return userInfoVO;
     }
+
+    @Override
+    public Boolean updateInfo(UserUpdateInfoDTO userUpdateInfoDTO) {
+        if(userUpdateInfoDTO == null){
+            throw new NullPointerException("参数不能为null！");
+        }
+        // 进行修改
+        Integer id = userUpdateInfoDTO.getId();
+        String nickname = userUpdateInfoDTO.getNickname();
+        String introduce = userUpdateInfoDTO.getIntroduce();
+        Byte gender = userUpdateInfoDTO.getGender();
+        LocalDate birthday = userUpdateInfoDTO.getBirthday();
+        String address = userUpdateInfoDTO.getAddress();
+        return lambdaUpdate().eq(UmsUser::getId, id)
+                .set(StrUtil.isNotEmpty(nickname), UmsUser::getNickname, nickname)
+                .set(StrUtil.isNotEmpty(introduce), UmsUser::getIntroduce, introduce)
+                .set(gender != null, UmsUser::getGender, gender)
+                .set(birthday != null, UmsUser::getBirthday, birthday)
+                .set(StrUtil.isNotEmpty(address), UmsUser::getAddress, address)
+                .update();
+    }
+
 }

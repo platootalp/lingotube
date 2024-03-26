@@ -3,6 +3,7 @@ package com.moncoder.lingo.user.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
+import com.moncoder.lingo.user.domain.dto.UserUpdateInfoDTO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 
 /**
@@ -35,4 +36,11 @@ public interface IUmsUserService extends IService<UmsUser> {
      * @return
      */
     UserInfoVO getInfo(Integer id);
+
+    /**
+     * 修改用户信息
+     * @param userUpdateInfoDTO
+     * @return
+     */
+    Boolean updateInfo(UserUpdateInfoDTO userUpdateInfoDTO);
 }

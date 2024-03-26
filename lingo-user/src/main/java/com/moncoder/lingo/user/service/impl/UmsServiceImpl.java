@@ -60,7 +60,7 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
         if (!PhoneUtil.isPhone(phone)) {
             throw new IllegalParaException("手机格式不正确！");
         }
-        // 3.60s内不重复发送验证码
+        // 3.5min内不重复发送验证码
         Boolean hasCode = redisService.hasKey(UserConstant.UMS_USER_CODE + phone);
         if (hasCode) {
             throw new ApiException("验证码已发送！");
@@ -103,25 +103,25 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
         // 6.获取系统注册用户数量
         String key = SystemConstant.LINGO_USER_COUNT;
         Integer userCount = (Integer) redisService.get(key);// Long会报错
-        redisService.incr(key,1L);
+        redisService.incr(key, 1L);
         umsUser.setUsername(userCount + UserConstant.UMS_USER_USERNAME_SUFFIX);
         return save(umsUser);
     }
 
     @Override
     public UserInfoVO getInfo(Integer id) {
-        if(id == null){
+        if (id == null) {
             return null;
         }
         UmsUser user = lambdaQuery().eq(UmsUser::getId, id).one();
         UserInfoVO userInfoVO = new UserInfoVO();
-        BeanUtils.copyProperties(user,userInfoVO);
+        BeanUtils.copyProperties(user, userInfoVO);
         return userInfoVO;
     }
 
     @Override
     public Boolean updateInfo(UserUpdateInfoDTO userUpdateInfoDTO) {
-        if(userUpdateInfoDTO == null){
+        if (userUpdateInfoDTO == null) {
             throw new NullPointerException("参数不能为null！");
         }
         // 进行修改
@@ -137,6 +137,20 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
                 .set(gender != null, UmsUser::getGender, gender)
                 .set(birthday != null, UmsUser::getBirthday, birthday)
                 .set(StrUtil.isNotEmpty(address), UmsUser::getAddress, address)
+                .update();
+    }
+
+    @Override
+    public Boolean verifyCode(String phone, String code) {
+        String authCode = (String) redisService.get(UserConstant.UMS_USER_CODE + phone);
+        return code.equals(authCode);
+    }
+
+    @Override
+    public Boolean updatePassword(String phone, String password) {
+        return lambdaUpdate().eq(StrUtil.isNotEmpty(phone), UmsUser::getPhone, phone)
+                .set(StrUtil.isNotEmpty(password), UmsUser::getPassword, passwordEncoder.encode(password))
+                .set(UmsUser::getUpdatedTime, LocalDateTime.now())
                 .update();
     }
 

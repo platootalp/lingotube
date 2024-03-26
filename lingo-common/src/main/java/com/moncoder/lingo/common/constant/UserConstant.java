@@ -9,14 +9,14 @@ package com.moncoder.lingo.common.constant;
 public interface UserConstant {
 
     /**
-     * 注册登录验证码前缀
+     * 注册登录验证验证码前缀
      */
     String UMS_USER_CODE = "lingo:ums:user:code:";
 
     /**
      * 注册登录验证码过期时间（秒）
      */
-    Long UMS_USER_CODE_EXPIRE = 60L;
+    Long UMS_USER_CODE_EXPIRE = 300L;
 
     /**
      * 用户名后缀

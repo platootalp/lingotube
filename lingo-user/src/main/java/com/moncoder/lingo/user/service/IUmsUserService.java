@@ -8,7 +8,7 @@ import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 
 /**
  * <p>
- *  服务类
+ * 服务类
  * </p>
  *
  * @author moncoder
@@ -17,7 +17,6 @@ import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 public interface IUmsUserService extends IService<UmsUser> {
 
     /**
-     *
      * @param phone
      * @return
      */
@@ -25,6 +24,7 @@ public interface IUmsUserService extends IService<UmsUser> {
 
     /**
      * 注册
+     *
      * @param userRegisterDTO
      * @return
      */
@@ -32,6 +32,7 @@ public interface IUmsUserService extends IService<UmsUser> {
 
     /**
      * 获取用户信息
+     *
      * @param id
      * @return
      */
@@ -39,8 +40,28 @@ public interface IUmsUserService extends IService<UmsUser> {
 
     /**
      * 修改用户信息
+     *
      * @param userUpdateInfoDTO
      * @return
      */
     Boolean updateInfo(UserUpdateInfoDTO userUpdateInfoDTO);
+
+    /**
+     * 修改密码前对验证码进行验证
+     *
+     * @param phone
+     * @param code
+     * @return
+     */
+    Boolean verifyCode(String phone, String code);
+
+    /**
+     * 修改用户密码
+     *
+     * @param id
+     * @param password
+     * @return
+     */
+    Boolean updatePassword(String phone, String password);
+
 }

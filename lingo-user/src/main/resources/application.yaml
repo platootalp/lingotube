@@ -1,6 +1,6 @@
 server:
   port: 8081
-
+  address: 127.0.0.1
 spring:
   mvc:
     pathmatch:
@@ -26,7 +26,10 @@ spring:
         max-active: 8
         # 连接池最大阻塞等待时间 负值表示没有限制
         max-wait: 1000ms
-
+  servlet:
+    multipart:
+      max-file-size: 2MB # 单文件上传大小
+      max-request-size: 12MB # 总文件大小
 knife4j:
   enable: true
   openapi:

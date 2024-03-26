@@ -20,11 +20,15 @@ import com.moncoder.lingo.user.service.IUmsUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,6 +51,8 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private Environment environment;
 
     /**
      * TODO 修改为发送短信
@@ -161,21 +167,34 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     @Override
     public Boolean uploadAvatar(Integer id, MultipartFile file) {
         if (file.isEmpty()) {
-            throw new IllegalArgumentException("文件不能为null");
+            throw new IllegalArgumentException("文件不能为null！");
         }
         // 将文件保存到服务器并返回url
-        String avatarUrl = null;
+        String avatarUri = null;
         try {
-            avatarUrl = FileUtil.saveFile(file,"uploads/avatars", UserConstant.UMS_USER_FILE_PREFIX);
+            avatarUri = FileUtil.saveFile(file, UserConstant.UMS_USER_AVATAR_PATH,
+                    UserConstant.UMS_USER_FILE_PREFIX);
         } catch (IOException e) {
+            e.printStackTrace();
             throw new FileUploadException("文件上传失败！");
         }
-        // 设置用户头像url
+        // 设置用户头像uri
         UmsUser umsUser = new UmsUser();
         umsUser.setId(id);
-        umsUser.setAvatar(avatarUrl);
+        umsUser.setAvatar(avatarUri);
         return updateById(umsUser);
     }
 
+    @Override
+    public String getAvatar(Integer id) {
+        String avatarPath = getById(id).getAvatar();
+        // 获取服务器 IP 地址
+        String ipAddress = environment.getProperty("server.address");
+        // 获取服务器端口号
+        int port = environment.getProperty("server.port", Integer.class);
+        // 构建URL
+        String url = "http://" + ipAddress + ":" + port + "/" + avatarPath;
+        return url;
+    }
 
 }

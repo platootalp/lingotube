@@ -8,6 +8,8 @@ import com.moncoder.lingo.user.service.IUmsUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -94,9 +96,18 @@ public class UmsUserController {
                                        @RequestParam("avatar") @NotNull MultipartFile file) {
         Boolean flag = userService.uploadAvatar(id, file);
         if (!flag) {
-            return Result.failed("更新失败！");
+            return Result.failed();
         }
-        return Result.success("更新成功！", null);
+        return Result.success();
     }
 
+    @ApiOperation("获取用户头像")
+    @GetMapping("/avatar")
+    public Result<String> getAvatar(@RequestParam("id") @NotNull Integer id){
+        String avatar = userService.getAvatar(id);
+        if(avatar == null){
+            return Result.failed();
+        }
+        return Result.success(avatar);
+    }
 }

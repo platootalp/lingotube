@@ -5,6 +5,7 @@ import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserUpdateInfoDTO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -72,4 +73,10 @@ public interface IUmsUserService extends IService<UmsUser> {
      * @return
      */
     Boolean uploadAvatar(Integer id, MultipartFile file);
+
+    /**
+     * 获取用户头像
+     * @param id
+     */
+    String getAvatar(Integer id);
 }

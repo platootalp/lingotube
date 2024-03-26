@@ -13,8 +13,4 @@ public interface SystemConstant {
      */
     String LINGO_USER_COUNT = "lingo:sys:user:count:";
 
-    /**
-     * 系统存放路径
-     */
-    String LINGO_FILE_PATH = "E:/project/Java/now/lingotube/";
 }

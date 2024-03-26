@@ -2,7 +2,8 @@ package com.moncoder.lingo.common.advice;
 
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.common.exception.ApiException;
-import com.moncoder.lingo.common.exception.IllegalParaException;
+import com.moncoder.lingo.common.exception.FileUploadException;
+import com.moncoder.lingo.common.exception.IllegalArgumentException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -24,10 +25,17 @@ public class GlobalExceptionAdvice {
         return Result.failed(message);
     }
 
-    @ExceptionHandler(IllegalParaException.class)
-    public Result<String> handleInvalidParaException(IllegalParaException e){
+    @ExceptionHandler(IllegalArgumentException.class)
+    public Result<String> handleInvalidParaException(IllegalArgumentException e){
         String message = e.getMessage();
         log.error("发生非法参数异常->{}",message);
+        return Result.failed(message);
+    }
+
+    @ExceptionHandler(FileUploadException.class)
+    public Result<String> handleFileUploadException(Exception e){
+        String message = e.getMessage();
+        log.error("发生文件上传异常->{}",message);
         return Result.failed(message);
     }
 

@@ -1,32 +1,30 @@
 package com.moncoder.lingo.user.service.impl;
 
-import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.util.PhoneUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.crypto.SecureUtil;
-import com.alibaba.nacos.shaded.org.checkerframework.checker.units.qual.A;
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.common.constant.SystemConstant;
 import com.moncoder.lingo.common.constant.UserConstant;
 import com.moncoder.lingo.common.exception.ApiException;
-import com.moncoder.lingo.common.exception.IllegalParaException;
+import com.moncoder.lingo.common.exception.FileUploadException;
+import com.moncoder.lingo.common.exception.IllegalArgumentException;
 import com.moncoder.lingo.common.service.IRedisService;
+import com.moncoder.lingo.common.util.FileUtil;
 import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.mapper.UmsUserMapper;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserUpdateInfoDTO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 import com.moncoder.lingo.user.service.IUmsUserService;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -52,6 +50,7 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
 
     /**
      * TODO 修改为发送短信
+     *
      * @param phone
      * @return
      */
@@ -59,11 +58,11 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     public String sendCode(String phone) {
         // 1.参数校验
         if (StrUtil.isEmpty(phone)) {
-            throw new IllegalParaException("手机号不能为空");
+            throw new IllegalArgumentException("手机号不能为空");
         }
         // 2.手机号格式验证
         if (!PhoneUtil.isPhone(phone)) {
-            throw new IllegalParaException("手机格式不正确！");
+            throw new IllegalArgumentException("手机格式不正确！");
         }
         // 3.5min内不重复发送验证码
         Boolean hasCode = redisService.hasKey(UserConstant.UMS_USER_CODE + phone);
@@ -86,7 +85,7 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
         // 2.手机号格式验证
         String phone = userRegisterDTO.getPhone();
         if (!PhoneUtil.isPhone(phone)) {
-            throw new IllegalParaException("手机格式不正确！");
+            throw new IllegalArgumentException("手机格式不正确！");
         }
         // 3.判断电话是否已经被注册
         List<UmsUser> list = lambdaQuery().eq(UmsUser::getPhone, phone).list();
@@ -158,5 +157,25 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
                 .set(UmsUser::getUpdatedTime, LocalDateTime.now())
                 .update();
     }
+
+    @Override
+    public Boolean uploadAvatar(Integer id, MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new IllegalArgumentException("文件不能为null");
+        }
+        // 将文件保存到服务器并返回url
+        String avatarUrl = null;
+        try {
+            avatarUrl = FileUtil.saveFile(file,"uploads/avatars", UserConstant.UMS_USER_FILE_PREFIX);
+        } catch (IOException e) {
+            throw new FileUploadException("文件上传失败！");
+        }
+        // 设置用户头像url
+        UmsUser umsUser = new UmsUser();
+        umsUser.setId(id);
+        umsUser.setAvatar(avatarUrl);
+        return updateById(umsUser);
+    }
+
 
 }

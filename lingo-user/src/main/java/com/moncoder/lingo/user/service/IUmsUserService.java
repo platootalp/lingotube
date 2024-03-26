@@ -5,6 +5,7 @@ import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserUpdateInfoDTO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * <p>
@@ -64,4 +65,11 @@ public interface IUmsUserService extends IService<UmsUser> {
      */
     Boolean updatePassword(String phone, String password);
 
+    /**
+     * 修改用户头像
+     * @param id
+     * @param file
+     * @return
+     */
+    Boolean uploadAvatar(Integer id, MultipartFile file);
 }

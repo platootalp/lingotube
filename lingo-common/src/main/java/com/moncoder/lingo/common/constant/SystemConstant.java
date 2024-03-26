@@ -8,5 +8,13 @@ package com.moncoder.lingo.common.constant;
  */
 public interface SystemConstant {
 
+    /**
+     * 系统用户数量前缀
+     */
     String LINGO_USER_COUNT = "lingo:sys:user:count:";
+
+    /**
+     * 系统存放路径
+     */
+    String LINGO_FILE_PATH = "E:/project/Java/now/lingotube/";
 }

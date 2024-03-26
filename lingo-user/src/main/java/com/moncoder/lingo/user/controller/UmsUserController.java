@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
@@ -44,7 +45,7 @@ public class UmsUserController {
         if (!flag) {
             return Result.failed("注册失败！");
         }
-        return Result.success("注册成功！",null);
+        return Result.success("注册成功！", null);
     }
 
     @ApiOperation("获取当前用户信息")
@@ -61,10 +62,10 @@ public class UmsUserController {
         if (!flag) {
             return Result.failed("更新失败！");
         }
-        return Result.success("更新成功！",null);
+        return Result.success("更新成功！", null);
     }
 
-    @ApiOperation("修改密码前对验证码进行验证")
+    @ApiOperation("验证验证码")
     @GetMapping("/password/verify")
     public Result<String> verifyCode(@RequestParam("phone") @NotEmpty String phone,
                                      @RequestParam("code") @NotEmpty String code) {
@@ -72,7 +73,7 @@ public class UmsUserController {
         if (!flag) {
             return Result.failed("验证失败！");
         }
-        return Result.success("验证成功！",null);
+        return Result.success("验证成功！", null);
     }
 
 
@@ -84,6 +85,18 @@ public class UmsUserController {
         if (!flag) {
             return Result.failed("更新失败！");
         }
-        return Result.success("更新成功！",null);
+        return Result.success("更新成功！", null);
     }
+
+    @ApiOperation("上传用户头像")
+    @PutMapping("/upload/avatar")
+    public Result<String> uploadAvatar(@RequestParam("id") @NotNull Integer id,
+                                       @RequestParam("avatar") @NotNull MultipartFile file) {
+        Boolean flag = userService.uploadAvatar(id, file);
+        if (!flag) {
+            return Result.failed("更新失败！");
+        }
+        return Result.success("更新成功！", null);
+    }
+
 }

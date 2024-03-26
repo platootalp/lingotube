@@ -22,4 +22,9 @@ public interface UserConstant {
      * 用户名后缀
      */
     String UMS_USER_USERNAME_SUFFIX = "_linger";
+
+    /**
+     * 用户模块文件前缀
+     */
+    String UMS_USER_FILE_PREFIX = "ums-user-file-";
 }

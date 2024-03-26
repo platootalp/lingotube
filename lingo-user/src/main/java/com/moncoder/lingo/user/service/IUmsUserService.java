@@ -58,7 +58,7 @@ public interface IUmsUserService extends IService<UmsUser> {
     /**
      * 修改用户密码
      *
-     * @param id
+     * @param phone
      * @param password
      * @return
      */

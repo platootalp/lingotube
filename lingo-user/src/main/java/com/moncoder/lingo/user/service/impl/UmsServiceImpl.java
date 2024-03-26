@@ -49,7 +49,12 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    // TODO 修改为发送短信
+
+    /**
+     * TODO 修改为发送短信
+     * @param phone
+     * @return
+     */
     @Override
     public String sendCode(String phone) {
         // 1.参数校验

@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
@@ -27,7 +28,7 @@ public class UserRegisterDTO {
     @NotEmpty
     @ApiModelProperty(value = "验证码", required = true)
     private String code;
-    @NotEmpty
+    @NotBlank
     @ApiModelProperty(value = "昵称", required = true)
     private String nickname;
     @NotEmpty

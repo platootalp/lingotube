@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2024-03-20 16:27:25
  */
 @RestController
-@RequestMapping("/umsUserFavoriteVideo")
+@RequestMapping("/user/fav/video")
 public class UmsUserFavoriteVideoController {
 
 }

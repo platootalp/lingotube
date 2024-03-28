@@ -1,5 +1,6 @@
 package com.moncoder.lingo.user.domain.dto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,12 +11,13 @@ import java.time.LocalDate;
 /**
  * @author Moncoder
  * @version 1.0
- * @description 用户信息更新参数
+ * @description 用户信息修改参数
  * @date 2024/3/26 10:05
  */
 @Getter
 @Setter
-public class UserUpdateInfoDTO {
+@ApiModel("用户信息修改参数")
+public class UserInfoUpdateDTO {
 
     @NotNull
     @ApiModelProperty(value = "id",required = true)

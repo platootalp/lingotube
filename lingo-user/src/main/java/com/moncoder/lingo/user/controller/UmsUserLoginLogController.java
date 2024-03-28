@@ -5,14 +5,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  前端控制器
+ *  用户登录日志表 前端控制器
  * </p>
  *
  * @author moncoder
  * @since 2024-03-20 16:27:25
  */
 @RestController
-@RequestMapping("/umsUserLoginLog")
+@RequestMapping("/user/login/log")
 public class UmsUserLoginLogController {
 
 }

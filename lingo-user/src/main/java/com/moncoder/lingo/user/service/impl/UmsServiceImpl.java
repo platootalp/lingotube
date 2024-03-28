@@ -7,28 +7,23 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.common.constant.SystemConstant;
 import com.moncoder.lingo.common.constant.UserConstant;
 import com.moncoder.lingo.common.exception.ApiException;
-import com.moncoder.lingo.common.exception.FileUploadException;
 import com.moncoder.lingo.common.exception.IllegalArgumentException;
 import com.moncoder.lingo.common.service.IRedisService;
-import com.moncoder.lingo.common.util.FileUtil;
 import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.mapper.UmsUserMapper;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
-import com.moncoder.lingo.user.domain.dto.UserUpdateInfoDTO;
+import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 import com.moncoder.lingo.user.service.IUmsUserService;
+import com.moncoder.lingo.user.service.IUploadService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -53,6 +48,9 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
 
     @Autowired
     private Environment environment;
+
+    @Autowired
+    private IUploadService uploadService;
 
     /**
      * TODO 修改为发送短信
@@ -83,7 +81,7 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     }
 
     @Override
-    public Boolean register(UserRegisterDTO userRegisterDTO) {
+    public boolean register(UserRegisterDTO userRegisterDTO) {
         // 1.参数校验
         if (userRegisterDTO == null) {
             throw new NullPointerException("参数不能为null！");
@@ -130,7 +128,7 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     }
 
     @Override
-    public Boolean updateInfo(UserUpdateInfoDTO userUpdateInfoDTO) {
+    public boolean updateInfo(UserInfoUpdateDTO userUpdateInfoDTO) {
         if (userUpdateInfoDTO == null) {
             throw new NullPointerException("参数不能为null！");
         }
@@ -151,13 +149,13 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     }
 
     @Override
-    public Boolean verifyCode(String phone, String code) {
+    public boolean verifyCode(String phone, String code) {
         String authCode = (String) redisService.get(UserConstant.UMS_USER_CODE + phone);
         return code.equals(authCode);
     }
 
     @Override
-    public Boolean updatePassword(String phone, String password) {
+    public boolean updatePassword(String phone, String password) {
         return lambdaUpdate().eq(StrUtil.isNotEmpty(phone), UmsUser::getPhone, phone)
                 .set(StrUtil.isNotEmpty(password), UmsUser::getPassword, passwordEncoder.encode(password))
                 .set(UmsUser::getUpdatedTime, LocalDateTime.now())
@@ -165,23 +163,13 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     }
 
     @Override
-    public Boolean uploadAvatar(Integer id, MultipartFile file) {
-        if (file.isEmpty()) {
-            throw new IllegalArgumentException("文件不能为null！");
-        }
-        // 将文件保存到服务器并返回url
-        String avatarUri = null;
-        try {
-            avatarUri = FileUtil.saveFile(file, UserConstant.UMS_USER_AVATAR_PATH,
-                    UserConstant.UMS_USER_FILE_PREFIX);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new FileUploadException("文件上传失败！");
-        }
+    public boolean updateAvatar(Integer id, MultipartFile file) {
+        // 上传头像并获取uri
+        String avatar = uploadService.upload(file, UserConstant.UMS_USER_AVATAR_PATH);
         // 设置用户头像uri
         UmsUser umsUser = new UmsUser();
         umsUser.setId(id);
-        umsUser.setAvatar(avatarUri);
+        umsUser.setAvatar(avatar);
         return updateById(umsUser);
     }
 
@@ -193,8 +181,7 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
         // 获取服务器端口号
         int port = environment.getProperty("server.port", Integer.class);
         // 构建URL
-        String url = "http://" + ipAddress + ":" + port + "/" + avatarPath;
-        return url;
+        return "http://" + ipAddress + ":" + port + "/" + avatarPath;
     }
 
 }

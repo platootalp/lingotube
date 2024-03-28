@@ -39,6 +39,6 @@ public class UmsUserVideoBrowseHistory implements Serializable {
     @ApiModelProperty("用户观看视频的总时长（秒）")
     private Integer viewingDuration;
 
-    @ApiModelProperty("用户开始浏览视频的时间戳")
+    @ApiModelProperty("用户开始浏览视频的时间")
     private LocalDateTime createTime;
 }

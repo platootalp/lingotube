@@ -2,14 +2,12 @@ package com.moncoder.lingo.user.controller;
 
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
-import com.moncoder.lingo.user.domain.dto.UserUpdateInfoDTO;
+import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 import com.moncoder.lingo.user.service.IUmsUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.InputStreamResource;
-import org.springframework.core.io.Resource;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -19,15 +17,15 @@ import javax.validation.constraints.NotNull;
 
 /**
  * <p>
- * 前端控制器
+ * 用户表 前端控制器
  * </p>
  *
  * @author moncoder
  * @since 2024-03-20 14:59:05
  */
-@RestController
-@RequestMapping("/umsUser")
 @Api(tags = "用户管理")
+@RestController
+@RequestMapping("/user")
 public class UmsUserController {
 
     @Autowired
@@ -59,7 +57,7 @@ public class UmsUserController {
 
     @ApiOperation("修改用户信息")
     @PutMapping("/info")
-    public Result<String> updateInfo(@RequestBody @Valid UserUpdateInfoDTO userUpdateInfoDTO) {
+    public Result<String> updateInfo(@RequestBody @Valid UserInfoUpdateDTO userUpdateInfoDTO) {
         Boolean flag = userService.updateInfo(userUpdateInfoDTO);
         if (!flag) {
             return Result.failed("更新失败！");
@@ -90,11 +88,11 @@ public class UmsUserController {
         return Result.success("更新成功！", null);
     }
 
-    @ApiOperation("上传用户头像")
-    @PutMapping("/upload/avatar")
-    public Result<String> uploadAvatar(@RequestParam("id") @NotNull Integer id,
+    @ApiOperation("更新用户头像")
+    @PutMapping("/avatar")
+    public Result<String> updateAvatar(@RequestParam("id") @NotNull Integer id,
                                        @RequestParam("avatar") @NotNull MultipartFile file) {
-        Boolean flag = userService.uploadAvatar(id, file);
+        Boolean flag = userService.updateAvatar(id, file);
         if (!flag) {
             return Result.failed();
         }
@@ -103,9 +101,9 @@ public class UmsUserController {
 
     @ApiOperation("获取用户头像")
     @GetMapping("/avatar")
-    public Result<String> getAvatar(@RequestParam("id") @NotNull Integer id){
+    public Result<String> getAvatar(@RequestParam("id") @NotNull Integer id) {
         String avatar = userService.getAvatar(id);
-        if(avatar == null){
+        if (avatar == null) {
             return Result.failed();
         }
         return Result.success(avatar);

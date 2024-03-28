@@ -24,12 +24,12 @@ public interface UserConstant {
     String UMS_USER_USERNAME_SUFFIX = "_linger";
 
     /**
-     * 用户模块文件前缀
+     * 头像存放文件夹
      */
-    String UMS_USER_FILE_PREFIX = "ums-user-file-";
+    String UMS_USER_AVATAR_PATH = "uploads/avatars/";
 
     /**
-     * 用户模块头像存放文件夹
+     * 收藏夹封面存放文件夹
      */
-    String UMS_USER_AVATAR_PATH = "uploads/avatar";
+    String UMS_USER_FAVORITE_FOLDER_PATH = "uploads/favoriteFolders/";
 }

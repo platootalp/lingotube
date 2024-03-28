@@ -39,15 +39,18 @@ public class UmsUserFavoriteFolder implements Serializable {
     @ApiModelProperty("封面图片URL或路径")
     private String coverImage;
 
+    @ApiModelProperty("简介")
+    private String description;
+
     @ApiModelProperty("是否为默认收藏夹，1为默认，0为非默认")
     private Byte isDefault;
 
     @ApiModelProperty("是否为公开收藏夹，1为公开，0为私有")
     private Byte isPublic;
 
-    @ApiModelProperty("简介")
-    private String description;
-
     @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
+
+    @ApiModelProperty("更新时间")
+    private LocalDateTime updateTime;
 }

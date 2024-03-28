@@ -3,9 +3,8 @@ package com.moncoder.lingo.user.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
-import com.moncoder.lingo.user.domain.dto.UserUpdateInfoDTO;
+import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
-import org.springframework.core.io.InputStreamResource;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -30,7 +29,7 @@ public interface IUmsUserService extends IService<UmsUser> {
      * @param userRegisterDTO
      * @return
      */
-    Boolean register(UserRegisterDTO userRegisterDTO);
+    boolean register(UserRegisterDTO userRegisterDTO);
 
     /**
      * 获取用户信息
@@ -46,7 +45,7 @@ public interface IUmsUserService extends IService<UmsUser> {
      * @param userUpdateInfoDTO
      * @return
      */
-    Boolean updateInfo(UserUpdateInfoDTO userUpdateInfoDTO);
+    boolean updateInfo(UserInfoUpdateDTO userUpdateInfoDTO);
 
     /**
      * 修改密码前对验证码进行验证
@@ -55,7 +54,7 @@ public interface IUmsUserService extends IService<UmsUser> {
      * @param code
      * @return
      */
-    Boolean verifyCode(String phone, String code);
+    boolean verifyCode(String phone, String code);
 
     /**
      * 修改用户密码
@@ -64,7 +63,7 @@ public interface IUmsUserService extends IService<UmsUser> {
      * @param password
      * @return
      */
-    Boolean updatePassword(String phone, String password);
+    boolean updatePassword(String phone, String password);
 
     /**
      * 修改用户头像
@@ -72,7 +71,7 @@ public interface IUmsUserService extends IService<UmsUser> {
      * @param file
      * @return
      */
-    Boolean uploadAvatar(Integer id, MultipartFile file);
+    boolean updateAvatar(Integer id, MultipartFile file);
 
     /**
      * 获取用户头像

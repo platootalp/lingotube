@@ -1,6 +1,6 @@
 package com.moncoder.lingo.mapper;
 
-import com.moncoder.lingo.entity.UmsUserVideoWatchLater;
+import com.moncoder.lingo.entity.VmsVideoWatchLater;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -9,8 +9,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author moncoder
- * @since 2024-03-20 16:27:25
+ * @since 2024-03-28 14:54:53
  */
-public interface UmsUserVideoWatchLaterMapper extends BaseMapper<UmsUserVideoWatchLater> {
+public interface VmsVideoWatchLaterMapper extends BaseMapper<VmsVideoWatchLater> {
 
 }

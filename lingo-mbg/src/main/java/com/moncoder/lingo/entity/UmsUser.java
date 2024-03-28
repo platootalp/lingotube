@@ -6,7 +6,6 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -18,7 +17,7 @@ import lombok.Setter;
  * </p>
  *
  * @author moncoder
- * @since 2024-03-20 16:27:25
+ * @since 2024-03-28 14:54:53
  */
 @Getter
 @Setter
@@ -55,7 +54,7 @@ public class UmsUser implements Serializable {
     @ApiModelProperty("邮箱")
     private String email;
 
-    @ApiModelProperty("手机号")
+    @ApiModelProperty("电话号码")
     private String phone;
 
     @ApiModelProperty("地址")

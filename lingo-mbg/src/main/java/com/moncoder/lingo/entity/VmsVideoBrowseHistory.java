@@ -12,21 +12,21 @@ import lombok.Setter;
 
 /**
  * <p>
- * 赞过的视频表
+ * 用户浏览视频历史记录表
  * </p>
  *
  * @author moncoder
- * @since 2024-03-20 16:27:25
+ * @since 2024-03-28 14:54:53
  */
 @Getter
 @Setter
-@TableName("ums_user_video_like")
-@ApiModel(value = "UmsUserVideoLike对象", description = "赞过的视频表")
-public class UmsUserVideoLike implements Serializable {
+@TableName("vms_video_browse_history")
+@ApiModel(value = "VmsVideoBrowseHistory对象", description = "用户浏览视频历史记录表")
+public class VmsVideoBrowseHistory implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("唯一标识ID")
+    @ApiModelProperty("浏览记录ID，主键，自增")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
@@ -36,6 +36,9 @@ public class UmsUserVideoLike implements Serializable {
     @ApiModelProperty("视频ID，外键，关联视频表")
     private Integer videoId;
 
-    @ApiModelProperty("点赞时间")
-    private LocalDateTime likedTime;
+    @ApiModelProperty("用户观看视频的总时长（秒）")
+    private Integer viewingDuration;
+
+    @ApiModelProperty("用户开始浏览视频的时间")
+    private LocalDateTime createTime;
 }

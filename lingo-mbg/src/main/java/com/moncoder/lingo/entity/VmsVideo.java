@@ -16,7 +16,7 @@ import lombok.Setter;
  * </p>
  *
  * @author moncoder
- * @since 2024-03-20 16:27:25
+ * @since 2024-03-28 14:54:53
  */
 @Getter
 @Setter
@@ -45,29 +45,29 @@ public class VmsVideo implements Serializable {
     @ApiModelProperty("视频类型（0：普通视频，1：电视剧，2：电影）")
     private Byte type;
 
-    @ApiModelProperty("视频是否下架（1为上架，0为下架）")
-    private Integer isEnable;
+    @ApiModelProperty("视频是否下架（0：下架，1：上架）")
+    private Byte enable;
 
     @ApiModelProperty("视频时长（秒）")
     private Integer duration;
 
     @ApiModelProperty("观看次数")
-    private Integer viewsCount;
+    private Integer views;
 
     @ApiModelProperty("点赞次数")
-    private Integer likesCount;
+    private Integer likes;
 
     @ApiModelProperty("点踩次数")
-    private Integer dislikesCount;
+    private Integer dislikes;
 
     @ApiModelProperty("收藏次数")
-    private Integer favoritesCount;
+    private Integer favorites;
 
     @ApiModelProperty("分享次数")
-    private Integer sharesCount;
+    private Integer shares;
 
     @ApiModelProperty("评论次数")
-    private Integer commentsCount;
+    private Integer comments;
 
     @ApiModelProperty("上传者ID，外键，关联用户表")
     private Integer uploaderId;

@@ -40,7 +40,7 @@ public class VmsVideoController {
 
     @ApiOperation("收藏、取消收藏视频")
     @PostMapping("/favorite")
-    public Result<Void> favoriteVideo(@RequestParam @NotNull Integer userId,
+    public Result<String> favoriteVideo(@RequestParam @NotNull Integer userId,
                                       @RequestParam @NotNull Integer videoId,
                                       @RequestParam @NotNull Integer folderId) {
         boolean flag = videoService.favoriteVideo(userId, videoId, folderId);

@@ -36,7 +36,7 @@ public class VmsUserFavoriteVideoController {
 
     @ApiOperation("批量删除")
     @DeleteMapping("/s")
-    public Result<Void> deleteBatch(@RequestParam @NotNull List<String> ids) {
+    public Result<String> deleteBatch(@RequestParam @NotNull List<String> ids) {
         boolean flag = favoriteFolderService.removeBatchByIds(ids);
         if (!flag) {
             return Result.failed();

@@ -88,10 +88,10 @@ public class UmsUserController {
         return Result.success("更新成功！", null);
     }
 
-    @ApiOperation("更新用户头像")
+    @ApiOperation("修改用户头像")
     @PutMapping("/avatar")
     public Result<String> updateAvatar(@RequestParam("id") @NotNull Integer id,
-                                       @RequestParam("avatar") @NotNull MultipartFile file) {
+                                       @RequestPart("avatar") @NotNull MultipartFile file) {
         Boolean flag = userService.updateAvatar(id, file);
         if (!flag) {
             return Result.failed();

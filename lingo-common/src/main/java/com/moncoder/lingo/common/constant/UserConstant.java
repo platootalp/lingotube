@@ -3,7 +3,7 @@ package com.moncoder.lingo.common.constant;
 /**
  * @author lenovo
  * @version 1.0
- * @description 用户常量定义
+ * @description 用户模块常量
  * @date 2024/3/23 13:48
  */
 public interface UserConstant {
@@ -26,10 +26,6 @@ public interface UserConstant {
     /**
      * 头像存放文件夹
      */
-    String UMS_USER_AVATAR_PATH = "uploads/avatars/";
+    String UMS_USER_AVATAR_PATH = "uploads/ums/avatars/";
 
-    /**
-     * 收藏夹封面存放文件夹
-     */
-    String UMS_USER_FAVORITE_FOLDER_PATH = "uploads/favoriteFolders/";
 }

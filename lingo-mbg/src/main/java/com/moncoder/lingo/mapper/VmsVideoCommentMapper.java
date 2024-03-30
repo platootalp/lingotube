@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * </p>
  *
  * @author moncoder
- * @since 2024-03-28 14:54:53
+ * @since 2024-03-28 15:51:18
  */
 public interface VmsVideoCommentMapper extends BaseMapper<VmsVideoComment> {
 

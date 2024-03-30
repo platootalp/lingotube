@@ -21,28 +21,28 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(ApiException.class)
     public Result<String> handleApiException(ApiException e){
         String message = e.getMessage();
-        log.error("发生API异常->{}",message);
+        log.error("API异常->{}",message);
         return Result.failed(message);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public Result<String> handleInvalidParaException(IllegalArgumentException e){
         String message = e.getMessage();
-        log.error("发生非法参数异常->{}",message);
+        log.error("非法参数异常->{}",message);
         return Result.failed(message);
     }
 
     @ExceptionHandler(FileUploadException.class)
     public Result<String> handleFileUploadException(Exception e){
         String message = e.getMessage();
-        log.error("发生文件上传异常->{}",message);
+        log.error("文件上传异常->{}",message);
         return Result.failed(message);
     }
 
     @ExceptionHandler(Exception.class)
     public Result<String> handleOtherException(Exception e){
         String message = e.getMessage();
-        log.error("发生未知异常->{}",message);
+        log.error("其他异常->{}",message);
         return Result.failed("请求失败！");
     }
 }

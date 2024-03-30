@@ -9,13 +9,14 @@ import com.moncoder.lingo.common.constant.UserConstant;
 import com.moncoder.lingo.common.exception.ApiException;
 import com.moncoder.lingo.common.exception.IllegalArgumentException;
 import com.moncoder.lingo.common.service.IRedisService;
+import com.moncoder.lingo.common.util.FileUtil;
 import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.mapper.UmsUserMapper;
+import com.moncoder.lingo.user.api.UploadClient;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 import com.moncoder.lingo.user.service.IUmsUserService;
-import com.moncoder.lingo.user.service.IUploadService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -48,9 +50,6 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
 
     @Autowired
     private Environment environment;
-
-    @Autowired
-    private IUploadService uploadService;
 
     /**
      * TODO 修改为发送短信
@@ -165,7 +164,12 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     @Override
     public boolean updateAvatar(Integer id, MultipartFile file) {
         // 上传头像并获取uri
-        String avatar = uploadService.upload(file, UserConstant.UMS_USER_AVATAR_PATH);
+        String avatar = null;
+        try {
+            avatar = FileUtil.saveFile(file, UserConstant.UMS_USER_AVATAR_PATH);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         // 设置用户头像uri
         UmsUser umsUser = new UmsUser();
         umsUser.setId(id);

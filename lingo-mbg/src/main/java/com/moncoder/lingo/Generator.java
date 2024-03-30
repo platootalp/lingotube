@@ -19,15 +19,13 @@ public class Generator {
             "characterEncoding=UTF-8&useUnicode=true&useSSL=false";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "root";
-    private static final String GLOBAL_CONFIG_AUTHOR = "moncoder";
-    private static final String GLOBAL_CONFIG_COMMENT_DATE = "yyyy-MM-dd HH:mm:ss";
 
     public static void main(String[] args) {
         FastAutoGenerator.create(URL, USERNAME, PASSWORD)
                 .globalConfig(builder -> {
-                    builder.author(GLOBAL_CONFIG_AUTHOR) // 设置作者
+                    builder.author("moncoder") // 设置作者
                             .enableSwagger() // 开启 swagger 模式
-                            .commentDate(GLOBAL_CONFIG_COMMENT_DATE)   //注释日期
+                            .commentDate("yyyy-MM-dd HH:mm:ss")   //注释日期
                             .outputDir("lingo-mbg/src/main/java") // 指定输出目录
                             .disableOpenDir(); //禁止打开输出目录，默认打开
                 })

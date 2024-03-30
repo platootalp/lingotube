@@ -16,5 +16,5 @@ public interface SystemConstant {
     /**
      * 系统默认文件存放目录
      */
-    String LINGO_DEFAULT_FILE_PATH = "uploads/";
+    String LINGO_DEFAULT_FILE_PATH = "uploads/default/";
 }

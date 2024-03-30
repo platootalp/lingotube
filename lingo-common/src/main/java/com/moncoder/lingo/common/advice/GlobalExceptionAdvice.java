@@ -19,30 +19,34 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionAdvice {
 
     @ExceptionHandler(ApiException.class)
-    public Result<String> handleApiException(ApiException e){
+    public Result<String> handleApiException(ApiException e) {
         String message = e.getMessage();
-        log.error("API异常->{}",message);
+        log.error("API异常->{}", message);
+        e.printStackTrace();
         return Result.failed(message);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public Result<String> handleInvalidParaException(IllegalArgumentException e){
+    public Result<String> handleInvalidParaException(IllegalArgumentException e) {
         String message = e.getMessage();
-        log.error("非法参数异常->{}",message);
+        log.error("非法参数异常->{}", message);
+        e.printStackTrace();
         return Result.failed(message);
     }
 
     @ExceptionHandler(FileUploadException.class)
-    public Result<String> handleFileUploadException(Exception e){
+    public Result<String> handleFileUploadException(Exception e) {
         String message = e.getMessage();
-        log.error("文件上传异常->{}",message);
+        log.error("文件上传异常->{}", message);
+        e.printStackTrace();
         return Result.failed(message);
     }
 
     @ExceptionHandler(Exception.class)
-    public Result<String> handleOtherException(Exception e){
+    public Result<String> handleOtherException(Exception e) {
         String message = e.getMessage();
-        log.error("其他异常->{}",message);
+        log.error("其他异常->{}", message);
+        e.printStackTrace();
         return Result.failed("请求失败！");
     }
 }

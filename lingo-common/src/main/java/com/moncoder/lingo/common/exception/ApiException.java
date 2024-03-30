@@ -1,6 +1,5 @@
 package com.moncoder.lingo.common.exception;
 
-
 /**
  * @author Moncoder
  * @version 1.0
@@ -14,8 +13,16 @@ public class ApiException extends RuntimeException{
     public ApiException(){
 
     }
-
     public ApiException(String msg){
         super(msg);
     }
+
+    public ApiException(Throwable cause) {
+        super(cause);
+    }
+
+    public ApiException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
 }

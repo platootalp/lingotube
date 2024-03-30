@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.common.constant.SystemConstant;
 import com.moncoder.lingo.common.constant.UserConstant;
 import com.moncoder.lingo.common.exception.ApiException;
+import com.moncoder.lingo.common.exception.FileUploadException;
 import com.moncoder.lingo.common.exception.IllegalArgumentException;
 import com.moncoder.lingo.common.service.IRedisService;
 import com.moncoder.lingo.common.util.FileUtil;
@@ -168,7 +169,7 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
         try {
             avatar = FileUtil.saveFile(file, UserConstant.UMS_USER_AVATAR_PATH);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new FileUploadException("文件上传失败！");
         }
         // 设置用户头像uri
         UmsUser umsUser = new UmsUser();

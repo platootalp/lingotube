@@ -14,7 +14,7 @@ public interface SystemConstant {
     String LINGO_USER_COUNT = "lingo:sys:user:count:";
 
     /**
-     * 系统默认文件存放目录
+     * 系统默认文件存放路径
      */
     String LINGO_DEFAULT_FILE_PATH = "uploads/default/";
 }

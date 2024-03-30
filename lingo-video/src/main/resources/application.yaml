@@ -1,9 +1,12 @@
 server:
   port: 8082
-
+  address: 127.0.0.1
 spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
   datasource:
-    url: jdbc:mysql://${hm.db.host}:3306/lingotube?useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://${hm.db.host}:3306/lingotube??useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&useSSL=false
     driver-class-name: com.mysql.jdbc.Driver
     username: root
     password: ${hm.db.pw}
@@ -23,12 +26,15 @@ spring:
         max-active: 8
         # 连接池最大阻塞等待时间 负值表示没有限制
         max-wait: 1000ms
-
+  servlet:
+    multipart:
+      max-file-size: 2MB # 单文件上传大小
+      max-request-size: 12MB # 总文件大小
 knife4j:
   enable: true
   openapi:
     title: lingotube接口文档
-    description: "lingotube文档"
+    description: "video模块文档"
     email: zhanghuyi@itcast.cn
     concat: Moncoder
     url: https://www.itcast.cn
@@ -39,3 +45,7 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.moncoder.lingo.video.controller
+logging:
+  level:
+    root: info
+    com.moncoder: debug

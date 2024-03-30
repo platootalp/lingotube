@@ -24,13 +24,13 @@ import java.util.List;
  */
 @Api(tags = "用户收藏夹管理")
 @RestController
-@RequestMapping("/user/fav/folder")
+@RequestMapping("/video/fav/folder")
 public class VmsUserFavoriteFolderController {
 
     @Autowired
     private IVmsUserFavoriteFolderService userFavoriteFolderService;
 
-    // TODO 前端写完再改
+    // TODO 请求体里面加上文件字段
     @ApiOperation("创建收藏夹")
     @PostMapping("/")
     public Result<String> create(@RequestBody @Valid UserFavoriteFolderDTO userFavoriteFolderDTO) {
@@ -52,10 +52,10 @@ public class VmsUserFavoriteFolderController {
         return Result.success();
     }
 
+    // TODO 请求体里面加上文件字段
     @ApiOperation("修改收藏夹")
     @PutMapping("/{id}")
     public Result<String> update(@PathVariable @NotNull Integer id,
-
                                  @RequestBody @Valid UserFavoriteFolderUpdateDTO userFavoriteFolderUpdateDTO) {
         boolean flag = userFavoriteFolderService.update(id, userFavoriteFolderUpdateDTO);
         if (!flag) {

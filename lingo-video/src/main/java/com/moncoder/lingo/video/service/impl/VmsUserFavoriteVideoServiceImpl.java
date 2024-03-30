@@ -17,5 +17,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class VmsUserFavoriteVideoServiceImpl extends ServiceImpl<VmsUserFavoriteVideoMapper, VmsUserFavoriteVideo> implements IVmsUserFavoriteVideoService {
 
-
+    @Override
+    public VmsUserFavoriteVideo getByUserVideoFolderId(Integer userId, Integer videoId, Integer folderId) {
+        return lambdaQuery().eq(VmsUserFavoriteVideo::getUserId, userId)
+                .eq(VmsUserFavoriteVideo::getVideoId, videoId)
+                .eq(VmsUserFavoriteVideo::getFolderId, folderId)
+                .one();
+    }
 }

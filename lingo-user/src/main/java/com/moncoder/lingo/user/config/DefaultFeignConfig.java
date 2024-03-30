@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean;
 /**
  * @author Moncoder
  * @version 1.0
- * @description TODO
+ * @description feign配置
  * @date 2024/3/29 23:29
  */
 public class DefaultFeignConfig {

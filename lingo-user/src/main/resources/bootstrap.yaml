@@ -2,7 +2,7 @@ spring:
   application:
     name: lingo-user # 服务名称
   profiles:
-    active: dev
+    active: local
   cloud:
     nacos:
       server-addr: 192.168.10.100 # nacos地址

@@ -13,4 +13,12 @@ import com.moncoder.lingo.entity.VmsUserFavoriteVideo;
  */
 public interface IVmsUserFavoriteVideoService extends IService<VmsUserFavoriteVideo> {
 
+    /**
+     * 根据参数获取记录
+     * @param userId
+     * @param videoId
+     * @param folderId
+     * @return
+     */
+    VmsUserFavoriteVideo getByUserVideoFolderId(Integer userId, Integer videoId, Integer folderId);
 }

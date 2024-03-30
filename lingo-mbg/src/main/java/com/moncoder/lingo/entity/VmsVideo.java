@@ -26,7 +26,7 @@ public class VmsVideo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("视频唯一标识ID")
+    @ApiModelProperty("视频唯一标识")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 

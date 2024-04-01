@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(tags = "用户收藏视频管理")
 @RestController
-@RequestMapping("/video/fav/video")
+@RequestMapping("/vms/fav/video")
 public class VmsUserFavoriteFolderVideoController {
 
     @Autowired
@@ -51,7 +51,7 @@ public class VmsUserFavoriteFolderVideoController {
     }
 
     @ApiOperation("复制当前收藏夹视频到其他收藏夹")
-    @PostMapping("/copy/s")
+    @PostMapping("/copy")
     public Result<String> copyVideosToFolders(@RequestBody @Valid FolderVideoCopyDTO folderVideoCopyDTO) {
         boolean flag = folderVideoService.copyVideosToFolders(folderVideoCopyDTO);
         if (!flag) {

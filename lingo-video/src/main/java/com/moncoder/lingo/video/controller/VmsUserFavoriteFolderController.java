@@ -26,7 +26,7 @@ import java.util.List;
  */
 @Api(tags = "用户收藏夹管理")
 @RestController
-@RequestMapping("/video/fav")
+@RequestMapping("/vms/fav/folder")
 public class VmsUserFavoriteFolderController {
 
     @Autowired
@@ -36,7 +36,7 @@ public class VmsUserFavoriteFolderController {
 
     // TODO 请求体里面加上文件字段
     @ApiOperation("创建收藏夹")
-    @PostMapping("/folder")
+    @PostMapping("/")
     public Result<String> create(@RequestBody @Valid FavoriteFolderCreateDTO favoriteFolderCreateDTO) {
         boolean flag = favoriteFolderService.create(favoriteFolderCreateDTO);
         if (!flag) {
@@ -47,7 +47,7 @@ public class VmsUserFavoriteFolderController {
 
 
     @ApiOperation("删除非默认收藏夹")
-    @DeleteMapping("/folder/{id}")
+    @DeleteMapping("/{id}")
     public Result<String> delete(@PathVariable @NotNull Integer id) {
         boolean flag = favoriteFolderService.delete(id);
         if (!flag) {
@@ -58,7 +58,7 @@ public class VmsUserFavoriteFolderController {
 
     // TODO 请求体里面加上文件字段
     @ApiOperation("修改收藏夹")
-    @PutMapping("/folder/{id}")
+    @PutMapping("/{id}")
     public Result<String> update(@PathVariable @NotNull Integer id,
                                  @RequestBody @Valid FavoriteFolderUpdateDTO favoriteFolderUpdateDTO) {
         boolean flag = favoriteFolderService.update(id, favoriteFolderUpdateDTO);

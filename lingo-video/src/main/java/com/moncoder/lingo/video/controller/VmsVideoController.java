@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * <p>
@@ -42,8 +43,8 @@ public class VmsVideoController {
     @PostMapping("/favorite")
     public Result<String> favoriteVideo(@RequestParam @NotNull Integer userId,
                                       @RequestParam @NotNull Integer videoId,
-                                      @RequestParam @NotNull Integer folderId) {
-        boolean flag = videoService.favoriteVideo(userId, videoId, folderId);
+                                      @RequestParam @NotNull List<Integer> folderIds) {
+        boolean flag = videoService.favoriteVideo(userId, videoId, folderIds);
         if (!flag) {
             return Result.failed();
         }

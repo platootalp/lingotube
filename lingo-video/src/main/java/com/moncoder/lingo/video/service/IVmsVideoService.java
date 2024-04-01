@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.entity.VmsVideo;
 import com.moncoder.lingo.video.domain.dto.VmsVideoDTO;
 
+import java.util.List;
+
 /**
  * <p>
  * 视频表 服务类
@@ -25,9 +27,9 @@ public interface IVmsVideoService extends IService<VmsVideo> {
      * 收藏视频
      * @param userId
      * @param videoId
-     * @param folderId
+     * @param folderIds
      * @return
      */
-    boolean favoriteVideo(Integer userId, Integer videoId, Integer folderId);
+    boolean favoriteVideo(Integer userId, Integer videoId,  List<Integer> folderIds);
 
 }

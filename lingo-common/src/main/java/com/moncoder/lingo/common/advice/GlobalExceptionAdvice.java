@@ -27,7 +27,7 @@ public class GlobalExceptionAdvice {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public Result<String> handleInvalidParaException(IllegalArgumentException e) {
+    public Result<String> handleIllegalArgumentException(IllegalArgumentException e) {
         String message = e.getMessage();
         log.error("非法参数异常->{}", message);
         e.printStackTrace();

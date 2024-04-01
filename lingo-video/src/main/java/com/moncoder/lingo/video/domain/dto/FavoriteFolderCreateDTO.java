@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @ApiModel("用户收藏夹创建参数")
-public class UserFavoriteFolderDTO {
+public class FavoriteFolderCreateDTO {
 
     @NotNull
     @ApiModelProperty(value = "用户ID，外键，关联用户表",required = true)

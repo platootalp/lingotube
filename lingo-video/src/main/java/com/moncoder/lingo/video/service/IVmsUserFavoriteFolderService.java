@@ -2,9 +2,9 @@ package com.moncoder.lingo.video.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.entity.VmsUserFavoriteFolder;
-import com.moncoder.lingo.video.domain.dto.UserFavoriteFolderDTO;
-import com.moncoder.lingo.video.domain.dto.UserFavoriteFolderUpdateDTO;
-import com.moncoder.lingo.video.domain.vo.UserFavoriteFolderVO;
+import com.moncoder.lingo.video.domain.dto.FavoriteFolderCreateDTO;
+import com.moncoder.lingo.video.domain.dto.FavoriteFolderUpdateDTO;
+import com.moncoder.lingo.video.domain.vo.FavoriteFolderVO;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public interface IVmsUserFavoriteFolderService extends IService<VmsUserFavoriteF
      * @param userFavoriteFolderDTO
      * @return
      */
-    boolean create(UserFavoriteFolderDTO userFavoriteFolderDTO);
+    boolean create(FavoriteFolderCreateDTO userFavoriteFolderDTO);
 
     /**
      * 删除非默认文件夹
@@ -41,7 +41,7 @@ public interface IVmsUserFavoriteFolderService extends IService<VmsUserFavoriteF
      * @param userFavoriteFolderUpdateDTO
      * @return
      */
-    boolean update(Integer id, UserFavoriteFolderUpdateDTO userFavoriteFolderUpdateDTO);
+    boolean update(Integer id, FavoriteFolderUpdateDTO userFavoriteFolderUpdateDTO);
 
     /**
      * 获取指定用户的收藏夹列表
@@ -49,6 +49,6 @@ public interface IVmsUserFavoriteFolderService extends IService<VmsUserFavoriteF
      * @param userId
      * @return
      */
-    List<UserFavoriteFolderVO> getList(Integer userId);
+    List<FavoriteFolderVO> getList(Integer userId);
 
 }

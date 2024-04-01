@@ -6,5 +6,5 @@ package com.moncoder.lingo.video.domain.vo;
  * @description TODO 用户收藏视频返回值参数
  * @date 2024/3/28 15:29
  */
-public class UserFavoriteVideoVo {
+public class FavoriteVideoVo {
 }

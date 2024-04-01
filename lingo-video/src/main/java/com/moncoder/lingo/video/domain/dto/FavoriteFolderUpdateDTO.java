@@ -17,7 +17,7 @@ import javax.validation.constraints.NotBlank;
 @Getter
 @Setter
 @ApiModel("用户收藏夹修改参数")
-public class UserFavoriteFolderUpdateDTO {
+public class FavoriteFolderUpdateDTO {
 
     @NotBlank
     @ApiModelProperty(value = "收藏夹名称", required = true)

@@ -16,13 +16,13 @@ import lombok.Setter;
  * </p>
  *
  * @author moncoder
- * @since 2024-03-28 15:51:18
+ * @since 2024-04-01 13:42:53
  */
 @Getter
 @Setter
-@TableName("vms_user_favorite_video")
-@ApiModel(value = "VmsUserFavoriteVideo对象", description = "用户收藏视频记录表")
-public class VmsUserFavoriteVideo implements Serializable {
+@TableName("vms_user_favorite_folder_video")
+@ApiModel(value = "VmsUserFavoriteFolderVideo对象", description = "用户收藏视频记录表")
+public class VmsUserFavoriteFolderVideo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -39,6 +39,6 @@ public class VmsUserFavoriteVideo implements Serializable {
     @ApiModelProperty("收藏夹ID，外键，关联收藏夹表")
     private Integer folderId;
 
-    @ApiModelProperty("收藏时间")
+    @ApiModelProperty("上传时间")
     private LocalDateTime createTime;
 }

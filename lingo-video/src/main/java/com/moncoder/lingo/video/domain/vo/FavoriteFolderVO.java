@@ -11,13 +11,13 @@ import javax.validation.constraints.NotNull;
 /**
  * @author Moncoder
  * @version 1.0
- * @description TODO 用户收藏夹返回值参数
+ * @description 用户收藏夹返回值参数
  * @date 2024/3/28 12:56
  */
 @Getter
 @Setter
 @ApiModel("用户收藏夹返回值参数")
-public class UserFavoriteFolderVO {
+public class FavoriteFolderVO {
 
     @NotEmpty
     @ApiModelProperty(value = "收藏夹名称")

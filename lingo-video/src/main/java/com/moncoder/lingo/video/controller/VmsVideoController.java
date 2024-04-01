@@ -1,7 +1,7 @@
 package com.moncoder.lingo.video.controller;
 
 import com.moncoder.lingo.common.api.Result;
-import com.moncoder.lingo.video.domain.dto.VmsVideoDTO;
+import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
 import com.moncoder.lingo.video.service.IVmsVideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * <p>
@@ -30,7 +31,7 @@ public class VmsVideoController {
     // TODO 请求体中加入视频文件
     @ApiOperation("上传视频")
     @PostMapping("/upload")
-    public Result<Void> uploadVideo(@RequestBody @Valid VmsVideoDTO vmsVideoDTO) {
+    public Result<Void> uploadVideo(@RequestBody @Valid VideoCreateDTO vmsVideoDTO) {
         boolean flag = videoService.uploadVideo(vmsVideoDTO);
         if (!flag) {
             return Result.failed();
@@ -42,8 +43,8 @@ public class VmsVideoController {
     @PostMapping("/favorite")
     public Result<String> favoriteVideo(@RequestParam @NotNull Integer userId,
                                       @RequestParam @NotNull Integer videoId,
-                                      @RequestParam @NotNull Integer folderId) {
-        boolean flag = videoService.favoriteVideo(userId, videoId, folderId);
+                                      @RequestParam @NotNull List<Integer> folderIds) {
+        boolean flag = videoService.favoriteVideo(userId, videoId, folderIds);
         if (!flag) {
             return Result.failed();
         }

@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 @Getter
 @Setter
 @ApiModel("视频上传参数")
-public class VmsVideoDTO {
+public class VideoCreateDTO {
 
     @NotBlank
     @ApiModelProperty("视频标题")

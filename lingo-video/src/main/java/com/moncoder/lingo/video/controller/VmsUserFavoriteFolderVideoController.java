@@ -1,5 +1,6 @@
 package com.moncoder.lingo.video.controller;
 
+
 import com.moncoder.lingo.common.api.Page;
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.video.domain.dto.FolderVideoCopyDTO;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>

@@ -6,6 +6,8 @@ import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
 
 import java.util.List;
 
+import java.util.List;
+
 /**
  * <p>
  * 视频表 服务类

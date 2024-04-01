@@ -5,6 +5,7 @@ import com.moncoder.lingo.entity.VmsUserFavoriteFolderVideo;
 import com.moncoder.lingo.video.domain.dto.FolderVideoCopyDTO;
 import com.moncoder.lingo.video.domain.dto.FolderVideoMoveDTO;
 
+
 import java.util.List;
 
 /**
@@ -24,16 +25,16 @@ public interface IVmsUserFavoriteFolderVideoService extends IService<VmsUserFavo
      * @param folderIds
      * @return
      */
-    List<VmsUserFavoriteFolderVideo> getListByUserIdVideoIdFolderIds(Integer userId, Integer videoId,
-                                                                     List<Integer> folderIds);
+    List<VmsUserFavoriteFolderVideo> getListByUserIdVideoIdFolderIds(Integer userId, Integer videoId, List<Integer> folderIds);
 
     /**
-     * 根据用户id和视频id,获取到所有收藏夹中的记录
+     * 根据用户id,和视频id,获取到其所有收藏记录
      *
      * @param userId
      * @param videoId
      * @return
      */
+
     List<VmsUserFavoriteFolderVideo> getAllByUserIdVideoId(Integer userId, Integer videoId);
 
     /**
@@ -72,4 +73,6 @@ public interface IVmsUserFavoriteFolderVideoService extends IService<VmsUserFavo
      * @return
      */
     boolean moveVideosToFolder(FolderVideoMoveDTO folderVideoMoveDTO);
+
+
 }

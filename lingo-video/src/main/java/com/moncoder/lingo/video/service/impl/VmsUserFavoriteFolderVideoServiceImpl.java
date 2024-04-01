@@ -7,7 +7,6 @@ import com.moncoder.lingo.mapper.VmsUserFavoriteFolderVideoMapper;
 import com.moncoder.lingo.video.domain.dto.FolderVideoCopyDTO;
 import com.moncoder.lingo.video.domain.dto.FolderVideoMoveDTO;
 import com.moncoder.lingo.video.service.IVmsUserFavoriteFolderVideoService;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +15,13 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
 
 /**
  * <p>
@@ -30,12 +36,13 @@ public class VmsUserFavoriteFolderVideoServiceImpl
         extends ServiceImpl<VmsUserFavoriteFolderVideoMapper, VmsUserFavoriteFolderVideo>
         implements IVmsUserFavoriteFolderVideoService {
 
+
     @Autowired
     private VmsUserFavoriteFolderVideoMapper favoriteVideoMapper;
 
     @Override
     public List<VmsUserFavoriteFolderVideo> getListByUserIdVideoIdFolderIds(Integer userId, Integer videoId,
-                                                                            List<Integer> folderIds) {
+                                                                      List<Integer> folderIds) {
         // 如果folderIds为空，直接返回空列表
         if (CollUtil.isEmpty(folderIds)) {
             return Collections.emptyList();
@@ -165,5 +172,7 @@ public class VmsUserFavoriteFolderVideoServiceImpl
 
         return saveBatch(videosToAdd);
     }
+
+
 
 }

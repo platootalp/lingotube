@@ -16,7 +16,7 @@ import lombok.Setter;
  * </p>
  *
  * @author moncoder
- * @since 2024-03-28 15:51:18
+ * @since 2024-04-03 13:40:30
  */
 @Getter
 @Setter
@@ -37,7 +37,7 @@ public class VmsVideoBrowseHistory implements Serializable {
     private Integer videoId;
 
     @ApiModelProperty("用户观看视频的总时长（秒）")
-    private Integer viewingDuration;
+    private Integer viewDuration;
 
     @ApiModelProperty("用户开始浏览视频的时间")
     private LocalDateTime createTime;

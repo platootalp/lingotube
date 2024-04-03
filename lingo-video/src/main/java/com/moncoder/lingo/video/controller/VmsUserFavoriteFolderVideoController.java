@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @author moncoder
  * @since 2024-04-01 13:42:53
  */
-@Api(tags = "用户收藏视频管理")
+@Api(tags = "收藏视频管理")
 @RestController
 @RequestMapping("/video/fav/video")
 public class VmsUserFavoriteFolderVideoController {

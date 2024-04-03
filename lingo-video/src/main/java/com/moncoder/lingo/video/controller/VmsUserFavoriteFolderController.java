@@ -24,7 +24,7 @@ import java.util.List;
  * @author moncoder
  * @since 2024-03-20 16:27:25
  */
-@Api(tags = "用户收藏夹管理")
+@Api(tags = "收藏夹管理")
 @RestController
 @RequestMapping("/video/fav/folder")
 public class VmsUserFavoriteFolderController {

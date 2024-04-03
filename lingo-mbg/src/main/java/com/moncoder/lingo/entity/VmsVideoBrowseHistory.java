@@ -21,7 +21,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @TableName("vms_video_browse_history")
-@ApiModel(value = "VmsVideoBrowseHistory对象", description = "用户浏览视频历史记录表")
+@ApiModel(value = "VmsVideoBrowseHistory对象", description = "视频浏览历史记录表")
 public class VmsVideoBrowseHistory implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -39,6 +39,6 @@ public class VmsVideoBrowseHistory implements Serializable {
     @ApiModelProperty("用户观看视频的总时长（秒）")
     private Integer viewDuration;
 
-    @ApiModelProperty("用户开始浏览视频的时间")
+    @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
 }

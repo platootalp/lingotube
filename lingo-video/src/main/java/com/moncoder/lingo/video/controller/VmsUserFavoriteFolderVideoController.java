@@ -36,17 +36,17 @@ public class VmsUserFavoriteFolderVideoController {
     private IVmsUserFavoriteFolderVideoService folderVideoService;
 
     @ApiOperation("分页查询收藏夹下的所有视频")
-    @GetMapping("/s")
-    public Result<LPage<FavoriteFolderVideoVO>> getPageList
+    @GetMapping("/page")
+    public Result<LPage<FavoriteFolderVideoVO>> getPage
             (@RequestParam @NotNull Integer userId,
              @RequestParam @NotNull Integer folderId,
              @RequestParam(value = "pageNum", defaultValue = "1") Long pageNum,
              @RequestParam(value = "pageSize", defaultValue = "5") Long pageSize,
              @RequestParam(value = "nameKeyWord", required = false) String titleKeyWord,
              @RequestParam(value = "orderBy", required = false) Integer orderBy) {
-        LPage<FavoriteFolderVideoVO> pageList =
-                folderVideoService.getPageList(userId, folderId, pageNum, pageSize, titleKeyWord, orderBy);
-        return Result.success(pageList);
+        LPage<FavoriteFolderVideoVO> folderVideoPage
+                = folderVideoService.getPage(userId, folderId, pageNum, pageSize, titleKeyWord, orderBy);
+        return Result.success(folderVideoPage);
     }
 
     @ApiOperation("批量删除收藏视频")

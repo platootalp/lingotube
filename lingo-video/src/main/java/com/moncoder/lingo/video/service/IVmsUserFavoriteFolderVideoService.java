@@ -87,6 +87,6 @@ public interface IVmsUserFavoriteFolderVideoService extends IService<VmsUserFavo
      * @param orderBy     排序条件，0：按收藏时间，1：按播放量
      * @return
      */
-    LPage<FavoriteFolderVideoVO> getPageList(Integer userId, Integer folderId, Long pageNum, Long pageSize,
-                                             String titleKeyWord, Integer orderBy);
+    LPage<FavoriteFolderVideoVO> getPage(Integer userId, Integer folderId, Long pageNum, Long pageSize,
+                                         String titleKeyWord, Integer orderBy);
 }

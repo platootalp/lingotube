@@ -41,9 +41,8 @@ public class VmsUserFavoriteFolderVideoServiceImpl
         implements IVmsUserFavoriteFolderVideoService {
 
     @Autowired
-    private VmsUserFavoriteFolderVideoMapper favoriteFolderVideoMapper;
-    @Autowired
     private VmsUserFavoriteFolderVideoDao favoriteFolderVideoDao;
+
     @Override
     public List<VmsUserFavoriteFolderVideo> getListByUserIdVideoIdFolderIds(Integer userId, Integer videoId,
                                                                             List<Integer> folderIds) {
@@ -180,17 +179,16 @@ public class VmsUserFavoriteFolderVideoServiceImpl
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public LPage<FavoriteFolderVideoVO> getPageList(Integer userId, Integer folderId,
-                                                    Long pageNum, Long pageSize,
-                                                    String titleKeyWord, Integer orderBy) {
+    public LPage<FavoriteFolderVideoVO> getPage(Integer userId, Integer folderId,
+                                                Long pageNum, Long pageSize,
+                                                String titleKeyWord, Integer orderBy) {
         // 1.查询出当前用户当前收藏夹下所有视频id
         List<Integer> videoIds = getAllByUserIdFolderId(userId, folderId)
                 .stream().map(VmsUserFavoriteFolderVideo::getVideoId)
                 .collect(Collectors.toList());
         // 2.根据videoIds查询出所有的视频
         List<FavoriteFolderVideoVO> favoriteVideoVos
-                = favoriteFolderVideoDao.selectAllByVideoIds(videoIds,titleKeyWord);
-        // 3.分页
+                = favoriteFolderVideoDao.selectListByVideoIds(videoIds, titleKeyWord);
         // 3.将查询结果列表封装到分页对象中
         IPage<FavoriteFolderVideoVO> page = new Page<>(pageNum, pageSize);
         page.setRecords(favoriteVideoVos);

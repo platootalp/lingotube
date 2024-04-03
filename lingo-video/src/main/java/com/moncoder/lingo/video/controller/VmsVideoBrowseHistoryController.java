@@ -1,8 +1,22 @@
 package com.moncoder.lingo.video.controller;
 
+import com.moncoder.lingo.common.api.LPage;
+import com.moncoder.lingo.common.api.Result;
+import com.moncoder.lingo.entity.VmsVideoBrowseHistory;
+import com.moncoder.lingo.video.domain.dto.VideoBrowseHistoryDTO;
+import com.moncoder.lingo.video.domain.vo.VideoBrowseHistoryVO;
+import com.moncoder.lingo.video.service.IVmsVideoBrowseHistoryService;
 import io.swagger.annotations.Api;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -17,4 +31,41 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/video/history")
 public class VmsVideoBrowseHistoryController {
 
+    @Autowired
+    private IVmsVideoBrowseHistoryService videoBrowseHistoryService;
+
+    @ApiOperation("保存浏览历史")
+    @PostMapping("/")
+    public Result<String> save(@RequestBody @Valid VideoBrowseHistoryDTO videoBrowseHistoryDTO) {
+        VmsVideoBrowseHistory videoBrowseHistory = new VmsVideoBrowseHistory();
+        BeanUtils.copyProperties(videoBrowseHistoryDTO, videoBrowseHistory);
+        videoBrowseHistory.setCreateTime(LocalDateTime.now());
+        boolean flag = videoBrowseHistoryService.save(videoBrowseHistory);
+        if (!flag) {
+            return Result.failed();
+        }
+        return Result.success();
+    }
+
+    @ApiOperation("批量删除浏览历史")
+    @DeleteMapping("/s")
+    public Result<String> deleteBatch(@RequestParam @NotNull Integer userId,
+                                      @RequestParam @NotNull List<Integer> ids) {
+        boolean flag = videoBrowseHistoryService.deleteBatch(userId, ids);
+        if (!flag) {
+            return Result.failed();
+        }
+        return Result.success();
+    }
+
+    @ApiOperation("获取用户全部浏览历史")
+    @GetMapping("/page")
+    public Result<LPage<VideoBrowseHistoryVO>> getPage(@RequestParam @NotNull Integer userId,
+                                                       @RequestParam(defaultValue = "1") Long pageNum,
+                                                       @RequestParam(defaultValue = "5") Long pageSize,
+                                                       @RequestParam(required = false) String titleKeyWord) {
+        LPage<VideoBrowseHistoryVO> browseHistoryVOS
+                = videoBrowseHistoryService.getPageByUserId(userId, pageNum, pageSize,titleKeyWord);
+        return Result.success(browseHistoryVOS);
+    }
 }

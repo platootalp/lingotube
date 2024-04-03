@@ -12,11 +12,11 @@ import lombok.Setter;
 
 /**
  * <p>
- * 赞过的视频表
+ * 视频点赞表
  * </p>
  *
  * @author moncoder
- * @since 2024-03-28 15:51:18
+ * @since 2024-04-03 19:07:44
  */
 @Getter
 @Setter
@@ -30,12 +30,12 @@ public class VmsVideoLike implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @ApiModelProperty("用户ID，外键，关联用户表")
+    @ApiModelProperty("用户id，外键，关联用户表")
     private Integer userId;
 
-    @ApiModelProperty("视频ID，外键，关联视频表")
+    @ApiModelProperty("视频id，外键，关联视频表")
     private Integer videoId;
 
     @ApiModelProperty("点赞时间")
-    private LocalDateTime likedTime;
+    private LocalDateTime createTime;
 }

@@ -1,11 +1,9 @@
 package com.moncoder.lingo.video.dao;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.moncoder.lingo.video.domain.vo.FavoriteFolderVideoVO;
 import com.moncoder.lingo.video.domain.vo.VideoBrowseHistoryVO;
 import org.apache.ibatis.annotations.Param;
 
-import java.util.List;
 
 /**
  * @author lenovo

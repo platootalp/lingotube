@@ -53,7 +53,7 @@ public class VmsVideoWatchLaterController {
 
     @ApiOperation("删除全部稍后再看记录")
     @DeleteMapping("/all")
-    public Result<String> deleteBatch(@RequestParam @NotNull Integer userId) {
+    public Result<String> deleteAll(@RequestParam @NotNull Integer userId) {
         boolean flag = videoWatchLaterService.deleteAll(userId);
         if (!flag) {
             return Result.failed();

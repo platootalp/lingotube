@@ -16,17 +16,17 @@
 
     <select id="selectPageByUserId" resultMap="videoBrowseHistoryVO">
         SELECT
-               h.id,h.view_duration,h.create_time,v.*
+        h.id,h.view_duration,h.create_time,v.*
         FROM
-             vms_video_browse_history h
+        vms_video_browse_history h
         LEFT JOIN
-                 vms_video v ON h.video_id = v.id
+        vms_video v ON h.video_id = v.id
         WHERE
-              h.user_id = #{userId}
+        h.user_id = #{userId}
         <if test="titleKeyWord != null and titleKeyWord != ''">
             AND v.title LIKE CONCAT('%', #{titleKeyWord}, '%')
         </if>
         ORDER BY
-                 h.create_time DESC
+        h.create_time DESC
     </select>
 </mapper>

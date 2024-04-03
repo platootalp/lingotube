@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
- * 赞过的视频表 Mapper 接口
+ * 视频点赞表 Mapper 接口
  * </p>
  *
  * @author moncoder
- * @since 2024-03-28 15:51:18
+ * @since 2024-04-03 19:07:44
  */
 public interface VmsVideoLikeMapper extends BaseMapper<VmsVideoLike> {
 

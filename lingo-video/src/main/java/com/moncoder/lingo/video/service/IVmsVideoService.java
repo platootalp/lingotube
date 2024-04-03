@@ -20,19 +20,29 @@ public interface IVmsVideoService extends IService<VmsVideo> {
 
     /**
      * 上传视频
+     *
      * @param vmsVideoDTO
      * @return
      */
     boolean uploadVideo(VideoCreateDTO vmsVideoDTO);
 
     /**
-     * 收藏视频
+     * 收藏、取消收藏视频
+     *
      * @param userId
      * @param videoId
      * @param folderIds
      * @return
      */
-    boolean favoriteVideo(Integer userId, Integer videoId,  List<Integer> folderIds);
+    boolean favoriteVideo(Integer userId, Integer videoId, List<Integer> folderIds);
 
 
+    /**
+     * 点赞、取消点赞视频
+     *
+     * @param userId
+     * @param videoId
+     * @return
+     */
+    boolean likeVideo(Integer userId, Integer videoId);
 }

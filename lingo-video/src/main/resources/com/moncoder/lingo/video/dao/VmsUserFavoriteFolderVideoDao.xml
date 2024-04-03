@@ -15,13 +15,13 @@
 
     <select id="selectPageByVideoIds" resultMap="favoriteFolderVideoVO">
         SELECT
-               v.*, f.favorite_time
+        v.*, f.favorite_time
         FROM
-             vms_video v
+        vms_video v
         LEFT JOIN
-                 vms_user_favorite_folder_video f ON v.id = f.video_id
+        vms_user_favorite_folder_video f ON v.id = f.video_id
         WHERE
-              v.id IN
+        v.id IN
         <foreach item="videoId" collection="videoIds" open="(" separator="," close=")">
             #{videoId}
         </foreach>
@@ -29,6 +29,6 @@
             AND v.title LIKE CONCAT('%', #{titleKeyWord}, '%')
         </if>
         ORDER BY
-                 f.favorite_time
+        f.favorite_time
     </select>
 </mapper>

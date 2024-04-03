@@ -39,7 +39,7 @@ public class Generator {
                 .strategyConfig(builder -> {
                     builder
                             // 设置需要生成的表名(所有表)
-                            .addInclude("vms_video_watch_later")
+                            .addInclude("vms_video_like")
                             .addTablePrefix("sys_") // 设置过滤表前缀
                             // 1.entity配置
                             .entityBuilder()

@@ -6,16 +6,19 @@ import com.moncoder.lingo.common.exception.ApiException;
 import com.moncoder.lingo.entity.VmsUserFavoriteFolder;
 import com.moncoder.lingo.entity.VmsUserFavoriteFolderVideo;
 import com.moncoder.lingo.entity.VmsVideo;
+import com.moncoder.lingo.entity.VmsVideoLike;
 import com.moncoder.lingo.mapper.VmsVideoMapper;
 import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
 import com.moncoder.lingo.video.service.IVmsUserFavoriteFolderService;
 import com.moncoder.lingo.video.service.IVmsUserFavoriteFolderVideoService;
+import com.moncoder.lingo.video.service.IVmsVideoLikeService;
 import com.moncoder.lingo.video.service.IVmsVideoService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,7 +36,9 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
     @Autowired
     private IVmsUserFavoriteFolderService favoriteFolderService;
     @Autowired
-    private IVmsUserFavoriteFolderVideoService folderVideoService;
+    private IVmsUserFavoriteFolderVideoService favoriteFolderVideoService;
+    @Autowired
+    private IVmsVideoLikeService videoLikeService;
 
     @Override
     public boolean uploadVideo(VideoCreateDTO vmsVideoDTO) {
@@ -68,12 +73,12 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
 
         // 3.查看收藏视频表是否有记录
         List<VmsUserFavoriteFolderVideo> favoriteVideoList =
-                folderVideoService.getListByUserIdVideoId(userId, videoId);
+                favoriteFolderVideoService.getListByUserIdVideoId(userId, videoId);
 
         // 4.如果收藏视频表没有记录且收藏夹id列表不为空，则为收藏
         if (favoriteVideoList != null && favoriteVideoList.isEmpty() && !folderIds.isEmpty()) {
             // 收藏到收藏视频记录表
-            folderVideoService.saveBatchByUserIdVideoIdFolderIds(userId, videoId, folderIds);
+            favoriteFolderVideoService.saveBatchByUserIdVideoIdFolderIds(userId, videoId, folderIds);
             // 当前视频收藏数+1
             video.setFavorites(favorites + 1);
             return updateById(video);
@@ -91,7 +96,7 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
                     .collect(Collectors.toList());
             // 处理新增的收藏夹
             if (!addedFolderIds.isEmpty()) {
-                folderVideoService.saveBatchByUserIdVideoIdFolderIds(userId, videoId, addedFolderIds);
+                favoriteFolderVideoService.saveBatchByUserIdVideoIdFolderIds(userId, videoId, addedFolderIds);
             }
             // 处理取消的收藏夹
             if (!removedFolderIds.isEmpty()) {
@@ -99,7 +104,7 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
                                 removedFolderIds.contains(favoriteVideo.getFolderId()))
                         .map(VmsUserFavoriteFolderVideo::getId)
                         .collect(Collectors.toList());
-                folderVideoService.removeByIds(favoriteVideoIds);
+                favoriteFolderVideoService.removeByIds(favoriteVideoIds);
             }
         }
 
@@ -107,13 +112,40 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
         if (favoriteVideoList != null && !favoriteVideoList.isEmpty() && folderIds.isEmpty()) {
             List<Integer> favoriteVideoIds = favoriteVideoList.stream().map(VmsUserFavoriteFolderVideo::getId)
                     .collect(Collectors.toList());
-            folderVideoService.removeByIds(favoriteVideoIds);
+            favoriteFolderVideoService.removeByIds(favoriteVideoIds);
             video.setFavorites(favorites - 1);
             return updateById(video);
         }
 
         // 默认返回失败
         return true;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean likeVideo(Integer userId, Integer videoId) {
+        // 1.查询当前视频点赞数
+        VmsVideo video = lambdaQuery().eq(VmsVideo::getId, videoId).one();
+        Integer likes = video.getLikes();
+        // 2.查看点赞记录表是否有记录
+        VmsVideoLike videoLike = videoLikeService.getByUserIdAndVideoId(userId, videoId);
+        if (videoLike == null) {
+            // 2.1 点赞
+            VmsVideoLike newVideoLike = new VmsVideoLike();
+            newVideoLike.setUserId(userId);
+            newVideoLike.setVideoId(videoId);
+            newVideoLike.setCreateTime(LocalDateTime.now());
+            videoLikeService.save(newVideoLike);
+            // 当前视频点赞数 + 1
+            video.setLikes(likes + 1);
+        } else {
+            // 2.2 取消点赞
+            videoLikeService.removeById(videoLike.getId());
+            // 当前视频点赞数 - 1
+            video.setLikes(likes - 1);
+        }
+        // 3.修改点赞数
+        return updateById(video);
     }
 
 }

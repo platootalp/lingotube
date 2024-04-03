@@ -8,18 +8,17 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 /**
  * @author Moncoder
  * @version 1.0
- * @description  用户收藏的视频返回值参数
+ * @description  用户藏夹视频返回值参数
  * @date 2024/3/28 15:29
  */
 @Getter
 @Setter
-@ApiModel("用户收藏的视频返回值参数")
-public class FavoriteVideoVO {
+@ApiModel("用户收藏夹视频返回值参数")
+public class FavoriteFolderVideoVO {
 
     @ApiModelProperty("主键")
     private Integer id;

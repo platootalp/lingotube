@@ -3,9 +3,9 @@ package com.moncoder.lingo.video.controller;
 
 import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.common.api.Result;
-import com.moncoder.lingo.video.domain.dto.FolderVideoCopyDTO;
-import com.moncoder.lingo.video.domain.dto.FolderVideoMoveDTO;
-import com.moncoder.lingo.video.domain.vo.FavoriteVideoVO;
+import com.moncoder.lingo.video.domain.dto.FavoriteFolderVideoCopyDTO;
+import com.moncoder.lingo.video.domain.dto.FavoriteFolderVideoMoveDTO;
+import com.moncoder.lingo.video.domain.vo.FavoriteFolderVideoVO;
 import com.moncoder.lingo.video.service.IVmsUserFavoriteFolderVideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -37,14 +37,14 @@ public class VmsUserFavoriteFolderVideoController {
 
     @ApiOperation("分页查询收藏夹下的所有视频")
     @GetMapping("/s")
-    public Result<LPage<FavoriteVideoVO>> getPageList
+    public Result<LPage<FavoriteFolderVideoVO>> getPageList
             (@RequestParam @NotNull Integer userId,
              @RequestParam @NotNull Integer folderId,
              @RequestParam(value = "pageNum", defaultValue = "1") Long pageNum,
              @RequestParam(value = "pageSize", defaultValue = "5") Long pageSize,
              @RequestParam(value = "nameKeyWord", required = false) String titleKeyWord,
              @RequestParam(value = "orderBy", required = false) Integer orderBy) {
-        LPage<FavoriteVideoVO> pageList =
+        LPage<FavoriteFolderVideoVO> pageList =
                 folderVideoService.getPageList(userId, folderId, pageNum, pageSize, titleKeyWord, orderBy);
         return Result.success(pageList);
     }
@@ -61,7 +61,7 @@ public class VmsUserFavoriteFolderVideoController {
 
     @ApiOperation("复制当前收藏夹视频到其他收藏夹")
     @PostMapping("/copy")
-    public Result<String> copyVideosToFolders(@RequestBody @Valid FolderVideoCopyDTO folderVideoCopyDTO) {
+    public Result<String> copyVideosToFolders(@RequestBody @Valid FavoriteFolderVideoCopyDTO folderVideoCopyDTO) {
         boolean flag = folderVideoService.copyVideosToFolders(folderVideoCopyDTO);
         if (!flag) {
             return Result.failed();
@@ -71,7 +71,7 @@ public class VmsUserFavoriteFolderVideoController {
 
     @ApiOperation("移动当前收藏夹视频到其他收藏夹")
     @PostMapping("/move")
-    public Result<String> moveVideosToFolder(@RequestBody @Valid FolderVideoMoveDTO folderVideoMoveDTO) {
+    public Result<String> moveVideosToFolder(@RequestBody @Valid FavoriteFolderVideoMoveDTO folderVideoMoveDTO) {
         boolean flag = folderVideoService.moveVideosToFolder(folderVideoMoveDTO);
         if (!flag) {
             return Result.failed();

@@ -1,6 +1,6 @@
 package com.moncoder.lingo.video.dao;
 
-import com.moncoder.lingo.video.domain.vo.FavoriteVideoVO;
+import com.moncoder.lingo.video.domain.vo.FavoriteFolderVideoVO;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -13,6 +13,6 @@ import java.util.List;
  */
 public interface VmsUserFavoriteFolderVideoDao {
 
-    List<FavoriteVideoVO> selectAllByVideoIds(@Param("videoIds") List<Integer> videoIds,
-                                              @Param("titleKeyWord") String titleKeyWord);
+    List<FavoriteFolderVideoVO> selectAllByVideoIds(@Param("videoIds") List<Integer> videoIds,
+                                                    @Param("titleKeyWord") String titleKeyWord);
 }

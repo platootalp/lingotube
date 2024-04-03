@@ -3,9 +3,9 @@ package com.moncoder.lingo.video.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.entity.VmsUserFavoriteFolderVideo;
-import com.moncoder.lingo.video.domain.dto.FolderVideoCopyDTO;
-import com.moncoder.lingo.video.domain.dto.FolderVideoMoveDTO;
-import com.moncoder.lingo.video.domain.vo.FavoriteVideoVO;
+import com.moncoder.lingo.video.domain.dto.FavoriteFolderVideoCopyDTO;
+import com.moncoder.lingo.video.domain.dto.FavoriteFolderVideoMoveDTO;
+import com.moncoder.lingo.video.domain.vo.FavoriteFolderVideoVO;
 
 
 import java.util.List;
@@ -65,7 +65,7 @@ public interface IVmsUserFavoriteFolderVideoService extends IService<VmsUserFavo
      * @param folderVideoCopyDTO
      * @return
      */
-    boolean copyVideosToFolders(FolderVideoCopyDTO folderVideoCopyDTO);
+    boolean copyVideosToFolders(FavoriteFolderVideoCopyDTO folderVideoCopyDTO);
 
 
     /**
@@ -74,7 +74,7 @@ public interface IVmsUserFavoriteFolderVideoService extends IService<VmsUserFavo
      * @param folderVideoMoveDTO
      * @return
      */
-    boolean moveVideosToFolder(FolderVideoMoveDTO folderVideoMoveDTO);
+    boolean moveVideosToFolder(FavoriteFolderVideoMoveDTO folderVideoMoveDTO);
 
     /**
      * 分页查询收藏夹下的所有视频
@@ -87,6 +87,6 @@ public interface IVmsUserFavoriteFolderVideoService extends IService<VmsUserFavo
      * @param orderBy     排序条件，0：按收藏时间，1：按播放量
      * @return
      */
-    LPage<FavoriteVideoVO> getPageList(Integer userId, Integer folderId, Long pageNum, Long pageSize,
+    LPage<FavoriteFolderVideoVO> getPageList(Integer userId, Integer folderId, Long pageNum, Long pageSize,
                                              String titleKeyWord, Integer orderBy);
 }

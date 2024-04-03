@@ -8,9 +8,9 @@ import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.entity.VmsUserFavoriteFolderVideo;
 import com.moncoder.lingo.mapper.VmsUserFavoriteFolderVideoMapper;
 import com.moncoder.lingo.video.dao.VmsUserFavoriteFolderVideoDao;
-import com.moncoder.lingo.video.domain.dto.FolderVideoCopyDTO;
-import com.moncoder.lingo.video.domain.dto.FolderVideoMoveDTO;
-import com.moncoder.lingo.video.domain.vo.FavoriteVideoVO;
+import com.moncoder.lingo.video.domain.dto.FavoriteFolderVideoCopyDTO;
+import com.moncoder.lingo.video.domain.dto.FavoriteFolderVideoMoveDTO;
+import com.moncoder.lingo.video.domain.vo.FavoriteFolderVideoVO;
 import com.moncoder.lingo.video.service.IVmsUserFavoriteFolderVideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -93,7 +93,7 @@ public class VmsUserFavoriteFolderVideoServiceImpl
     }
 
     @Override
-    public boolean copyVideosToFolders(FolderVideoCopyDTO folderVideoCopyDTO) {
+    public boolean copyVideosToFolders(FavoriteFolderVideoCopyDTO folderVideoCopyDTO) {
         Integer userId = folderVideoCopyDTO.getUserId();
         List<Integer> videoIds = folderVideoCopyDTO.getVideoIds();
         Integer curFolderId = folderVideoCopyDTO.getCurFolderId();
@@ -138,7 +138,7 @@ public class VmsUserFavoriteFolderVideoServiceImpl
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean moveVideosToFolder(FolderVideoMoveDTO folderVideoMoveDTO) {
+    public boolean moveVideosToFolder(FavoriteFolderVideoMoveDTO folderVideoMoveDTO) {
         //1. 判断两个收藏夹是否相同
         var curFolderId = folderVideoMoveDTO.getCurFolderId();
         var newFolderId = folderVideoMoveDTO.getNewFolderId();
@@ -180,7 +180,7 @@ public class VmsUserFavoriteFolderVideoServiceImpl
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public LPage<FavoriteVideoVO> getPageList(Integer userId, Integer folderId,
+    public LPage<FavoriteFolderVideoVO> getPageList(Integer userId, Integer folderId,
                                                     Long pageNum, Long pageSize,
                                                     String titleKeyWord, Integer orderBy) {
         // 1.查询出当前用户当前收藏夹下所有视频id
@@ -188,11 +188,11 @@ public class VmsUserFavoriteFolderVideoServiceImpl
                 .stream().map(VmsUserFavoriteFolderVideo::getVideoId)
                 .collect(Collectors.toList());
         // 2.根据videoIds查询出所有的视频
-        List<FavoriteVideoVO> favoriteVideoVos
+        List<FavoriteFolderVideoVO> favoriteVideoVos
                 = favoriteFolderVideoDao.selectAllByVideoIds(videoIds,titleKeyWord);
         // 3.分页
         // 3.将查询结果列表封装到分页对象中
-        IPage<FavoriteVideoVO> page = new Page<>(pageNum, pageSize);
+        IPage<FavoriteFolderVideoVO> page = new Page<>(pageNum, pageSize);
         page.setRecords(favoriteVideoVos);
 
         // 4.返回分页对象

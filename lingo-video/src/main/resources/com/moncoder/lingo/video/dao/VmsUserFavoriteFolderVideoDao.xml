@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.moncoder.lingo.video.dao.VmsUserFavoriteFolderVideoDao">
 
-    <resultMap id="videoWithFavoriteTime" type="com.moncoder.lingo.video.domain.vo.FavoriteVideoVO">
+    <resultMap id="videoWithFavoriteTime" type="com.moncoder.lingo.video.domain.vo.FavoriteFolderVideoVO">
         <id property="id" column="id"/>
         <result property="favoriteTime" column="favorite_time" javaType="java.time.LocalDateTime"/>
         <association property="video" javaType="com.moncoder.lingo.entity.VmsVideo">

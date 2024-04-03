@@ -48,6 +48,7 @@ public class VmsVideoLikeServiceImpl extends ServiceImpl<VmsVideoLikeMapper, Vms
         Page<VideoLikeVO> page = new Page<>(pageNum, pageSize);
         IPage<VideoLikeVO> videoLikeVos = videoLikeDao.selectPageByUserId(page, userId, titleKeyWord);
         // 2.返回分页对象
+
         return LPage.restPage(videoLikeVos);
     }
 }

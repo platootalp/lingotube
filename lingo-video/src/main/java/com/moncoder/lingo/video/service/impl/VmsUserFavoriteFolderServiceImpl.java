@@ -31,9 +31,6 @@ public class VmsUserFavoriteFolderServiceImpl
         extends ServiceImpl<VmsUserFavoriteFolderMapper, VmsUserFavoriteFolder>
         implements IVmsUserFavoriteFolderService {
 
-    @Autowired
-    private UploadClient uploadClient;
-
     @Override
     public boolean create(FavoriteFolderCreateDTO userFavoriteFolderDTO) {
         // 1.判断新创建的文件夹是否为默认文件夹，默认文件夹每个用户只能有一个

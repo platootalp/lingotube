@@ -62,7 +62,7 @@ public class VmsUserFavoriteFolderVideoServiceImpl
     }
 
     @Override
-    public List<VmsUserFavoriteFolderVideo> getAllByUserIdVideoId(Integer userId, Integer videoId) {
+    public List<VmsUserFavoriteFolderVideo> getListByUserIdVideoId(Integer userId, Integer videoId) {
         // 一个用户的一个视频可以收藏到多个收藏夹中
         return lambdaQuery().eq(VmsUserFavoriteFolderVideo::getUserId, userId)
                 .eq(VmsUserFavoriteFolderVideo::getVideoId, videoId)
@@ -71,7 +71,7 @@ public class VmsUserFavoriteFolderVideoServiceImpl
 
 
     @Override
-    public List<VmsUserFavoriteFolderVideo> getAllByUserIdFolderId(Integer userId, Integer folderId) {
+    public List<VmsUserFavoriteFolderVideo> getListByUserIdFolderId(Integer userId, Integer folderId) {
         // 一个用户的一个收藏夹可以有多个视频
         return lambdaQuery().eq(VmsUserFavoriteFolderVideo::getUserId, userId)
                 .eq(VmsUserFavoriteFolderVideo::getFolderId, folderId)
@@ -183,7 +183,7 @@ public class VmsUserFavoriteFolderVideoServiceImpl
                                                 Long pageNum, Long pageSize,
                                                 String titleKeyWord, Integer orderBy) {
         // 1.查询出当前用户当前收藏夹下所有视频id
-        List<Integer> videoIds = getAllByUserIdFolderId(userId, folderId)
+        List<Integer> videoIds = getListByUserIdFolderId(userId, folderId)
                 .stream().map(VmsUserFavoriteFolderVideo::getVideoId)
                 .collect(Collectors.toList());
         // 2.根据videoIds查询出所有的视频

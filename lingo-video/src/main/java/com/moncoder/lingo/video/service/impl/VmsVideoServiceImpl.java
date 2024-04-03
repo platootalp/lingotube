@@ -68,7 +68,7 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
 
         // 3.查看收藏视频表是否有记录
         List<VmsUserFavoriteFolderVideo> favoriteVideoList =
-                folderVideoService.getAllByUserIdVideoId(userId, videoId);
+                folderVideoService.getListByUserIdVideoId(userId, videoId);
 
         // 4.如果收藏视频表没有记录且收藏夹id列表不为空，则为收藏
         if (favoriteVideoList != null && favoriteVideoList.isEmpty() && !folderIds.isEmpty()) {

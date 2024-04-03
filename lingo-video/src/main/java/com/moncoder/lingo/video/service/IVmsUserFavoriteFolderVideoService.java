@@ -37,7 +37,7 @@ public interface IVmsUserFavoriteFolderVideoService extends IService<VmsUserFavo
      * @return
      */
 
-    List<VmsUserFavoriteFolderVideo> getAllByUserIdVideoId(Integer userId, Integer videoId);
+    List<VmsUserFavoriteFolderVideo> getListByUserIdVideoId(Integer userId, Integer videoId);
 
     /**
      * 根据用户id和收藏夹id,获取到该收藏夹中所有记录
@@ -46,7 +46,7 @@ public interface IVmsUserFavoriteFolderVideoService extends IService<VmsUserFavo
      * @param folderId
      * @return
      */
-    List<VmsUserFavoriteFolderVideo> getAllByUserIdFolderId(Integer userId, Integer folderId);
+    List<VmsUserFavoriteFolderVideo> getListByUserIdFolderId(Integer userId, Integer folderId);
 
     /**
      * 将视频收藏到多个收藏夹中

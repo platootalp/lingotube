@@ -1,11 +1,11 @@
 package com.moncoder.lingo.video.controller;
 
 
-import com.moncoder.lingo.common.api.Page;
+import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.video.domain.dto.FolderVideoCopyDTO;
 import com.moncoder.lingo.video.domain.dto.FolderVideoMoveDTO;
-import com.moncoder.lingo.video.domain.vo.FavoriteVideoVo;
+import com.moncoder.lingo.video.domain.vo.FavoriteVideoVO;
 import com.moncoder.lingo.video.service.IVmsUserFavoriteFolderVideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,9 +36,17 @@ public class VmsUserFavoriteFolderVideoController {
     private IVmsUserFavoriteFolderVideoService folderVideoService;
 
     @ApiOperation("分页查询收藏夹下的所有视频")
-    @GetMapping("/{folder_id}")
-    public Result<List<Page<FavoriteVideoVo>>> getPage(@PathVariable @NotNull Integer folderId) {
-        return Result.failed();
+    @GetMapping("/s")
+    public Result<LPage<FavoriteVideoVO>> getPageList
+            (@RequestParam @NotNull Integer userId,
+             @RequestParam @NotNull Integer folderId,
+             @RequestParam(value = "pageNum", defaultValue = "1") Long pageNum,
+             @RequestParam(value = "pageSize", defaultValue = "5") Long pageSize,
+             @RequestParam(value = "nameKeyWord", required = false) String titleKeyWord,
+             @RequestParam(value = "orderBy", required = false) Integer orderBy) {
+        LPage<FavoriteVideoVO> pageList =
+                folderVideoService.getPageList(userId, folderId, pageNum, pageSize, titleKeyWord, orderBy);
+        return Result.success(pageList);
     }
 
     @ApiOperation("批量删除收藏视频")

@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Page<T> {
+public class LPage<T> {
     /**
      * 当前页码
      */
@@ -45,8 +45,8 @@ public class Page<T> {
      * @param <T>
      * @return
      */
-    public static <T> Page<T> restPage(org.springframework.data.domain.Page<T> page) {
-        Page<T> result = new Page<>();
+    public static <T> LPage<T> restPage(org.springframework.data.domain.Page<T> page) {
+        LPage<T> result = new LPage<>();
         result.setPageNum((long) page.getNumber());
         result.setPageSize((long) page.getSize());
         result.setTotalPage((long) page.getTotalPages());
@@ -61,8 +61,8 @@ public class Page<T> {
      * @param <T>
      * @return
      */
-    public static <T> Page<T> restPage(IPage<T> page) {
-        Page<T> result = new Page<>();
+    public static <T> LPage<T> restPage(IPage<T> page) {
+        LPage<T> result = new LPage<>();
         result.setPageNum(page.getCurrent());
         result.setPageSize(page.getSize());
         result.setTotalPage(page.getPages());

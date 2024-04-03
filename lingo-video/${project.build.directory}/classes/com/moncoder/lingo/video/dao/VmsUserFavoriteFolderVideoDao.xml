@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moncoder.lingo.video.dao.VmsUserFavoriteFolderVideoDao">
+
+    <resultMap id="videoWithFavoriteTime" type="com.moncoder.lingo.video.domain.vo.FavoriteVideoVO">
+        <id property="id" column="id"/>
+        <result property="favoriteTime" column="favorite_time" javaType="java.time.LocalDateTime"/>
+        <association property="video" javaType="com.moncoder.lingo.entity.VmsVideo">
+            <id property="id" column="id"/>
+            <result property="title" column="title"/>
+        </association>
+    </resultMap>
+
+    <select id="selectAllByVideoIds" resultMap="videoWithFavoriteTime">
+        SELECT v.*, f.favorite_time
+        FROM vms_video v
+        LEFT JOIN vms_user_favorite_folder_video f ON v.id = f.video_id
+        WHERE v.id IN
+        <foreach item="videoId" collection="videoIds" open="(" separator="," close=")">
+            #{videoId}
+        </foreach>
+        <if test="titleKeyWord != null and titleKeyWord != ''">
+            AND v.title LIKE CONCAT('%', #{titleKeyWord}, '%')
+        </if>
+        ORDER BY f.favorite_time;
+    </select>
+</mapper>

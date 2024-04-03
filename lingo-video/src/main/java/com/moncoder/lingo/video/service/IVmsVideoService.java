@@ -34,4 +34,5 @@ public interface IVmsVideoService extends IService<VmsVideo> {
      */
     boolean favoriteVideo(Integer userId, Integer videoId,  List<Integer> folderIds);
 
+
 }

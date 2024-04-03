@@ -1,11 +1,16 @@
 package com.moncoder.lingo.video.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.entity.VmsUserFavoriteFolderVideo;
 import com.moncoder.lingo.mapper.VmsUserFavoriteFolderVideoMapper;
+import com.moncoder.lingo.video.dao.VmsUserFavoriteFolderVideoDao;
 import com.moncoder.lingo.video.domain.dto.FolderVideoCopyDTO;
 import com.moncoder.lingo.video.domain.dto.FolderVideoMoveDTO;
+import com.moncoder.lingo.video.domain.vo.FavoriteVideoVO;
 import com.moncoder.lingo.video.service.IVmsUserFavoriteFolderVideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +20,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
 
 
 import java.util.Collections;
@@ -36,13 +40,13 @@ public class VmsUserFavoriteFolderVideoServiceImpl
         extends ServiceImpl<VmsUserFavoriteFolderVideoMapper, VmsUserFavoriteFolderVideo>
         implements IVmsUserFavoriteFolderVideoService {
 
-
     @Autowired
-    private VmsUserFavoriteFolderVideoMapper favoriteVideoMapper;
-
+    private VmsUserFavoriteFolderVideoMapper favoriteFolderVideoMapper;
+    @Autowired
+    private VmsUserFavoriteFolderVideoDao favoriteFolderVideoDao;
     @Override
     public List<VmsUserFavoriteFolderVideo> getListByUserIdVideoIdFolderIds(Integer userId, Integer videoId,
-                                                                      List<Integer> folderIds) {
+                                                                            List<Integer> folderIds) {
         // 如果folderIds为空，直接返回空列表
         if (CollUtil.isEmpty(folderIds)) {
             return Collections.emptyList();
@@ -80,6 +84,7 @@ public class VmsUserFavoriteFolderVideoServiceImpl
         // 将视频收藏到多个收藏夹中
         List<VmsUserFavoriteFolderVideo> favoriteVideoList = folderIds.stream().map(folderId -> {
             VmsUserFavoriteFolderVideo favoriteVideo = new VmsUserFavoriteFolderVideo();
+            favoriteVideo.setUserId(userId);
             favoriteVideo.setVideoId(videoId);
             favoriteVideo.setFolderId(folderId);
             return favoriteVideo;
@@ -115,12 +120,12 @@ public class VmsUserFavoriteFolderVideoServiceImpl
                             .eq(VmsUserFavoriteFolderVideo::getVideoId, videoId)
                             .eq(VmsUserFavoriteFolderVideo::getFolderId, folderId)
                             .count();
-                    if(count == 0){
+                    if (count == 0) {
                         VmsUserFavoriteFolderVideo modifiedVideo = new VmsUserFavoriteFolderVideo();
                         modifiedVideo.setUserId(userId);
                         modifiedVideo.setVideoId(videoId);
                         modifiedVideo.setFolderId(folderId);
-                        modifiedVideo.setCreateTime(LocalDateTime.now());
+                        modifiedVideo.setFavoriteTime(LocalDateTime.now());
                         // 返回修改后的视频
                         return modifiedVideo;
 
@@ -165,7 +170,7 @@ public class VmsUserFavoriteFolderVideoServiceImpl
                 folderVideo.setUserId(userId);
                 folderVideo.setVideoId(videoId);
                 folderVideo.setFolderId(newFolderId);
-                folderVideo.setCreateTime(LocalDateTime.now());
+                folderVideo.setFavoriteTime(LocalDateTime.now());
                 videosToAdd.add(folderVideo);
             }
         }
@@ -173,6 +178,26 @@ public class VmsUserFavoriteFolderVideoServiceImpl
         return saveBatch(videosToAdd);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public LPage<FavoriteVideoVO> getPageList(Integer userId, Integer folderId,
+                                                    Long pageNum, Long pageSize,
+                                                    String titleKeyWord, Integer orderBy) {
+        // 1.查询出当前用户当前收藏夹下所有视频id
+        List<Integer> videoIds = getAllByUserIdFolderId(userId, folderId)
+                .stream().map(VmsUserFavoriteFolderVideo::getVideoId)
+                .collect(Collectors.toList());
+        // 2.根据videoIds查询出所有的视频
+        List<FavoriteVideoVO> favoriteVideoVos
+                = favoriteFolderVideoDao.selectAllByVideoIds(videoIds,titleKeyWord);
+        // 3.分页
+        // 3.将查询结果列表封装到分页对象中
+        IPage<FavoriteVideoVO> page = new Page<>(pageNum, pageSize);
+        page.setRecords(favoriteVideoVos);
+
+        // 4.返回分页对象
+        return LPage.restPage(page);
+    }
 
 
 }

@@ -39,6 +39,6 @@ public class VmsUserFavoriteFolderVideo implements Serializable {
     @ApiModelProperty("收藏夹ID，外键，关联收藏夹表")
     private Integer folderId;
 
-    @ApiModelProperty("上传时间")
-    private LocalDateTime createTime;
+    @ApiModelProperty("收藏时间")
+    private LocalDateTime favoriteTime;
 }

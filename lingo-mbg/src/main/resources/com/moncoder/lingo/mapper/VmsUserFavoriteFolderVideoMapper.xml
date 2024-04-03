@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.moncoder.lingo.mapper.VmsUserFavoriteFolderVideoMapper">
+
     <select id="selectBatchByIds" parameterType="list"
             resultType="com.moncoder.lingo.entity.VmsUserFavoriteFolderVideo">
         SELECT id, user_id, video_id, folder_id, create_time
@@ -10,4 +11,5 @@
             #{id}
         </foreach>
     </select>
+
 </mapper>

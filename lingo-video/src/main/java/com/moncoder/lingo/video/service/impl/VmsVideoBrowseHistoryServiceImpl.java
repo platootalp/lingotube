@@ -1,6 +1,6 @@
 package com.moncoder.lingo.video.service.impl;
 
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.common.api.LPage;
@@ -69,12 +69,11 @@ public class VmsVideoBrowseHistoryServiceImpl extends ServiceImpl<VmsVideoBrowse
     public LPage<VideoBrowseHistoryVO> getPageByUserId(Integer userId, Long pageNum, Long pageSize,
                                                        String titleKeyWord) {
         // 1.根据用户id查询出所有VideoBrowseHistoryVO
-        List<VideoBrowseHistoryVO> historyVos = videoBrowseHistoryDao.selectListByUserId(userId, titleKeyWord);
-        // 2.设置分页
         Page<VideoBrowseHistoryVO> page = new Page<>(pageNum, pageSize);
-        page.setTotal(historyVos.size());
-        page.setRecords(historyVos);
-        return LPage.restPage(page);
+        IPage<VideoBrowseHistoryVO> historyVos
+                = videoBrowseHistoryDao.selectPageByUserId(page, userId, titleKeyWord);
+        // 2.返回分页对象
+        return LPage.restPage(historyVos);
     }
 
 }

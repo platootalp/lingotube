@@ -1,6 +1,7 @@
 package com.moncoder.lingo.common.api;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.github.pagehelper.PageInfo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -37,6 +38,25 @@ public class LPage<T> {
      * 分页数据
      */
     private List<T> list;
+
+    /**
+     * pagehelper分页
+     *
+     * @param list
+     * @param <T>
+     * @return
+     */
+    public static <T> LPage<T> restPage(List<T> list) {
+        LPage<T> result = new LPage<>();
+        PageInfo<T> pageInfo = new PageInfo<>();
+        result.setPageNum((long) pageInfo.getPageNum());
+        result.setPageSize((long) pageInfo.getPageSize());
+        result.setTotalPage((long) pageInfo.getPages());
+        result.setTotal(pageInfo.getTotal());
+        result.setList(list);
+        return result;
+    }
+
 
     /**
      * spring-data分页数据重构

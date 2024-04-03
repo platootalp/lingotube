@@ -22,15 +22,12 @@ public class FavoriteFolderVideoMoveDTO {
     @NotNull
     @ApiModelProperty("用户id")
     private Integer userId;
-
     @NotNull
     @ApiModelProperty("收藏视频id集合")
     private List<Integer> videoIds;
-
     @NotNull
     @ApiModelProperty("当前收藏夹id")
     private Integer curFolderId;
-
     @NotNull
     @ApiModelProperty("新收藏夹id")
     private Integer newFolderId;

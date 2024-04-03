@@ -187,15 +187,11 @@ public class VmsUserFavoriteFolderVideoServiceImpl
                 .stream().map(VmsUserFavoriteFolderVideo::getVideoId)
                 .collect(Collectors.toList());
         // 2.根据videoIds查询出所有的视频
-        List<FavoriteFolderVideoVO> favoriteVideoVos
-                = favoriteFolderVideoDao.selectListByVideoIds(videoIds, titleKeyWord);
-        // 3.将查询结果列表封装到分页对象中
         IPage<FavoriteFolderVideoVO> page = new Page<>(pageNum, pageSize);
-        page.setTotal(favoriteVideoVos.size());
-        page.setRecords(favoriteVideoVos);
-
-        // 4.返回分页对象
-        return LPage.restPage(page);
+        IPage<FavoriteFolderVideoVO> favoriteVideoVos
+                = favoriteFolderVideoDao.selectPageByVideoIds(page,videoIds, titleKeyWord);
+        // 3.返回分页对象
+        return LPage.restPage(favoriteVideoVos);
     }
 
 

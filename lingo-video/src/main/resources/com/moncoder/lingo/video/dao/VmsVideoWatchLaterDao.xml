@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.moncoder.lingo.video.dao.VmsVideoBrowseHistoryDao">
+<mapper namespace="com.moncoder.lingo.video.dao.VmsVideoWatchLaterDao">
 
-    <resultMap id="videoBrowseHistoryVO" type="com.moncoder.lingo.video.domain.vo.VideoBrowseHistoryVO">
+    <resultMap id="videoWatchLaterVO" type="com.moncoder.lingo.video.domain.vo.VideoWatchLaterVO">
         <id property="id" column="id"/>
+        <result property="isWatched" column="is_watch" javaType="java.lang.Byte"/>
         <result property="viewDuration" column="view_duration"/>
         <result property="createTime" column="create_time" javaType="java.time.LocalDateTime"/>
         <association property="video" javaType="com.moncoder.lingo.entity.VmsVideo">
@@ -11,17 +12,24 @@
             <result property="title" column="title"/>
             <result property="videoUrl" column="video_url"/>
             <result property="thumbnailUrl" column="thumbnail_url"/>
+            <result property="duration" column="duration"/>
         </association>
     </resultMap>
 
-    <select id="selectListByUserId" resultMap="videoBrowseHistoryVO">
-        SELECT h.id,h.view_duration,h.create_time,v.*
-        FROM vms_video_browse_history h
-        LEFT JOIN vms_video v ON h.video_id = v.id
-        WHERE h.user_id = #{userId}
+    <select id="selectPageByUserId" resultMap="videoWatchLaterVO">
+        SELECT
+               vwl.id, vwl.is_watched, vwl.view_duration, vwl.create_time,
+               v.id, v.title, v.video_url, v.thumbnail_url, v.duration
+        FROM
+             vms_video_watch_later vwl
+        LEFT JOIN
+                 vms_video v ON vwl.video_id = v.id
+        WHERE
+                vwl.user_id = #{userId}
         <if test="titleKeyWord != null and titleKeyWord != ''">
             AND v.title LIKE CONCAT('%', #{titleKeyWord}, '%')
         </if>
-        ORDER BY h.create_time DESC;
+        ORDER BY
+                 vwl.create_time DESC
     </select>
 </mapper>

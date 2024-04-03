@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.moncoder.lingo.mapper.VmsUserFavoriteFolderVideoMapper">
-<<<<<<< HEAD
+
     <select id="selectBatchByIds" parameterType="list"
             resultType="com.moncoder.lingo.entity.VmsUserFavoriteFolderVideo">
         SELECT id, user_id, video_id, folder_id, create_time
@@ -9,13 +9,7 @@
         WHERE id IN
         <foreach item="id" index="index" collection="ids" open="(" separator="," close=")">
             #{id}
-=======
-    <select id="getBatchByIds" parameterType="java.util.List" resultType="com.moncoder.lingo.entity.VmsUserFavoriteFolderVideo">
-        SELECT id,user_id,video_id,folder_id,create_time FROM vms_user_favorite_video
-        WHERE id IN
-        <foreach collection="list" item="item" open="(" close=")" separator=",">
-            #{item}
->>>>>>> 5074a0784caad4b2142b27a3bc71f0a200ac2476
         </foreach>
     </select>
+
 </mapper>

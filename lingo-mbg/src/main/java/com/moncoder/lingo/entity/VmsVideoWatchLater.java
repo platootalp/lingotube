@@ -12,16 +12,16 @@ import lombok.Setter;
 
 /**
  * <p>
- * 稍后再看视频表
+ * 视频稍后再看表
  * </p>
  *
  * @author moncoder
- * @since 2024-03-28 15:51:18
+ * @since 2024-04-03 15:46:27
  */
 @Getter
 @Setter
 @TableName("vms_video_watch_later")
-@ApiModel(value = "VmsVideoWatchLater对象", description = "稍后再看视频表")
+@ApiModel(value = "VmsVideoWatchLater对象", description = "视频稍后再看表")
 public class VmsVideoWatchLater implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,17 +30,17 @@ public class VmsVideoWatchLater implements Serializable {
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
-    @ApiModelProperty("用户ID，外键，关联用户表")
+    @ApiModelProperty("用户id，外键，关联用户表")
     private Integer userId;
 
-    @ApiModelProperty("视频ID，外键，关联视频表")
+    @ApiModelProperty("视频id，外键，关联视频表")
     private Integer videoId;
 
-    @ApiModelProperty("是否已观看：1->已观看；0->未观看")
+    @ApiModelProperty("是否已观看：0->未观看 ；1->已观看")
     private Byte isWatched;
 
-    @ApiModelProperty("已观看的位置，以秒为单位")
-    private Integer watchedPosition;
+    @ApiModelProperty("已观看的时长（秒）")
+    private Integer viewDuration;
 
     @ApiModelProperty("添加时间")
     private LocalDateTime createTime;

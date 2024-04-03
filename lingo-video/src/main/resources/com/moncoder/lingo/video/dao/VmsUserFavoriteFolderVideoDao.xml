@@ -13,17 +13,22 @@
         </association>
     </resultMap>
 
-    <select id="selectListByVideoIds" resultMap="favoriteFolderVideoVO">
-        SELECT v.*, f.favorite_time
-        FROM vms_video v
-        LEFT JOIN vms_user_favorite_folder_video f ON v.id = f.video_id
-        WHERE v.id IN
+    <select id="selectPageByVideoIds" resultMap="favoriteFolderVideoVO">
+        SELECT
+               v.*, f.favorite_time
+        FROM
+             vms_video v
+        LEFT JOIN
+                 vms_user_favorite_folder_video f ON v.id = f.video_id
+        WHERE
+              v.id IN
         <foreach item="videoId" collection="videoIds" open="(" separator="," close=")">
             #{videoId}
         </foreach>
         <if test="titleKeyWord != null and titleKeyWord != ''">
             AND v.title LIKE CONCAT('%', #{titleKeyWord}, '%')
         </if>
-        ORDER BY f.favorite_time;
+        ORDER BY
+                 f.favorite_time
     </select>
 </mapper>

@@ -2,20 +2,16 @@ package com.moncoder.lingo.video.controller;
 
 import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.common.api.Result;
-import com.moncoder.lingo.entity.VmsVideoBrowseHistory;
 import com.moncoder.lingo.video.domain.dto.VideoBrowseHistoryDTO;
 import com.moncoder.lingo.video.domain.vo.VideoBrowseHistoryVO;
 import com.moncoder.lingo.video.service.IVmsVideoBrowseHistoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -37,10 +33,7 @@ public class VmsVideoBrowseHistoryController {
     @ApiOperation("保存浏览历史")
     @PostMapping("/")
     public Result<String> save(@RequestBody @Valid VideoBrowseHistoryDTO videoBrowseHistoryDTO) {
-        VmsVideoBrowseHistory videoBrowseHistory = new VmsVideoBrowseHistory();
-        BeanUtils.copyProperties(videoBrowseHistoryDTO, videoBrowseHistory);
-        videoBrowseHistory.setCreateTime(LocalDateTime.now());
-        boolean flag = videoBrowseHistoryService.save(videoBrowseHistory);
+        boolean flag = videoBrowseHistoryService.save(videoBrowseHistoryDTO);
         if (!flag) {
             return Result.failed();
         }

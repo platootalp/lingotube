@@ -191,6 +191,7 @@ public class VmsUserFavoriteFolderVideoServiceImpl
                 = favoriteFolderVideoDao.selectListByVideoIds(videoIds, titleKeyWord);
         // 3.将查询结果列表封装到分页对象中
         IPage<FavoriteFolderVideoVO> page = new Page<>(pageNum, pageSize);
+        page.setTotal(favoriteVideoVos.size());
         page.setRecords(favoriteVideoVos);
 
         // 4.返回分页对象

@@ -3,6 +3,7 @@ package com.moncoder.lingo.video.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.entity.VmsVideoBrowseHistory;
+import com.moncoder.lingo.video.domain.dto.VideoBrowseHistoryDTO;
 import com.moncoder.lingo.video.domain.vo.VideoBrowseHistoryVO;
 
 import java.util.List;
@@ -16,6 +17,14 @@ import java.util.List;
  * @since 2024-04-03 13:40:30
  */
 public interface IVmsVideoBrowseHistoryService extends IService<VmsVideoBrowseHistory> {
+
+    /**
+     * 保存浏览历史
+     *
+     * @param videoBrowseHistoryDTO
+     * @return
+     */
+    boolean save(VideoBrowseHistoryDTO videoBrowseHistoryDTO);
 
     /**
      * 批量删除视频浏览历史
@@ -44,4 +53,5 @@ public interface IVmsVideoBrowseHistoryService extends IService<VmsVideoBrowseHi
      * @return
      */
     LPage<VideoBrowseHistoryVO> getPageByUserId(Integer userId, Long pageNum, Long pageSize, String titleKeyWord);
+
 }

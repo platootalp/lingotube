@@ -47,12 +47,5 @@ public interface IVmsVideoService extends IService<VmsVideo> {
      */
     boolean likeVideo(Integer userId, Integer videoId);
 
-    /**
-     * 评论视频
-     * @param userId
-     * @param videoId
-     * @param videoCommentDTO
-     * @return
-     */
-    boolean commentVideo(Integer userId, Integer videoId, VideoCommentDTO videoCommentDTO);
+
 }

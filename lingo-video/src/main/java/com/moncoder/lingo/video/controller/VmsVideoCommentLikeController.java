@@ -1,4 +1,4 @@
-package com.moncoder.lingo.controller;
+package com.moncoder.lingo.video.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

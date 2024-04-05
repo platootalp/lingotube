@@ -5,13 +5,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.common.exception.ApiException;
 import com.moncoder.lingo.entity.*;
 import com.moncoder.lingo.mapper.VmsVideoMapper;
-import com.moncoder.lingo.service.IVmsVideoCommentService;
-import com.moncoder.lingo.video.domain.dto.VideoCommentDTO;
 import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
-import com.moncoder.lingo.video.service.IVmsUserFavoriteFolderService;
-import com.moncoder.lingo.video.service.IVmsUserFavoriteFolderVideoService;
-import com.moncoder.lingo.video.service.IVmsVideoLikeService;
-import com.moncoder.lingo.video.service.IVmsVideoService;
+import com.moncoder.lingo.video.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -147,24 +142,6 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
         }
         // 3.修改点赞数
         return updateById(video);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public boolean commentVideo(Integer userId, Integer videoId, VideoCommentDTO videoCommentDTO) {
-        // 1.视频评论表增加记录
-        VmsVideoComment videoComment = new VmsVideoComment();
-        BeanUtils.copyProperties(videoCommentDTO, videoComment);
-        videoComment.setParentId(0);
-        videoComment.setStatus((byte) 1);
-        videoComment.setLikes(0);
-        videoComment.setReplies(0);
-        videoCommentService.save(videoComment);
-        // 2.视频表评论数+1
-        VmsVideo video = lambdaQuery().eq(VmsVideo::getId, videoId).one();
-        return lambdaUpdate().eq(VmsVideo::getId, video)
-                .set(VmsVideo::getComments, video.getComments() + 1)
-                .update();
     }
 
 }

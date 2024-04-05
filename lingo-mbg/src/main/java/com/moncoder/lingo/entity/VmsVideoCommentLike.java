@@ -12,11 +12,11 @@ import lombok.Setter;
 
 /**
  * <p>
- * 用户点赞表
+ * 评论点赞表
  * </p>
  *
  * @author moncoder
- * @since 2024-04-05 10:32:25
+ * @since 2024-04-05 11:20:05
  */
 @Getter
 @Setter
@@ -26,7 +26,7 @@ public class VmsVideoCommentLike implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("评论点赞表ID，主键，自增")
+    @ApiModelProperty("点赞表ID，主键，自增")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
@@ -44,4 +44,7 @@ public class VmsVideoCommentLike implements Serializable {
 
     @ApiModelProperty("点赞时间")
     private LocalDateTime createTime;
+
+    @ApiModelProperty("点赞状态更新时间")
+    private LocalDateTime updateTime;
 }

@@ -48,4 +48,15 @@ public class VmsVideoCommentController {
         }
         return Result.success();
     }
+
+    @ApiOperation("点赞取消点赞评论")
+    @PostMapping("/like")
+    public Result<String> likeComment(@RequestParam @NotNull Integer id,
+                                      @RequestParam @NotNull Integer userId) {
+        boolean flag = videoCommentService.likeComment(id, userId);
+        if (!flag) {
+            return Result.failed();
+        }
+        return Result.success();
+    }
 }

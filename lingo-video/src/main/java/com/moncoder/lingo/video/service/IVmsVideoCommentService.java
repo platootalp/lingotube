@@ -29,4 +29,12 @@ public interface IVmsVideoCommentService extends IService<VmsVideoComment> {
      * @return
      */
     boolean delComment(Integer id);
+
+    /**
+     * 点赞评论
+     * @param id
+     * @param userId
+     * @return
+     */
+    boolean likeComment(Integer id, Integer userId);
 }

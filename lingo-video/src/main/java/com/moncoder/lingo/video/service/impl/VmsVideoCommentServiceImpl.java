@@ -4,15 +4,18 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.entity.VmsVideo;
 import com.moncoder.lingo.entity.VmsVideoComment;
+import com.moncoder.lingo.entity.VmsVideoCommentLike;
 import com.moncoder.lingo.mapper.VmsVideoCommentMapper;
 import com.moncoder.lingo.video.domain.dto.VideoCommentDTO;
 import com.moncoder.lingo.video.service.IVmsVideoCommentService;
 import com.moncoder.lingo.video.service.IVmsVideoService;
+import com.moncoder.lingo.video.service.service.IVmsVideoCommentLikeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,6 +32,8 @@ public class VmsVideoCommentServiceImpl extends ServiceImpl<VmsVideoCommentMappe
 
     @Autowired
     private IVmsVideoService videoService;
+    @Autowired
+    private IVmsVideoCommentLikeService videoCommentLikeService;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -61,6 +66,48 @@ public class VmsVideoCommentServiceImpl extends ServiceImpl<VmsVideoCommentMappe
                 .set(VmsVideoComment::getStatus, 2)
                 .update();
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean likeComment(Integer id, Integer userId) {
+        // 1.根据评论id与用户id查询评论点赞表，评论点赞状态
+        VmsVideoCommentLike commentLike = videoCommentLikeService.getByUserIdAndCommentId(userId, id);
+        // 判断点赞状态
+        boolean isLiked = commentLike != null && commentLike.getIsActive().equals((byte) 1);
+        // 2.更新点赞状态
+        boolean success = false;
+        if (isLiked) {
+            // 取消点赞
+            commentLike.setIsActive((byte) 0);
+            commentLike.setUpdateTime(LocalDateTime.now());
+            success = videoCommentLikeService.updateById(commentLike);
+        } else {
+            // 点赞
+            if (commentLike == null) {
+                // 新增点赞记录
+                VmsVideoCommentLike newCommentLike = new VmsVideoCommentLike();
+                newCommentLike.setUserId(userId);
+                newCommentLike.setCommentId(id);
+                newCommentLike.setIsActive((byte) 1);
+                newCommentLike.setCreateTime(LocalDateTime.now());
+                videoCommentLikeService.save(newCommentLike);
+            } else {
+                // 更新点赞状态为已点赞
+                commentLike.setIsActive((byte) 1);
+                commentLike.setUpdateTime(LocalDateTime.now());
+                videoCommentLikeService.updateById(commentLike);
+            }
+        }
+        // 3.更新点赞数
+        if (success || !isLiked) {
+            // 当前评论点赞数加一或减一
+            return lambdaUpdate().eq(VmsVideoComment::getId, id)
+                    .setSql(isLiked ? "likes = likes - 1" : "likes = likes + 1")
+                    .update();
+        }
+        return false;
+    }
+
 
     /**
      * 递归遍历评论树，找到所有子评论的 ID

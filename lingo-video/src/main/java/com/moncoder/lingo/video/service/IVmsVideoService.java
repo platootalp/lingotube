@@ -2,6 +2,7 @@ package com.moncoder.lingo.video.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.entity.VmsVideo;
+import com.moncoder.lingo.video.domain.dto.VideoCommentDTO;
 import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
 
 import java.util.List;
@@ -45,4 +46,13 @@ public interface IVmsVideoService extends IService<VmsVideo> {
      * @return
      */
     boolean likeVideo(Integer userId, Integer videoId);
+
+    /**
+     * 评论视频
+     * @param userId
+     * @param videoId
+     * @param videoCommentDTO
+     * @return
+     */
+    boolean commentVideo(Integer userId, Integer videoId, VideoCommentDTO videoCommentDTO);
 }

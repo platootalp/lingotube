@@ -1,6 +1,7 @@
 package com.moncoder.lingo.video.controller;
 
 import com.moncoder.lingo.common.api.Result;
+import com.moncoder.lingo.video.domain.dto.VideoCommentDTO;
 import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
 import com.moncoder.lingo.video.service.IVmsVideoService;
 import io.swagger.annotations.Api;
@@ -61,4 +62,17 @@ public class VmsVideoController {
         }
         return Result.success();
     }
+
+    @ApiOperation("评论视频")
+    @PostMapping("/comment")
+    public Result<String> commentVideo(@RequestParam @NotNull Integer userId,
+                                       @RequestParam @NotNull Integer videoId,
+                                       @RequestBody @Valid VideoCommentDTO videoCommentDTO) {
+        boolean flag = videoService.commentVideo(userId, videoId, videoCommentDTO);
+        if (!flag) {
+            return Result.failed();
+        }
+        return Result.success();
+    }
+
 }

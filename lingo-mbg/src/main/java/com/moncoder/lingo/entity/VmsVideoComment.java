@@ -3,8 +3,10 @@ package com.moncoder.lingo.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -16,7 +18,7 @@ import lombok.Setter;
  * </p>
  *
  * @author moncoder
- * @since 2024-03-28 15:51:18
+ * @since 2024-04-05 10:32:24
  */
 @Getter
 @Setter
@@ -27,32 +29,32 @@ public class VmsVideoComment implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty("评论的唯一标识符，主键，自增")
-    @TableId(value = "comment_id", type = IdType.AUTO)
-    private Integer commentId;
+    @TableId(value = "id", type = IdType.AUTO)
+    private Integer id;
 
-    @ApiModelProperty("评论者的用户ID，外键，关联到用户表")
+    @ApiModelProperty("评论的用户ID，外键，关联到用户表")
     private Integer userId;
 
-    @ApiModelProperty("评论的视频ID")
+    @ApiModelProperty("评论的视频ID，外键，关联到视频表")
     private Integer videoId;
 
     @ApiModelProperty("父评论的ID，0代表无父评论")
-    private Integer parentCommentId;
+    private Integer parentId;
 
     @ApiModelProperty("评论的具体内容")
     private String content;
 
-    @ApiModelProperty("评论的状态，0:待审核、1:已发布、2:已删除")
+    @ApiModelProperty("评论的状态，0：待审核、1：已发布、2：已删除")
     private Byte status;
 
     @ApiModelProperty("点赞数")
-    private Integer likeCount;
+    private Integer likes;
 
     @ApiModelProperty("回复数")
-    private Integer replyCount;
+    private Integer replies;
 
     @ApiModelProperty("评论创建时间")
-    private LocalDateTime creatTime;
+    private LocalDateTime createTime;
 
     @ApiModelProperty("评论更新时间")
     private LocalDateTime updateTime;

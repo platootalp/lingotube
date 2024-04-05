@@ -38,4 +38,14 @@ public class VmsVideoCommentController {
         }
         return Result.success();
     }
+
+    @ApiOperation("删除评论")
+    @PostMapping("/del")
+    public Result<String> delComment(@RequestParam @NotNull Integer id) {
+        boolean flag = videoCommentService.delComment(id);
+        if (!flag) {
+            return Result.failed();
+        }
+        return Result.success();
+    }
 }

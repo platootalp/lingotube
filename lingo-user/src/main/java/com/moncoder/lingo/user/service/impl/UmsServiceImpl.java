@@ -4,6 +4,7 @@ import cn.hutool.core.util.PhoneUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moncoder.lingo.api.domain.UserCommentInfoVO;
 import com.moncoder.lingo.common.constant.SystemConstant;
 import com.moncoder.lingo.common.constant.UserConstant;
 import com.moncoder.lingo.common.exception.ApiException;
@@ -13,7 +14,6 @@ import com.moncoder.lingo.common.service.IRedisService;
 import com.moncoder.lingo.common.util.FileUtil;
 import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.mapper.UmsUserMapper;
-import com.moncoder.lingo.user.api.UploadClient;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
@@ -187,6 +187,15 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
         int port = environment.getProperty("server.port", Integer.class);
         // 构建URL
         return "http://" + ipAddress + ":" + port + "/" + avatarPath;
+    }
+
+    @Override
+    public UserCommentInfoVO getCommentInfo(Integer id) {
+        UmsUser user = lambdaQuery().eq(UmsUser::getId, id)
+                .one();
+        UserCommentInfoVO userCommentInfoVO = new UserCommentInfoVO();
+        BeanUtils.copyProperties(user, userCommentInfoVO);
+        return userCommentInfoVO;
     }
 
 }

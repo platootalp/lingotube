@@ -13,6 +13,7 @@
         <module name="lingo-user" />
         <module name="lingo-admin" />
         <module name="lingo-search" />
+        <module name="lingo-api" />
         <module name="lingo-video" />
         <module name="lingo-common" />
       </profile>
@@ -25,6 +26,7 @@
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="lingo-admin" options="-parameters" />
+      <module name="lingo-api" options="-parameters" />
       <module name="lingo-auth" options="-parameters" />
       <module name="lingo-common" options="-parameters" />
       <module name="lingo-gateway" options="-parameters" />

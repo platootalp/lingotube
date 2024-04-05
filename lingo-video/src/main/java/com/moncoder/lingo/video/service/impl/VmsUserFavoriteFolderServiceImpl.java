@@ -4,14 +4,13 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.entity.VmsUserFavoriteFolder;
 import com.moncoder.lingo.mapper.VmsUserFavoriteFolderMapper;
-import com.moncoder.lingo.video.api.UploadClient;
+import com.moncoder.lingo.api.client.UploadClient;
 import com.moncoder.lingo.video.domain.dto.FavoriteFolderCreateDTO;
 import com.moncoder.lingo.video.domain.dto.FavoriteFolderUpdateDTO;
 import com.moncoder.lingo.video.domain.vo.FavoriteFolderVO;
 import com.moncoder.lingo.video.service.IVmsUserFavoriteFolderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

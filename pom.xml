@@ -18,6 +18,7 @@
     <modules>
         <module>lingo-mbg</module>
         <module>lingo-common</module>
+        <module>lingo-api</module>
         <module>lingo-gateway</module>
         <module>lingo-user</module>
         <module>lingo-video</module>

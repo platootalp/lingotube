@@ -1,6 +1,7 @@
 package com.moncoder.lingo.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.moncoder.lingo.api.domain.UserCommentInfoVO;
 import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
@@ -78,4 +79,11 @@ public interface IUmsUserService extends IService<UmsUser> {
      * @param id
      */
     String getAvatar(Integer id);
+
+    /**
+     * 获取用户评论时候需要的信息（昵称和头像）
+     * @param id
+     * @return
+     */
+    UserCommentInfoVO getCommentInfo(Integer id);
 }

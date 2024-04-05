@@ -1,10 +1,12 @@
 package com.moncoder.lingo.video.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moncoder.lingo.api.domain.UserCommentInfoVO;
 import com.moncoder.lingo.entity.VmsVideo;
 import com.moncoder.lingo.entity.VmsVideoComment;
 import com.moncoder.lingo.entity.VmsVideoCommentLike;
 import com.moncoder.lingo.mapper.VmsVideoCommentMapper;
+import com.moncoder.lingo.api.client.UmsUserClient;
 import com.moncoder.lingo.video.domain.dto.VideoCommentDTO;
 import com.moncoder.lingo.video.domain.vo.VideoCommentNodeVO;
 import com.moncoder.lingo.video.service.IVmsVideoCommentService;
@@ -35,6 +37,8 @@ public class VmsVideoCommentServiceImpl extends ServiceImpl<VmsVideoCommentMappe
     private IVmsVideoService videoService;
     @Autowired
     private IVmsVideoCommentLikeService videoCommentLikeService;
+    @Autowired
+    private UmsUserClient userClient;
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -55,8 +59,13 @@ public class VmsVideoCommentServiceImpl extends ServiceImpl<VmsVideoCommentMappe
         }
 
         // 3. 增加评论记录
+        Integer userId = videoCommentDTO.getUserId();
+        // 查询出用户昵称和头像
+        UserCommentInfoVO userCommentInfo = userClient.getUserCommentInfo(userId);
         VmsVideoComment videoComment = new VmsVideoComment();
         BeanUtils.copyProperties(videoCommentDTO, videoComment);
+        videoComment.setNickname(userCommentInfo.getNickname());
+        videoComment.setAvatar(userCommentInfo.getAvatar());
         videoComment.setStatus((byte) 1);
         videoComment.setLikes(0);
         videoComment.setReplies(0);

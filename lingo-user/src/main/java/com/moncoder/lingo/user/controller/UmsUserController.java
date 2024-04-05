@@ -1,5 +1,6 @@
 package com.moncoder.lingo.user.controller;
 
+import com.moncoder.lingo.api.domain.UserCommentInfoVO;
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
@@ -108,4 +109,12 @@ public class UmsUserController {
         }
         return Result.success(avatar);
     }
+
+    /**Fegin 客户端**/
+    @ApiOperation("获取用户评论时所需信息")
+    @GetMapping("/comment/info/{id}")
+    public UserCommentInfoVO getUserCommentInfo(@PathVariable @NotNull Integer id) {
+        return userService.getCommentInfo(id);
+    }
+
 }

@@ -20,8 +20,11 @@ import java.time.LocalDateTime;
 @ApiModel("视频评论返回值")
 public class VideoCommentVO {
 
-    @ApiModelProperty("评论的用户ID，外键，关联到用户表")
-    private Integer userId;
+    @ApiModelProperty("用户昵称")
+    private String nickname;
+
+    @ApiModelProperty("用户头像")
+    private String avatar;
 
     @ApiModelProperty("父评论的ID，0代表无父评论")
     private Integer parentId;

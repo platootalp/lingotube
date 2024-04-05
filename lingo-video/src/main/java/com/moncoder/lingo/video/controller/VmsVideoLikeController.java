@@ -40,7 +40,7 @@ public class VmsVideoLikeController {
     }
 
 
-    @ApiOperation("查询全部稍后再看记录")
+    @ApiOperation("查询全部点赞记录")
     @GetMapping("/page")
     public Result<LPage<VideoLikeVO>> getPage(@RequestParam @NotNull Integer userId,
                                               @RequestParam(defaultValue = "1") Long pageNum,

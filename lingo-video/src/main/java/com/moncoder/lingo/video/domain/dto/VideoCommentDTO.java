@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 /**
  * @author Moncoder
  * @version 1.0
- * @description TODO 视频评论参数
+ * @description 视频评论参数
  * @date 2024/4/5 10:15
  */
 @Getter
@@ -28,6 +28,9 @@ public class VideoCommentDTO {
     @NotNull
     @ApiModelProperty("评论的视频ID，外键，关联到视频表")
     private Integer videoId;
+    @NotNull
+    @ApiModelProperty("评论的视频ID，外键，关联到视频表")
+    private Integer parentId;
     @NotBlank
     @ApiModelProperty("评论的具体内容")
     private String content;

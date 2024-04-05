@@ -16,12 +16,10 @@ public interface IVmsVideoCommentService extends IService<VmsVideoComment> {
 
     /**
      * 评论视频
-     * @param userId
-     * @param videoId
      * @param videoCommentDTO
      * @return
      */
-    boolean commentVideo(Integer userId, Integer videoId, VideoCommentDTO videoCommentDTO);
+    boolean commentVideo(VideoCommentDTO videoCommentDTO);
 
     /**
      * 删除评论（评论及其子评论状态设为已删除:2）

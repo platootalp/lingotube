@@ -29,10 +29,8 @@ public class VmsVideoCommentController {
 
     @ApiOperation("评论视频")
     @PostMapping("/add")
-    public Result<String> commentVideo(@RequestParam @NotNull Integer userId,
-                                       @RequestParam @NotNull Integer videoId,
-                                       @RequestBody @Valid VideoCommentDTO videoCommentDTO) {
-        boolean flag = videoCommentService.commentVideo(userId, videoId, videoCommentDTO);
+    public Result<String> commentVideo(@RequestBody @Valid VideoCommentDTO videoCommentDTO) {
+        boolean flag = videoCommentService.commentVideo(videoCommentDTO);
         if (!flag) {
             return Result.failed();
         }

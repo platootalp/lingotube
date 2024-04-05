@@ -1,6 +1,5 @@
 package com.moncoder.lingo.video.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.entity.VmsVideo;
 import com.moncoder.lingo.entity.VmsVideoComment;
@@ -37,21 +36,31 @@ public class VmsVideoCommentServiceImpl extends ServiceImpl<VmsVideoCommentMappe
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean commentVideo(Integer userId, Integer videoId, VideoCommentDTO videoCommentDTO) {
-        // 1.视频表评论数+1
+    public boolean commentVideo(VideoCommentDTO videoCommentDTO) {
+        // 1. 更新视频评论数
+        Integer videoId = videoCommentDTO.getVideoId();
         VmsVideo video = videoService.lambdaQuery().eq(VmsVideo::getId, videoId).one();
-        videoService.lambdaUpdate().eq(VmsVideo::getId, video)
+        videoService.lambdaUpdate().eq(VmsVideo::getId, videoId)
                 .set(VmsVideo::getComments, video.getComments() + 1)
                 .update();
-        // 2.视频评论表增加记录
+
+        // 2. 更新父评论的回复数（如果有）
+        Integer parentId = videoCommentDTO.getParentId();
+        if (parentId != null && parentId != 0) {
+            lambdaUpdate().eq(VmsVideoComment::getId, parentId)
+                    .setSql("replies = replies + 1")
+                    .update();
+        }
+
+        // 3. 增加评论记录
         VmsVideoComment videoComment = new VmsVideoComment();
         BeanUtils.copyProperties(videoCommentDTO, videoComment);
-        videoComment.setParentId(0);
         videoComment.setStatus((byte) 1);
         videoComment.setLikes(0);
         videoComment.setReplies(0);
         return save(videoComment);
     }
+
 
     @Override
     public boolean delComment(Integer id) {
@@ -107,7 +116,6 @@ public class VmsVideoCommentServiceImpl extends ServiceImpl<VmsVideoCommentMappe
         }
         return false;
     }
-
 
     /**
      * 递归遍历评论树，找到所有子评论的 ID

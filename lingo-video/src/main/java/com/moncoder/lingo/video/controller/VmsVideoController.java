@@ -1,7 +1,6 @@
 package com.moncoder.lingo.video.controller;
 
 import com.moncoder.lingo.common.api.Result;
-import com.moncoder.lingo.video.domain.dto.VideoCommentDTO;
 import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
 import com.moncoder.lingo.video.service.IVmsVideoService;
 import io.swagger.annotations.Api;

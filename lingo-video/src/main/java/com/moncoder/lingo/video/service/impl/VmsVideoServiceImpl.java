@@ -33,8 +33,6 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
     private IVmsUserFavoriteFolderVideoService favoriteFolderVideoService;
     @Autowired
     private IVmsVideoLikeService videoLikeService;
-    @Autowired
-    private IVmsVideoCommentService videoCommentService;
 
     @Override
     public boolean uploadVideo(VideoCreateDTO vmsVideoDTO) {

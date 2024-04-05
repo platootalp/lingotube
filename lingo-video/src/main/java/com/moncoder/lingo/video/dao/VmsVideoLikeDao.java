@@ -7,7 +7,7 @@ import com.moncoder.lingo.video.domain.vo.VideoLikeVO;
 /**
  * @author lenovo
  * @version 1.0
- * @description TODO 自定义赞过的视频映射
+ * @description 自定义赞过的视频映射
  * @date 2024/4/3 19:40
  */
 public interface VmsVideoLikeDao {

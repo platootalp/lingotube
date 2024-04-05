@@ -3,6 +3,9 @@ package com.moncoder.lingo.video.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.entity.VmsVideoComment;
 import com.moncoder.lingo.video.domain.dto.VideoCommentDTO;
+import com.moncoder.lingo.video.domain.vo.VideoCommentNodeVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -35,4 +38,11 @@ public interface IVmsVideoCommentService extends IService<VmsVideoComment> {
      * @return
      */
     boolean likeComment(Integer id, Integer userId);
+
+    /**
+     * 树形结构获取当前视频全部评论
+     * @param videoId
+     * @return
+     */
+    List<VideoCommentNodeVO> treeList(Integer videoId);
 }

@@ -2,6 +2,7 @@ package com.moncoder.lingo.video.controller;
 
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.video.domain.dto.VideoCommentDTO;
+import com.moncoder.lingo.video.domain.vo.VideoCommentNodeVO;
 import com.moncoder.lingo.video.service.IVmsVideoCommentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * <p>
@@ -19,7 +21,7 @@ import javax.validation.constraints.NotNull;
  * @author moncoder
  * @since 2024-03-20 14:59:05
  */
-@Api("评论管理")
+@Api(tags = "评论管理")
 @RestController
 @RequestMapping("/video/comment")
 public class VmsVideoCommentController {
@@ -56,5 +58,12 @@ public class VmsVideoCommentController {
             return Result.failed();
         }
         return Result.success();
+    }
+
+    @ApiOperation("树形结构获取当前视频全部评论")
+    @GetMapping("/treeList")
+    public Result<List<VideoCommentNodeVO>> treeList(@RequestParam @NotNull Integer videoId){
+        List<VideoCommentNodeVO> videoCommentNodes = videoCommentService.treeList(videoId);
+        return Result.success(videoCommentNodes);
     }
 }

@@ -6,6 +6,7 @@ import com.moncoder.lingo.entity.VmsVideoComment;
 import com.moncoder.lingo.entity.VmsVideoCommentLike;
 import com.moncoder.lingo.mapper.VmsVideoCommentMapper;
 import com.moncoder.lingo.video.domain.dto.VideoCommentDTO;
+import com.moncoder.lingo.video.domain.vo.VideoCommentNodeVO;
 import com.moncoder.lingo.video.service.IVmsVideoCommentService;
 import com.moncoder.lingo.video.service.IVmsVideoService;
 import com.moncoder.lingo.video.service.service.IVmsVideoCommentLikeService;
@@ -17,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -64,13 +66,23 @@ public class VmsVideoCommentServiceImpl extends ServiceImpl<VmsVideoCommentMappe
 
     @Override
     public boolean delComment(Integer id) {
-        // 1.初始化要删除的评论 ID 列表
+        // 1.当前评论的父评论回复数-1
+        VmsVideoComment comment = lambdaQuery().eq(VmsVideoComment::getId, id).one();
+        Integer parentId = comment.getParentId();
+        if (parentId != 0) {
+            lambdaUpdate().eq(VmsVideoComment::getId, parentId)
+                    .setSql("replies = replies - 1")
+                    .update();
+        }
+
+        // 2.初始化要删除的评论 ID 列表
         List<Integer> idsToDelete = new ArrayList<>();
         idsToDelete.add(id);
-        // 2.树形遍历，找到所有子评论的 ID
+
+        // 3.树形遍历，找到所有子评论的 ID
         traverseTree(id, idsToDelete);
 
-        // 3.执行批量删除操作（状态设为已删除）
+        // 4.执行批量删除操作（状态设为已删除）
         return lambdaUpdate().in(VmsVideoComment::getId, idsToDelete)
                 .set(VmsVideoComment::getStatus, 2)
                 .update();
@@ -117,6 +129,38 @@ public class VmsVideoCommentServiceImpl extends ServiceImpl<VmsVideoCommentMappe
         return false;
     }
 
+    @Override
+    public List<VideoCommentNodeVO> treeList(Integer videoId) {
+        // 1.查询当前视频下全部未删除评论
+        List<VmsVideoComment> commentList = lambdaQuery().eq(VmsVideoComment::getVideoId, videoId)
+                .eq(VmsVideoComment::getStatus, (byte) 1)
+                .list();
+        // 2.获取根节点评论
+        return commentList.stream()
+                .filter(comment -> comment.getParentId().equals(0))
+                .map(comment -> covertCommentNode(comment, commentList))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * 将VmsVideoComment转化为VideoCommentNodeVo并设置children属性
+     *
+     * @param comment
+     * @param commentList
+     * @return
+     */
+    private VideoCommentNodeVO covertCommentNode(VmsVideoComment comment, List<VmsVideoComment> commentList) {
+        VideoCommentNodeVO commentNode = new VideoCommentNodeVO();
+        BeanUtils.copyProperties(comment, commentNode);
+        // 获取当前节点所有子节点
+        List<VideoCommentNodeVO> children = commentList.stream()
+                .filter(subComment -> subComment.getParentId().equals(comment.getId()))
+                .map(subComment -> covertCommentNode(subComment, commentList))
+                .collect(Collectors.toList());
+        commentNode.setChildrenNodes(children);
+        return commentNode;
+    }
+
     /**
      * 递归遍历评论树，找到所有子评论的 ID
      *
@@ -124,8 +168,11 @@ public class VmsVideoCommentServiceImpl extends ServiceImpl<VmsVideoCommentMappe
      * @param idsToDelete
      */
     private void traverseTree(Integer parentId, List<Integer> idsToDelete) {
-        // 1.获取当前评论的全部子评论
-        List<VmsVideoComment> childComments = lambdaQuery().eq(VmsVideoComment::getParentId, parentId).list();
+        // 1.获取当前评论的全部未删除子评论
+        List<VmsVideoComment> childComments = lambdaQuery()
+                .eq(VmsVideoComment::getParentId, parentId)
+                .eq(VmsVideoComment::getStatus, (byte) 1)
+                .list();
         // 2.遍历子评论
         for (VmsVideoComment childComment : childComments) {
             Integer childCommentId = childComment.getId();

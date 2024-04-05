@@ -1,4 +1,4 @@
-package com.moncoder.lingo.video.domain.dto;
+package com.moncoder.lingo.video.domain.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -7,31 +7,32 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 /**
  * @author Moncoder
  * @version 1.0
- * @description 视频评论参数
- * @date 2024/4/5 10:15
+ * @description 视频评论返回值
+ * @date 2024/4/5 14:10
  */
 @Getter
 @Setter
-@ApiModel("视频评论参数")
-public class VideoCommentDTO {
+@ApiModel("视频评论返回值")
+public class VideoCommentVO {
 
-    @NotNull
     @ApiModelProperty("评论的用户ID，外键，关联到用户表")
     private Integer userId;
-    @NotNull
-    @ApiModelProperty("评论的视频ID，外键，关联到视频表")
-    private Integer videoId;
-    @NotNull
-    @ApiModelProperty("评论的视频ID，外键，关联到视频表")
+
+    @ApiModelProperty("父评论的ID，0代表无父评论")
     private Integer parentId;
-    @NotBlank
+
     @ApiModelProperty("评论的具体内容")
     private String content;
+
+    @ApiModelProperty("点赞数")
+    private Integer likes;
+
+    @ApiModelProperty("回复数")
+    private Integer replies;
+
 }

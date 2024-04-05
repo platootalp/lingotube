@@ -2,12 +2,10 @@ package com.moncoder.lingo.video.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.entity.VmsVideo;
-import com.moncoder.lingo.video.domain.dto.VideoCommentDTO;
 import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
 
 import java.util.List;
 
-import java.util.List;
 
 /**
  * <p>

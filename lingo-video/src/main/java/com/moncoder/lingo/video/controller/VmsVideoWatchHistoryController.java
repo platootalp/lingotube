@@ -4,7 +4,7 @@ import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.video.domain.dto.VideoBrowseHistoryDTO;
 import com.moncoder.lingo.video.domain.vo.VideoBrowseHistoryVO;
-import com.moncoder.lingo.video.service.IVmsVideoBrowseHistoryService;
+import com.moncoder.lingo.video.service.IVmsVideoWatchHistoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,10 +25,10 @@ import java.util.List;
 @Api(tags = "视频浏览历史管理")
 @RestController
 @RequestMapping("/video/history")
-public class VmsVideoBrowseHistoryController {
+public class VmsVideoWatchHistoryController {
 
     @Autowired
-    private IVmsVideoBrowseHistoryService videoBrowseHistoryService;
+    private IVmsVideoWatchHistoryService videoBrowseHistoryService;
 
     @ApiOperation("保存浏览历史")
     @PostMapping("/add")

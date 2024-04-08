@@ -4,12 +4,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.common.api.LPage;
-import com.moncoder.lingo.entity.VmsVideoBrowseHistory;
-import com.moncoder.lingo.mapper.VmsVideoBrowseHistoryMapper;
-import com.moncoder.lingo.video.dao.VmsVideoBrowseHistoryDao;
+import com.moncoder.lingo.entity.VmsVideoWatchHistory;
+import com.moncoder.lingo.mapper.VmsVideoWatchHistoryMapper;
+import com.moncoder.lingo.video.dao.VmsVideoWatchHistoryDao;
 import com.moncoder.lingo.video.domain.dto.VideoBrowseHistoryDTO;
 import com.moncoder.lingo.video.domain.vo.VideoBrowseHistoryVO;
-import com.moncoder.lingo.video.service.IVmsVideoBrowseHistoryService;
+import com.moncoder.lingo.video.service.IVmsVideoWatchHistoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,10 +26,10 @@ import java.util.List;
  * @since 2024-04-03 13:40:30
  */
 @Service
-public class VmsVideoBrowseHistoryServiceImpl extends ServiceImpl<VmsVideoBrowseHistoryMapper, VmsVideoBrowseHistory> implements IVmsVideoBrowseHistoryService {
+public class VmsVideoWatchHistoryServiceImpl extends ServiceImpl<VmsVideoWatchHistoryMapper, VmsVideoWatchHistory> implements IVmsVideoWatchHistoryService {
 
     @Autowired
-    private VmsVideoBrowseHistoryDao videoBrowseHistoryDao;
+    private VmsVideoWatchHistoryDao videoBrowseHistoryDao;
 
     @Override
     public boolean save(VideoBrowseHistoryDTO videoBrowseHistoryDTO) {
@@ -37,8 +37,8 @@ public class VmsVideoBrowseHistoryServiceImpl extends ServiceImpl<VmsVideoBrowse
         Integer userId = videoBrowseHistoryDTO.getUserId();
         Integer videoId = videoBrowseHistoryDTO.getVideoId();
         Integer viewDuration = videoBrowseHistoryDTO.getViewDuration();
-        VmsVideoBrowseHistory browseHistory = lambdaQuery().eq(VmsVideoBrowseHistory::getUserId, userId)
-                .eq(VmsVideoBrowseHistory::getVideoId, videoId)
+        VmsVideoWatchHistory browseHistory = lambdaQuery().eq(VmsVideoWatchHistory::getUserId, userId)
+                .eq(VmsVideoWatchHistory::getVideoId, videoId)
                 .one();
         // 2.记录存在就修改
         if (browseHistory != null) {
@@ -47,7 +47,7 @@ public class VmsVideoBrowseHistoryServiceImpl extends ServiceImpl<VmsVideoBrowse
             return updateById(browseHistory);
         }
         // 3.不存在就新增
-        VmsVideoBrowseHistory newBrowseHistory = new VmsVideoBrowseHistory();
+        VmsVideoWatchHistory newBrowseHistory = new VmsVideoWatchHistory();
         BeanUtils.copyProperties(videoBrowseHistoryDTO, newBrowseHistory);
         newBrowseHistory.setCreateTime(LocalDateTime.now());
         return save(newBrowseHistory);
@@ -55,8 +55,8 @@ public class VmsVideoBrowseHistoryServiceImpl extends ServiceImpl<VmsVideoBrowse
 
     @Override
     public boolean deleteBatch(Integer userId, List<Integer> ids) {
-        return lambdaUpdate().eq(VmsVideoBrowseHistory::getUserId, userId)
-                .in(VmsVideoBrowseHistory::getId, ids)
+        return lambdaUpdate().eq(VmsVideoWatchHistory::getUserId, userId)
+                .in(VmsVideoWatchHistory::getId, ids)
                 .remove();
     }
 

@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Param;
  * @description 自定义视频浏览历史表映射
  * @date 2024/4/3 14:16
  */
-public interface VmsVideoBrowseHistoryDao {
+public interface VmsVideoWatchHistoryDao {
 
     /**
      * 查询当前用户全部视频浏览历史

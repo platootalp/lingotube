@@ -16,13 +16,13 @@ import lombok.Setter;
  * </p>
  *
  * @author moncoder
- * @since 2024-04-03 13:40:30
+ * @since 2024-04-08 15:37:19
  */
 @Getter
 @Setter
-@TableName("vms_video_browse_history")
-@ApiModel(value = "VmsVideoBrowseHistory对象", description = "视频浏览历史表")
-public class VmsVideoBrowseHistory implements Serializable {
+@TableName("vms_video_watch_history")
+@ApiModel(value = "VmsVideoWatchHistory对象", description = "视频浏览历史表")
+public class VmsVideoWatchHistory implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

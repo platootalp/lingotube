@@ -2,7 +2,7 @@ package com.moncoder.lingo.video.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.common.api.LPage;
-import com.moncoder.lingo.entity.VmsVideoBrowseHistory;
+import com.moncoder.lingo.entity.VmsVideoWatchHistory;
 import com.moncoder.lingo.video.domain.dto.VideoBrowseHistoryDTO;
 import com.moncoder.lingo.video.domain.vo.VideoBrowseHistoryVO;
 
@@ -16,7 +16,7 @@ import java.util.List;
  * @author moncoder
  * @since 2024-04-03 13:40:30
  */
-public interface IVmsVideoBrowseHistoryService extends IService<VmsVideoBrowseHistory> {
+public interface IVmsVideoWatchHistoryService extends IService<VmsVideoWatchHistory> {
 
     /**
      * 保存浏览历史

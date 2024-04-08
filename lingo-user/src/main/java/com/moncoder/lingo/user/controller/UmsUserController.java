@@ -79,7 +79,7 @@ public class UmsUserController {
 
 
     @ApiOperation("修改用户密码")
-    @PutMapping("/password/set")
+    @PutMapping("/password/reset")
     public Result<String> updatePassword(@RequestParam("phone") @NotEmpty String phone,
                                          @RequestParam("password") @NotEmpty String password) {
         Boolean flag = userService.updatePassword(phone, password);

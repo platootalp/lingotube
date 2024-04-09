@@ -26,8 +26,8 @@ public class UserPasswordUpdateDTO {
     private String email;
     @NotBlank
     @ApiModelProperty(value = "验证码", required = true)
-    private String code;
+    private String verifyCode;
     @NotBlank
-    @ApiModelProperty(value = "密码", required = true)
-    private String password;
+    @ApiModelProperty(value = "新密码", required = true)
+    private String newPassword;
 }

@@ -30,6 +30,7 @@ spring:
     multipart:
       max-file-size: 2MB # 单文件上传大小
       max-request-size: 12MB # 总文件大小
+
 knife4j:
   enable: true
   openapi:

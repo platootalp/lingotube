@@ -3,6 +3,7 @@ package com.moncoder.lingo.user.service.impl;
 import cn.hutool.core.util.PhoneUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.extra.mail.MailUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.api.domain.UserCommentInfoVO;
 import com.moncoder.lingo.common.constant.SystemConstant;
@@ -12,8 +13,10 @@ import com.moncoder.lingo.common.exception.FileUploadException;
 import com.moncoder.lingo.common.exception.IllegalArgumentException;
 import com.moncoder.lingo.common.service.IRedisService;
 import com.moncoder.lingo.common.util.FileUtil;
+import com.moncoder.lingo.common.util.RegexUtil;
 import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.mapper.UmsUserMapper;
+import com.moncoder.lingo.user.domain.dto.UserPasswordUpdateDTO;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
@@ -53,31 +56,34 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     private Environment environment;
 
     /**
-     * TODO 修改为发送短信
+     * 发送验证码到邮箱
      *
-     * @param phone
+     * @param email
      * @return
      */
     @Override
-    public String sendCode(String phone) {
+    public boolean sendVerifyCode(String email) {
         // 1.参数校验
-        if (StrUtil.isEmpty(phone)) {
-            throw new IllegalArgumentException("手机号不能为空");
+        if (StrUtil.isBlank(email)) {
+            throw new IllegalArgumentException("邮箱不能为空");
         }
-        // 2.手机号格式验证
-        if (!PhoneUtil.isPhone(phone)) {
-            throw new IllegalArgumentException("手机格式不正确！");
+        // 2.邮箱格式验证
+        if (!RegexUtil.isEmail(email)) {
+            throw new IllegalArgumentException("邮箱格式不正确！");
         }
         // 3.5min内不重复发送验证码
-        Boolean hasCode = redisService.hasKey(UserConstant.UMS_USER_CODE + phone);
+        Boolean hasCode = redisService.hasKey(UserConstant.UMS_USER_CODE + email);
         if (hasCode) {
             throw new ApiException("验证码已发送！");
         }
         // 4.生成6位验证码
         String code = RandomUtil.randomNumbers(6);
-        // 5.将验证码存入redis
-        redisService.set(UserConstant.UMS_USER_CODE + phone, code, UserConstant.UMS_USER_CODE_EXPIRE);
-        return code;
+        // 5.发送验证码到指定邮箱
+        MailUtil.send(email, UserConstant.UMS_USER_CODE_MAIL_SUBJECT,
+                UserConstant.UMS_USER_CODE_MAIL_CONTENT + code, false);
+        // 6.将验证码存入redis
+        redisService.set(UserConstant.UMS_USER_CODE + email, code, UserConstant.UMS_USER_CODE_EXPIRE);
+        return true;
     }
 
     @Override
@@ -155,9 +161,15 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     }
 
     @Override
-    public boolean updatePassword(String phone, String password) {
-        return lambdaUpdate().eq(StrUtil.isNotEmpty(phone), UmsUser::getPhone, phone)
-                .set(StrUtil.isNotEmpty(password), UmsUser::getPassword, passwordEncoder.encode(password))
+    public boolean updatePassword(UserPasswordUpdateDTO passwordUpdateDTO) {
+        String email = passwordUpdateDTO.getEmail();
+        String verifyCode = passwordUpdateDTO.getVerifyCode();
+        String newPassword = passwordUpdateDTO.getNewPassword();
+        if (!verifyCode(email, verifyCode)) {
+            throw new ApiException("验证码错误！");
+        }
+        return lambdaUpdate().eq(RegexUtil.isEmail(email), UmsUser::getEmail, email)
+                .set(StrUtil.isNotBlank(newPassword), UmsUser::getPassword, passwordEncoder.encode(newPassword))
                 .set(UmsUser::getUpdatedTime, LocalDateTime.now())
                 .update();
     }

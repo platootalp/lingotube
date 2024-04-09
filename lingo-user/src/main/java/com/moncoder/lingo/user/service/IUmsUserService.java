@@ -3,6 +3,7 @@ package com.moncoder.lingo.user.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.api.domain.UserCommentInfoVO;
 import com.moncoder.lingo.entity.UmsUser;
+import com.moncoder.lingo.user.domain.dto.UserPasswordUpdateDTO;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
@@ -19,10 +20,10 @@ import org.springframework.web.multipart.MultipartFile;
 public interface IUmsUserService extends IService<UmsUser> {
 
     /**
-     * @param phone
+     * @param email
      * @return
      */
-    String sendCode(String phone);
+    boolean sendVerifyCode(String email);
 
     /**
      * 注册
@@ -49,7 +50,7 @@ public interface IUmsUserService extends IService<UmsUser> {
     boolean updateInfo(UserInfoUpdateDTO userUpdateInfoDTO);
 
     /**
-     * 修改密码前对验证码进行验证
+     * 对验证码进行验证
      *
      * @param phone
      * @param code
@@ -60,14 +61,14 @@ public interface IUmsUserService extends IService<UmsUser> {
     /**
      * 修改用户密码
      *
-     * @param phone
-     * @param password
+     * @param passwordUpdateDTO
      * @return
      */
-    boolean updatePassword(String phone, String password);
+    boolean updatePassword(UserPasswordUpdateDTO passwordUpdateDTO);
 
     /**
      * 修改用户头像
+     *
      * @param id
      * @param file
      * @return
@@ -76,12 +77,14 @@ public interface IUmsUserService extends IService<UmsUser> {
 
     /**
      * 获取用户头像
+     *
      * @param id
      */
     String getAvatar(Integer id);
 
     /**
      * 获取用户评论时候需要的信息（昵称和头像）
+     *
      * @param id
      * @return
      */

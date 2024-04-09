@@ -2,6 +2,7 @@ package com.moncoder.lingo.user.controller;
 
 import com.moncoder.lingo.api.domain.UserCommentInfoVO;
 import com.moncoder.lingo.common.api.Result;
+import com.moncoder.lingo.user.domain.dto.UserPasswordUpdateDTO;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -33,16 +36,19 @@ public class UmsUserController {
     private IUmsUserService userService;
 
     @ApiOperation("发送验证码")
-    @GetMapping("/{phone}")
-    public Result<String> sendCode(@PathVariable @NotEmpty String phone) {
-        String code = userService.sendCode(phone);
-        return Result.success(code);
+    @PostMapping("/verifyCode")
+    public Result<String> sendVerifyCode(@RequestParam @NotBlank String email) {
+        boolean flag = userService.sendVerifyCode(email);
+        if (!flag) {
+            return Result.failed("发送失败！");
+        }
+        return Result.success("发送成功！", null);
     }
 
     @ApiOperation("用户注册")
     @PostMapping("/register")
     public Result<String> register(@RequestBody @Valid UserRegisterDTO userRegisterDTO) {
-        Boolean flag = userService.register(userRegisterDTO);
+        boolean flag = userService.register(userRegisterDTO);
         if (!flag) {
             return Result.failed("注册失败！");
         }
@@ -67,7 +73,7 @@ public class UmsUserController {
     }
 
     @ApiOperation("验证验证码")
-    @GetMapping("/password/verify")
+    @GetMapping("/verify")
     public Result<String> verifyCode(@RequestParam("phone") @NotEmpty String phone,
                                      @RequestParam("code") @NotEmpty String code) {
         Boolean flag = userService.verifyCode(phone, code);
@@ -80,9 +86,8 @@ public class UmsUserController {
 
     @ApiOperation("修改用户密码")
     @PutMapping("/password/reset")
-    public Result<String> updatePassword(@RequestParam("phone") @NotEmpty String phone,
-                                         @RequestParam("password") @NotEmpty String password) {
-        Boolean flag = userService.updatePassword(phone, password);
+    public Result<String> updatePassword(@RequestBody UserPasswordUpdateDTO passwordUpdateDTO) {
+        Boolean flag = userService.updatePassword(passwordUpdateDTO);
         if (!flag) {
             return Result.failed("更新失败！");
         }

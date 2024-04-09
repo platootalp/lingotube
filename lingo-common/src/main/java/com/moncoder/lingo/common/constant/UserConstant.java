@@ -9,7 +9,7 @@ package com.moncoder.lingo.common.constant;
 public interface UserConstant {
 
     /**
-     * 注册登录验证验证码前缀
+     * 注册登录验证码前缀
      */
     String UMS_USER_CODE = "lingo:ums:user:code:";
 
@@ -17,6 +17,16 @@ public interface UserConstant {
      * 注册登录验证码过期时间（秒）
      */
     Long UMS_USER_CODE_EXPIRE = 300L;
+
+    /**
+     * 验证码邮件标题
+     */
+    String UMS_USER_CODE_MAIL_SUBJECT = "来自LingoTube的邮件";
+
+    /**
+     * 验证码邮件内容
+     */
+    String UMS_USER_CODE_MAIL_CONTENT = "您正在进行验证，您的验证码是：";
 
     /**
      * 用户名后缀

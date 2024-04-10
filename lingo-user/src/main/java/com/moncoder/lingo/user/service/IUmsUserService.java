@@ -3,6 +3,7 @@ package com.moncoder.lingo.user.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.api.domain.UserCommentInfoVO;
 import com.moncoder.lingo.entity.UmsUser;
+import com.moncoder.lingo.user.domain.dto.UserLoginDTO;
 import com.moncoder.lingo.user.domain.dto.UserPasswordUpdateDTO;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
@@ -32,6 +33,13 @@ public interface IUmsUserService extends IService<UmsUser> {
      * @return
      */
     boolean register(UserRegisterDTO userRegisterDTO);
+
+    /**
+     * 登陆
+     * @param userLoginDTO
+     * @return
+     */
+    String login(UserLoginDTO userLoginDTO);
 
     /**
      * 获取用户信息
@@ -89,4 +97,5 @@ public interface IUmsUserService extends IService<UmsUser> {
      * @return
      */
     UserCommentInfoVO getCommentInfo(Integer id);
+
 }

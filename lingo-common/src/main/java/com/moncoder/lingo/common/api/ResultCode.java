@@ -10,6 +10,7 @@ public enum ResultCode implements IStatusCode{
 
     SUCCESS(200,"操作成功"),
     FAILED(500, "操作失败"),
+    BADREQUEST(400,"请求错误"),
     UNAUTHORIZED(401, "未登录或token已经过期"),
     FORBIDDEN(403, "无权限"),
     NOT_FOUND(404, "资源不存在");

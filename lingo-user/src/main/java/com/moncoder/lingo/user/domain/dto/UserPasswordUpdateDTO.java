@@ -19,7 +19,6 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 @ApiModel("用户密码修改参数")
 public class UserPasswordUpdateDTO {
-
     @Email
     @NotBlank
     @ApiModelProperty(value = "邮箱", required = true)

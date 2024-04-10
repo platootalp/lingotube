@@ -1,12 +1,12 @@
 package com.moncoder.lingo.common.advice;
 
 import com.moncoder.lingo.common.api.Result;
-import com.moncoder.lingo.common.exception.ApiException;
-import com.moncoder.lingo.common.exception.FileUploadException;
+import com.moncoder.lingo.common.exception.*;
 import com.moncoder.lingo.common.exception.IllegalArgumentException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 
 /**
  * @author Moncoder
@@ -40,6 +40,22 @@ public class GlobalExceptionAdvice {
         log.error("文件上传异常->{}", message);
         e.printStackTrace();
         return Result.failed(message);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public Result<String> handleUnauthorizedException(Exception e) {
+        String message = e.getMessage();
+        log.error("未认证->{}", message);
+        e.printStackTrace();
+        return Result.unauthorized(message);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public Result<String> handleForbiddenException(Exception e) {
+        String message = e.getMessage();
+        log.error("未授权->{}", message);
+        e.printStackTrace();
+        return Result.forbidden(message);
     }
 
     @ExceptionHandler(Exception.class)

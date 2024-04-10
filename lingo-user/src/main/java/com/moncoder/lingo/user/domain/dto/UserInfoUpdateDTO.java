@@ -18,24 +18,17 @@ import java.time.LocalDate;
 @Setter
 @ApiModel("用户信息修改参数")
 public class UserInfoUpdateDTO {
-
     @NotNull
     @ApiModelProperty(value = "id",required = true)
     private Integer id;
-
     @ApiModelProperty("昵称")
     private String nickname;
-
     @ApiModelProperty("个人介绍")
     private String introduce;
-
     @ApiModelProperty("性别：0->未知；1->男；2->女")
     private Byte gender;
-
     @ApiModelProperty("生日")
     private LocalDate birthday;
-
     @ApiModelProperty("地址")
     private String address;
-
 }

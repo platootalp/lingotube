@@ -4,23 +4,27 @@ import cn.hutool.core.util.PhoneUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.mail.MailUtil;
+import cn.hutool.jwt.JWT;
+import cn.hutool.jwt.JWTUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.api.domain.UserCommentInfoVO;
 import com.moncoder.lingo.common.constant.SystemConstant;
 import com.moncoder.lingo.common.constant.UserConstant;
-import com.moncoder.lingo.common.exception.ApiException;
-import com.moncoder.lingo.common.exception.FileUploadException;
+import com.moncoder.lingo.common.exception.*;
 import com.moncoder.lingo.common.exception.IllegalArgumentException;
 import com.moncoder.lingo.common.service.IRedisService;
 import com.moncoder.lingo.common.util.FileUtil;
 import com.moncoder.lingo.common.util.RegexUtil;
 import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.mapper.UmsUserMapper;
+import com.moncoder.lingo.user.config.JwtProperties;
+import com.moncoder.lingo.user.domain.dto.UserLoginDTO;
 import com.moncoder.lingo.user.domain.dto.UserPasswordUpdateDTO;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 import com.moncoder.lingo.user.service.IUmsUserService;
+import com.moncoder.lingo.user.util.JwtTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,12 +52,14 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
 
     @Autowired
     private IRedisService redisService;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private Environment environment;
+    @Autowired
+    private JwtProperties jwtProperties;
+    @Autowired
+    private JwtTool jwtTool;
 
     /**
      * 发送验证码到邮箱
@@ -93,20 +99,20 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
             throw new NullPointerException("参数不能为null！");
         }
         // 2.手机号格式验证
-        String phone = userRegisterDTO.getPhone();
-        if (!PhoneUtil.isPhone(phone)) {
-            throw new IllegalArgumentException("手机格式不正确！");
+        String email = userRegisterDTO.getEmail();
+        if (!RegexUtil.isEmail(email)) {
+            throw new IllegalArgumentException("邮箱格式不正确！");
         }
         // 3.判断电话是否已经被注册
-        List<UmsUser> list = lambdaQuery().eq(UmsUser::getPhone, phone).list();
+        List<UmsUser> list = lambdaQuery().eq(UmsUser::getEmail, email).list();
         if (list.size() > 0) {
-            throw new ApiException("手机号已经被注册了！");
+            throw new ApiException("邮箱已经注册过了！");
         }
         // 4.判断验证码是否正确
-        String code = userRegisterDTO.getCode();
-        log.debug(code);
-        String authCode = (String) redisService.get(UserConstant.UMS_USER_CODE + phone);
-        if (!code.equals(authCode)) {
+        String verifyCode = userRegisterDTO.getVerifyCode();
+        log.debug(verifyCode);
+        String authCode = (String) redisService.get(UserConstant.UMS_USER_CODE + email);
+        if (!verifyCode.equals(authCode)) {
             throw new ApiException("验证码错误！");
         }
         // 5.进行注册
@@ -116,10 +122,37 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
         umsUser.setGender((byte) 0);
         // 6.获取系统注册用户数量
         String key = SystemConstant.LINGO_USER_COUNT;
-        Integer userCount = (Integer) redisService.get(key);// Long会报错
+        // Long会报错
+        Integer userCount = (Integer) redisService.get(key);
         redisService.incr(key, 1L);
-        umsUser.setUsername(userCount + UserConstant.UMS_USER_USERNAME_SUFFIX);
+        umsUser.setNickname(userCount + UserConstant.UMS_USER_USERNAME_SUFFIX);
         return save(umsUser);
+    }
+
+    @Override
+    public String login(UserLoginDTO userLoginDTO) {
+        // 1.参数校验
+        String email = userLoginDTO.getEmail();
+        String password = userLoginDTO.getPassword();
+        if (!RegexUtil.isEmail(email)) {
+            throw new IllegalArgumentException("邮箱格式不正确！");
+        }
+        // 2.验证用户账号状况
+        UmsUser user = lambdaQuery().eq(UmsUser::getEmail, email).one();
+        // 2.1 账号不存在
+        if (user == null) {
+            throw new ApiException("请先注册！");
+        }
+        // 2.2 账号被禁用
+        if (user.getStatus().equals((byte) 0)) {
+            throw new ForbiddenException("账号被禁用！");
+        }
+        // 2.3 密码错误
+        if (!passwordEncoder.matches(password, user.getPassword())) {
+            throw new BadRequestException("密码不正确！");
+        }
+        // 3.返回token
+        return jwtTool.createToken(Long.valueOf(user.getId()), jwtProperties.getTokenTTL());
     }
 
     @Override

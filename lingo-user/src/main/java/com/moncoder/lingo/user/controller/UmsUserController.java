@@ -2,6 +2,7 @@ package com.moncoder.lingo.user.controller;
 
 import com.moncoder.lingo.api.domain.UserCommentInfoVO;
 import com.moncoder.lingo.common.api.Result;
+import com.moncoder.lingo.user.domain.dto.UserLoginDTO;
 import com.moncoder.lingo.user.domain.dto.UserPasswordUpdateDTO;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
@@ -54,6 +55,12 @@ public class UmsUserController {
         }
         return Result.success("注册成功！", null);
     }
+    @ApiOperation("用户登陆")
+    @PostMapping("/login")
+    public Result<String> login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
+        String token = userService.login(userLoginDTO);
+        return Result.success("登陆成功！", token);
+    }
 
     @ApiOperation("获取当前用户信息")
     @GetMapping("/info/{id}")
@@ -71,18 +78,6 @@ public class UmsUserController {
         }
         return Result.success("更新成功！", null);
     }
-
-    @ApiOperation("验证验证码")
-    @GetMapping("/verify")
-    public Result<String> verifyCode(@RequestParam("phone") @NotEmpty String phone,
-                                     @RequestParam("code") @NotEmpty String code) {
-        Boolean flag = userService.verifyCode(phone, code);
-        if (!flag) {
-            return Result.failed("验证失败！");
-        }
-        return Result.success("验证成功！", null);
-    }
-
 
     @ApiOperation("修改用户密码")
     @PutMapping("/password/reset")
@@ -115,7 +110,7 @@ public class UmsUserController {
         return Result.success(avatar);
     }
 
-    /**Fegin 客户端**/
+    /** Fegin 客户端 **/
     @ApiOperation("获取用户评论时所需信息")
     @GetMapping("/comment/info/{id}")
     public UserCommentInfoVO getUserCommentInfo(@PathVariable @NotNull Integer id) {

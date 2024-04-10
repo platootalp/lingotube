@@ -20,19 +20,16 @@ import java.time.LocalDate;
 @Getter
 @ApiModel("用户注册参数")
 public class UserRegisterDTO {
-
-
-    @NotEmpty
-    @ApiModelProperty(value = "手机号", required = true)
-    private String phone;
-    @NotEmpty
-    @ApiModelProperty(value = "验证码", required = true)
-    private String code;
     @NotBlank
-    @ApiModelProperty(value = "昵称", required = true)
-    private String nickname;
-    @NotEmpty
-    @ApiModelProperty(value = "密码（加密存储）", required = true)
+    @ApiModelProperty(value = "邮箱", required = true)
+    private String email;
+    @NotBlank
+    @ApiModelProperty(value = "验证码", required = true)
+    private String verifyCode;
+    @NotBlank
+    @ApiModelProperty(value = "用户名", required = true)
+    private String username;
+    @NotBlank
+    @ApiModelProperty(value = "密码", required = true)
     private String password;
-
 }

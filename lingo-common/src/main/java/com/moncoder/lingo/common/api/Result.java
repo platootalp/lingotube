@@ -21,7 +21,7 @@ public class Result<T> {
     /**
      * 状态码
      */
-    private Long code;
+    private Integer code;
 
     /**
      * 数据

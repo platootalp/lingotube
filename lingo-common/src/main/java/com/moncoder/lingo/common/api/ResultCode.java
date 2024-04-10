@@ -8,27 +8,27 @@ package com.moncoder.lingo.common.api;
  */
 public enum ResultCode implements IStatusCode{
 
-    SUCCESS(200L,"操作成功"),
-    FAILED(500L, "操作失败"),
-    UNAUTHORIZED(401L, "未登录或token已经过期"),
-    FORBIDDEN(403L, "无权限"),
-    NOT_FOUND(404L, "资源不存在");
+    SUCCESS(200,"操作成功"),
+    FAILED(500, "操作失败"),
+    UNAUTHORIZED(401, "未登录或token已经过期"),
+    FORBIDDEN(403, "无权限"),
+    NOT_FOUND(404, "资源不存在");
     /**
      * 状态码
      */
-    private Long code;
+    private Integer code;
     /**
      * 提示消息
      */
     private String message;
 
-   ResultCode(Long code, String message){
+   ResultCode(Integer code, String message){
         this.code = code;
         this.message = message;
     }
 
     @Override
-    public Long getCode() {
+    public Integer getCode() {
         return this.code;
     }
 

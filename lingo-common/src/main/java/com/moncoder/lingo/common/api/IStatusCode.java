@@ -8,7 +8,7 @@ package com.moncoder.lingo.common.api;
  */
 public interface IStatusCode {
 
-    Long getCode();
+    Integer getCode();
 
     String getMessage();
 }

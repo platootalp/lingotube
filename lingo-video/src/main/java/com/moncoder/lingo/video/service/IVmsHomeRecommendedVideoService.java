@@ -2,6 +2,9 @@ package com.moncoder.lingo.video.service;
 
 import com.moncoder.lingo.entity.VmsHomeRecommendedVideo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.moncoder.lingo.video.domain.vo.VideoViewVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IVmsHomeRecommendedVideoService extends IService<VmsHomeRecommendedVideo> {
 
+    /**
+     * 获取首页推荐视频
+     * @return
+     */
+    List<VideoViewVO> getRecommendedVideos();
 }

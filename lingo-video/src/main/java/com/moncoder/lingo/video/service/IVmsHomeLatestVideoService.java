@@ -2,6 +2,9 @@ package com.moncoder.lingo.video.service;
 
 import com.moncoder.lingo.entity.VmsHomeLatestVideo;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.moncoder.lingo.video.domain.vo.VideoViewVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IVmsHomeLatestVideoService extends IService<VmsHomeLatestVideo> {
 
+    List<VideoViewVO> getLatestVideos();
 }

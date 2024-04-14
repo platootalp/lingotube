@@ -45,5 +45,11 @@ public interface IVmsVideoService extends IService<VmsVideo> {
      */
     boolean likeVideo(Integer userId, Integer videoId);
 
+    /**
+     * 保存最新视频到最新视频表中
+     * @param videoNum 视频数量
+     * @return
+     */
+    boolean saveLatestVideos(Integer videoNum);
 
 }

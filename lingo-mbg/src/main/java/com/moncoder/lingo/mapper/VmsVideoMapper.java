@@ -2,6 +2,8 @@ package com.moncoder.lingo.mapper;
 
 import com.moncoder.lingo.entity.VmsVideo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import io.swagger.models.auth.In;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * <p>
@@ -13,4 +15,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface VmsVideoMapper extends BaseMapper<VmsVideo> {
 
+    /**
+     * 获取最新视频
+     * @param videoNums
+     * @return
+     */
+    VmsVideo selectLatestVideos(@Param("num") Integer videoNums);
 }

@@ -3,6 +3,7 @@ package com.moncoder.lingo.video.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.common.exception.ApiException;
+import com.moncoder.lingo.common.service.IRedisService;
 import com.moncoder.lingo.entity.*;
 import com.moncoder.lingo.mapper.VmsVideoMapper;
 import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
@@ -33,6 +34,10 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
     private IVmsUserFavoriteFolderVideoService favoriteFolderVideoService;
     @Autowired
     private IVmsVideoLikeService videoLikeService;
+    @Autowired
+    private VmsVideoMapper videoMapper;
+    @Autowired
+    private IRedisService redisService;
 
     @Override
     public boolean uploadVideo(VideoCreateDTO vmsVideoDTO) {
@@ -140,6 +145,15 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
         }
         // 3.修改点赞数
         return updateById(video);
+    }
+
+    @Override
+    public boolean saveLatestVideos(Integer videoNum) {
+        VmsVideo vmsVideo = videoMapper.selectLatestVideos(videoNum);
+        VmsHomeLatestVideo vmsHomeLatestVideo = new VmsHomeLatestVideo();
+        BeanUtils.copyProperties(vmsVideo,vmsHomeLatestVideo);
+
+        return false;
     }
 
 }

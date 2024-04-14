@@ -1,6 +1,6 @@
 server:
   port: 8081
-  address: 127.0.0.1
+#  address: 127.0.0.1 会导致网关路由不到
 spring:
   mvc:
     pathmatch:

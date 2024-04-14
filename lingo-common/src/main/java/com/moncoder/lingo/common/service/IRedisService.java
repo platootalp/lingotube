@@ -74,4 +74,5 @@ public interface IRedisService {
      */
     Long incr(String key, long delta);
 
+    /**********hash操作**********/
 }

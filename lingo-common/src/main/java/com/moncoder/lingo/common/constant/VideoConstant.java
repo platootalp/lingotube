@@ -21,4 +21,24 @@ public interface VideoConstant {
      * 视频缩略图存放路径
      */
     String VMS_VIDEO_THUMBNAIL_PATH = "uploads/vms/video/thumbnail/";
+
+    /**
+     * 首页最新视频键名
+     */
+    String VMS_HOME_LATEST_VIDEO_KEY = "lingo:vms:home:video:latest:";
+
+    /**
+     * 首页推荐视频键名
+     */
+    String VMS_HOME_RECOMMENDED_VIDEO_KEY = "lingo:vms:home:video:latest:";
+
+    /**
+     * 首页热门视频键名
+     */
+    String VMS_HOME_TRENDING_VIDEO_KEY = "lingo:vms:home:video:latest:";
+
+    /**
+     * 首页视频键过期时间
+     */
+    Long VMS_HOME_LATEST_VIDEO_EXPIRE = 7 * 24 * 60 * 60L;
 }

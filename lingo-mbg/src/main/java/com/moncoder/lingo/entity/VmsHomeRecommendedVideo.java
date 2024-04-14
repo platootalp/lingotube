@@ -15,7 +15,7 @@ import lombok.Setter;
  * </p>
  *
  * @author moncoder
- * @since 2024-04-14 13:18:20
+ * @since 2024-04-14 14:50:39
  */
 @Getter
 @Setter
@@ -25,7 +25,7 @@ public class VmsHomeRecommendedVideo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("ID，唯一标识")
+    @ApiModelProperty("唯一标识")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
@@ -33,7 +33,19 @@ public class VmsHomeRecommendedVideo implements Serializable {
     private Integer videoId;
 
     @ApiModelProperty("视频标题")
-    private String videoTitle;
+    private String title;
+
+    @ApiModelProperty("缩略图URL")
+    private String thumbnailUrl;
+
+    @ApiModelProperty("视频时长（秒）")
+    private Integer duration;
+
+    @ApiModelProperty("观看次数")
+    private Integer views;
+
+    @ApiModelProperty("视频等级")
+    private String levelName;
 
     @ApiModelProperty("是否上架首页（0：下架，1：上架）")
     private Byte status;

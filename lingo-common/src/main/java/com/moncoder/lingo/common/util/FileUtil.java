@@ -41,7 +41,7 @@ public class FileUtil {
         Path filePath = Paths.get(dirName).resolve(fileName).toAbsolutePath();
         file.transferTo(filePath.toFile());
 
-        // 4.返回文件uri（相对路径）
+        // 4.返回文件url（相对路径）
         return dirName + fileName;
     }
 

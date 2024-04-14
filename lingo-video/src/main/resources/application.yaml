@@ -1,6 +1,5 @@
 server:
   port: 8082
-  address: 127.0.0.1
 spring:
   mvc:
     pathmatch:
@@ -28,8 +27,8 @@ spring:
         max-wait: 1000ms
   servlet:
     multipart:
-      max-file-size: 2MB # 单文件上传大小
-      max-request-size: 12MB # 总文件大小
+      max-file-size: 200MB # 单文件上传大小
+      max-request-size: 1GB # 总文件大小
 knife4j:
   enable: true
   openapi:

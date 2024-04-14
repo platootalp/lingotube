@@ -39,7 +39,7 @@ public class Generator {
                 .strategyConfig(builder -> {
                     builder
                             // 设置需要生成的表名(所有表)
-                            .addInclude("vms_home_latest_video","vms_home_recommended_video","vms_home_trending_video")
+                            .addInclude("vms_level","vms_video_level_relation")
                             .addTablePrefix("sys_") // 设置过滤表前缀
                             // 1.entity配置
                             .entityBuilder()

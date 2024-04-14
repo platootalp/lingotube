@@ -4,6 +4,7 @@ import com.moncoder.lingo.common.service.IRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -54,7 +55,17 @@ public class RedisServiceImpl implements IRedisService {
 
     @Override
     public Long incr(String key, long delta) {
-        return redisTemplate.opsForValue().increment(key,delta);
+        return redisTemplate.opsForValue().increment(key, delta);
+    }
+
+    @Override
+    public void put(String key, String hashKey, Object hashValue) {
+        redisTemplate.opsForHash().put(key, hashKey, hashValue);
+    }
+
+    @Override
+    public void putAll(String key, Map<String, Object> map) {
+        redisTemplate.opsForHash().putAll(key, map);
     }
 
 

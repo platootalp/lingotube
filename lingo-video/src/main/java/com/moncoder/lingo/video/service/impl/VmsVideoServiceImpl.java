@@ -1,20 +1,31 @@
 package com.moncoder.lingo.video.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.alibaba.nacos.shaded.org.checkerframework.checker.units.qual.A;
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moncoder.lingo.common.constant.VideoConstant;
 import com.moncoder.lingo.common.exception.ApiException;
 import com.moncoder.lingo.common.service.IRedisService;
+import com.moncoder.lingo.common.util.FileUtil;
 import com.moncoder.lingo.entity.*;
 import com.moncoder.lingo.mapper.VmsVideoMapper;
 import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
+import com.moncoder.lingo.video.domain.vo.UploadVideoVo;
 import com.moncoder.lingo.video.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -38,14 +49,39 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
     private VmsVideoMapper videoMapper;
     @Autowired
     private IRedisService redisService;
+    @Autowired
+    private IVmsHomeLatestVideoService latestVideoService;
+    @Autowired
+    private IVmsHomeTrendingVideoService trendingVideoService;
+    @Autowired
+    private IVmsHomeRecommendedVideoService recommendedVideoService;
 
     @Override
-    public boolean uploadVideo(VideoCreateDTO vmsVideoDTO) {
-        // 1.视频保存到服务器，返回视频路径
-        // 2.生成视频缩略图，返回缩略图路径
-        // 3.保存视频实体到数据库中
+    public UploadVideoVo uploadVideo(MultipartFile file) {
+        // 1.上传视频到指定文件夹中
+        String videoUrl = "";
+        try {
+            videoUrl = FileUtil.saveFile(file, VideoConstant.VMS_VIDEO_PATH);
+        } catch (IOException e) {
+            throw new ApiException("视频上传失败！");
+        }
+        // 2.生成缩率图
+        String thumbnailUrl = generateThumbnail(file);
+        // 3.返回存储url
+        UploadVideoVo uploadVideoVo = new UploadVideoVo();
+        uploadVideoVo.setVideoUrl(videoUrl);
+        uploadVideoVo.setThumbnailUrl(thumbnailUrl);
+        return uploadVideoVo;
+    }
+
+    private String generateThumbnail(MultipartFile file) {
+        return "thumbnailUrl";
+    }
+
+    @Override
+    public boolean saveVideo(VideoCreateDTO videoCreateDTO) {
         VmsVideo video = new VmsVideo();
-        BeanUtils.copyProperties(vmsVideoDTO, video);
+        BeanUtils.copyProperties(videoCreateDTO, video);
         return save(video);
     }
 
@@ -147,13 +183,93 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
         return updateById(video);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean saveLatestVideos(Integer videoNum) {
-        VmsVideo vmsVideo = videoMapper.selectLatestVideos(videoNum);
-        VmsHomeLatestVideo vmsHomeLatestVideo = new VmsHomeLatestVideo();
-        BeanUtils.copyProperties(vmsVideo,vmsHomeLatestVideo);
+        // 1.参数验证
+        if (videoNum == null || videoNum <= 0) {
+            throw new IllegalArgumentException("参数有误！");
+        }
+        // 2.获取最新视频并保存
+        return saveVideosHelper(videoNum, videoMapper::selectLatestVideos,
+                video -> {
+                    VmsHomeLatestVideo homeLatestVideo = new VmsHomeLatestVideo();
+                    homeLatestVideo.setVideoId(video.getId());
+                    BeanUtils.copyProperties(video, homeLatestVideo);
+                    return homeLatestVideo;
+                }, latestVideoService, VideoConstant.VMS_HOME_LATEST_VIDEO_KEY);
+    }
 
-        return false;
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean saveTrendingVideos(Integer videoNum) {
+        // 1.参数验证
+        if (videoNum == null || videoNum <= 0) {
+            throw new IllegalArgumentException("参数有误！");
+        }
+        // 2.获取热门视频并保存
+        return saveVideosHelper(videoNum, videoMapper::selectTrendingVideos,
+                video -> {
+                    VmsHomeTrendingVideo homeTrendingVideo = new VmsHomeTrendingVideo();
+                    homeTrendingVideo.setVideoId(video.getId());
+                    BeanUtils.copyProperties(video, homeTrendingVideo);
+                    return homeTrendingVideo;
+                }, trendingVideoService, VideoConstant.VMS_HOME_TRENDING_VIDEO_KEY);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean saveRecommendedVideos(Integer videoNum) {
+        // 1.参数验证
+        if (videoNum == null || videoNum <= 0) {
+            throw new IllegalArgumentException("参数有误！");
+        }
+        // 2.获取推荐视频并保存
+        return saveVideosHelper(videoNum, videoMapper::selectRecommendedVideos,
+                video -> {
+                    VmsHomeRecommendedVideo homeRecommendedVideo = new VmsHomeRecommendedVideo();
+                    homeRecommendedVideo.setVideoId(video.getId());
+                    BeanUtils.copyProperties(video, homeRecommendedVideo);
+                    return homeRecommendedVideo;
+                }, recommendedVideoService, VideoConstant.VMS_HOME_RECOMMENDED_VIDEO_KEY);
+    }
+
+    /**
+     * 保存视频的通用辅助方法
+     *
+     * @param videoNum        视频数目
+     * @param selectFunction  用于从数据库中选择视频的函数
+     * @param mappingFunction 用于将数据库视频映射为目标实体的函数
+     * @param service         数据库服务对象
+     * @param redisKey        缓存键值
+     * @param <S>             业务接口类型模板
+     * @param <T>             实体类型模板
+     * @return 是否成功保存视频
+     */
+    public <S extends IService<T>, T> boolean saveVideosHelper(Integer videoNum,
+                                                               Function<Integer, List<VmsVideo>> selectFunction,
+                                                               Function<VmsVideo, T> mappingFunction,
+                                                               S service, String redisKey) {
+        // 1.参数验证
+        if (videoNum == null || videoNum <= 0 || mappingFunction == null || service == null || redisKey == null) {
+            throw new IllegalArgumentException("参数有误！");
+        }
+        // 2.获取需要的视频
+        List<VmsVideo> videos = selectFunction.apply(videoNum);
+        // 3.检查视频是否为空
+        if (videos == null || videos.isEmpty()) {
+            throw new ApiException("未找到符合条件的视频！");
+        }
+        // 4.转换视频对象
+        List<T> targetVideos = videos.stream().map(mappingFunction).collect(Collectors.toList());
+        // 5.保存到数据库
+        service.saveBatch(targetVideos);
+        // 6.保存到缓存
+        Map<String, Object> map = new HashMap<>(videoNum);
+        videos.forEach(video -> map.put(video.getId().toString(), video));
+        redisService.putAll(redisKey, map);
+        redisService.expire(redisKey, VideoConstant.VMS_HOME_LATEST_VIDEO_EXPIRE);
+        return true;
     }
 
 }

@@ -41,4 +41,6 @@ public class VideoCreateDTO {
     private Integer uploaderId;
     @ApiModelProperty("电视剧的第几集")
     private Integer episode;
+    @ApiModelProperty("视频等级")
+    private String levelName;
 }

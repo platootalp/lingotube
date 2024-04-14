@@ -1,5 +1,7 @@
 package com.moncoder.lingo.common.service;
 
+import java.util.Map;
+
 /**
  * @author Moncoder
  * @version 1.0
@@ -69,10 +71,27 @@ public interface IRedisService {
 
     /**
      * 键值增加
+     *
      * @param key
      * @param delta 增加的数值
      */
     Long incr(String key, long delta);
 
-    /**********hash操作**********/
+    /********** hash操作 **********/
+    /**
+     * 保存hash数据
+     *
+     * @param key
+     * @param hashKey
+     * @param hashValue
+     */
+    void put(String key, String hashKey, Object hashValue);
+
+    /**
+     * 批量保存hash数据
+     *
+     * @param key
+     * @param map
+     */
+    void putAll(String key, Map<String, Object> map);
 }

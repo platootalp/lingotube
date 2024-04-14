@@ -23,7 +23,7 @@ public class UploadServiceImpl implements IUploadService {
             throw new IllegalArgumentException("文件不能为null！");
         }
         // 将文件保存到服务器并返回url
-        String uri = null;
+        String uri;
         try {
             uri = FileUtil.saveFile(file, dirName);
         } catch (IOException e) {

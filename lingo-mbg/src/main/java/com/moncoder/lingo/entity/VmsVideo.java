@@ -80,4 +80,7 @@ public class VmsVideo implements Serializable {
 
     @ApiModelProperty("电视剧的第几集")
     private Integer episode;
+
+    @ApiModelProperty("视频等级")
+    private String levelName;
 }

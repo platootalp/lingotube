@@ -11,7 +11,7 @@ import com.moncoder.lingo.video.domain.dto.VideoCommentDTO;
 import com.moncoder.lingo.video.domain.vo.VideoCommentNodeVO;
 import com.moncoder.lingo.video.service.IVmsVideoCommentService;
 import com.moncoder.lingo.video.service.IVmsVideoService;
-import com.moncoder.lingo.video.service.service.IVmsVideoCommentLikeService;
+import com.moncoder.lingo.video.service.IVmsVideoCommentLikeService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

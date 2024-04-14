@@ -3,15 +3,18 @@ package com.moncoder.lingo.video.controller;
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.entity.VmsVideo;
 import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
+import com.moncoder.lingo.video.domain.vo.UploadVideoVo;
 import com.moncoder.lingo.video.service.IVmsVideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -29,11 +32,17 @@ public class VmsVideoController {
     @Autowired
     private IVmsVideoService videoService;
 
-    // TODO 请求体中加入视频文件
     @ApiOperation("上传视频")
     @PostMapping("/upload")
-    public Result<String> uploadVideo(@RequestBody @Valid VideoCreateDTO vmsVideoDTO) {
-        boolean flag = videoService.uploadVideo(vmsVideoDTO);
+    public Result<UploadVideoVo> uploadVideo(@RequestParam("file") MultipartFile file) {
+        UploadVideoVo uploadVideoVo = videoService.uploadVideo(file);
+        return Result.success(uploadVideoVo);
+    }
+
+    @ApiOperation("保存视频")
+    @PostMapping("/save")
+    public Result<String> saveVideo(@RequestBody @Valid VideoCreateDTO videoCreateDTO) {
+        boolean flag = videoService.saveVideo(videoCreateDTO);
         if (!flag) {
             return Result.failed();
         }

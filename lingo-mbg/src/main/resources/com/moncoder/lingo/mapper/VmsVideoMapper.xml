@@ -4,8 +4,25 @@
 
     <select id="selectLatestVideos" resultType="com.moncoder.lingo.entity.VmsVideo">
         SELECT *
-        FROM vms_video v
-        ORDER BY v.create_time DESC
+        FROM vms_video
+        WHERE enable = 1
+        ORDER BY create_time DESC
+            LIMIT #{num}
+    </select>
+
+    <select id="selectTrendingVideos" resultType="com.moncoder.lingo.entity.VmsVideo">
+        SELECT *
+        FROM vms_video
+        WHERE enable = 1
+        ORDER BY views DESC, comments DESC, likes DESC, favorites DESC;
+            LIMIT #{num}
+    </select>
+
+    <select id="selectRecommendedVideos" resultType="com.moncoder.lingo.entity.VmsVideo">
+        SELECT *
+        FROM vms_video
+        WHERE enable = 1
+        ORDER BY likes DESC, favorites DESC;
             LIMIT #{num}
     </select>
 </mapper>

@@ -85,7 +85,7 @@ public interface IRedisService {
      * @param hashKey
      * @param hashValue
      */
-    void put(String key, String hashKey, Object hashValue);
+    void hSet(String key, String hashKey, Object hashValue);
 
     /**
      * 批量保存hash数据
@@ -93,5 +93,15 @@ public interface IRedisService {
      * @param key
      * @param map
      */
-    void putAll(String key, Map<String, Object> map);
+    void hSetAll(String key, Map<String, Object> map);
+
+    /**
+     * 获取Hash结构中的属性
+     */
+    Object hGet(String key, String hashKey);
+
+    /**
+     * 直接获取整个Hash结构
+     */
+    Map<Object, Object> hGetAll(String key);
 }

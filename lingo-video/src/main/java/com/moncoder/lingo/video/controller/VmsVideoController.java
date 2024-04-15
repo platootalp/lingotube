@@ -34,8 +34,9 @@ public class VmsVideoController {
 
     @ApiOperation("上传视频")
     @PostMapping("/upload")
-    public Result<UploadVideoVo> uploadVideo(@RequestParam("file") MultipartFile file) {
-        UploadVideoVo uploadVideoVo = videoService.uploadVideo(file);
+    public Result<UploadVideoVo> uploadVideo(@RequestParam("videoFile") MultipartFile videoFile,
+                                             @RequestParam("ThumbnailFile") MultipartFile ThumbnailFile) {
+        UploadVideoVo uploadVideoVo = videoService.uploadVideo(videoFile,ThumbnailFile);
         return Result.success(uploadVideoVo);
     }
 

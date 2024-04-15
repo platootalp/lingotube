@@ -1,7 +1,6 @@
 package com.moncoder.lingo.video.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
-import com.alibaba.nacos.shaded.org.checkerframework.checker.units.qual.A;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.common.constant.VideoConstant;
@@ -21,7 +20,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -63,10 +61,17 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
         try {
             videoUrl = FileUtil.saveFile(file, VideoConstant.VMS_VIDEO_PATH);
         } catch (IOException e) {
+            e.printStackTrace();
             throw new ApiException("视频上传失败！");
         }
         // 2.生成缩率图
-        String thumbnailUrl = generateThumbnail(file);
+        String thumbnailUrl = "";
+//        try {
+//            thumbnailUrl = FileUtil.generateThumbnail(videoUrl, VideoConstant.VMS_THUMBNAIL_PATH);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            throw new ApiException("缩略图生成失败！");
+//        }
         // 3.返回存储url
         UploadVideoVo uploadVideoVo = new UploadVideoVo();
         uploadVideoVo.setVideoUrl(videoUrl);
@@ -74,9 +79,31 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
         return uploadVideoVo;
     }
 
-    private String generateThumbnail(MultipartFile file) {
-        return "thumbnailUrl";
+    @Override
+    public UploadVideoVo uploadVideo(MultipartFile videoFile, MultipartFile thumbnailFile) {
+        // 1.上传视频到指定文件夹中
+        String videoUrl = "";
+        try {
+            videoUrl = FileUtil.saveFile(videoFile, VideoConstant.VMS_VIDEO_PATH);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new ApiException("视频上传失败！");
+        }
+        // 2.生成缩率图
+        String thumbnailUrl = "";
+        try {
+            thumbnailUrl = FileUtil.saveFile(thumbnailFile, VideoConstant.VMS_THUMBNAIL_PATH);
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new ApiException("缩略图生成失败！");
+        }
+        // 3.返回存储url
+        UploadVideoVo uploadVideoVo = new UploadVideoVo();
+        uploadVideoVo.setVideoUrl(videoUrl);
+        uploadVideoVo.setThumbnailUrl(thumbnailUrl);
+        return uploadVideoVo;
     }
+
 
     @Override
     public boolean saveVideo(VideoCreateDTO videoCreateDTO) {
@@ -194,8 +221,9 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
         return saveVideosHelper(videoNum, videoMapper::selectLatestVideos,
                 video -> {
                     VmsHomeLatestVideo homeLatestVideo = new VmsHomeLatestVideo();
-                    homeLatestVideo.setVideoId(video.getId());
                     BeanUtils.copyProperties(video, homeLatestVideo);
+                    homeLatestVideo.setVideoId(video.getId());
+                    homeLatestVideo.setId(null);
                     return homeLatestVideo;
                 }, latestVideoService, VideoConstant.VMS_HOME_LATEST_VIDEO_KEY);
     }
@@ -211,8 +239,9 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
         return saveVideosHelper(videoNum, videoMapper::selectTrendingVideos,
                 video -> {
                     VmsHomeTrendingVideo homeTrendingVideo = new VmsHomeTrendingVideo();
-                    homeTrendingVideo.setVideoId(video.getId());
                     BeanUtils.copyProperties(video, homeTrendingVideo);
+                    homeTrendingVideo.setVideoId(video.getId());
+                    homeTrendingVideo.setId(null);
                     return homeTrendingVideo;
                 }, trendingVideoService, VideoConstant.VMS_HOME_TRENDING_VIDEO_KEY);
     }
@@ -228,8 +257,9 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
         return saveVideosHelper(videoNum, videoMapper::selectRecommendedVideos,
                 video -> {
                     VmsHomeRecommendedVideo homeRecommendedVideo = new VmsHomeRecommendedVideo();
-                    homeRecommendedVideo.setVideoId(video.getId());
                     BeanUtils.copyProperties(video, homeRecommendedVideo);
+                    homeRecommendedVideo.setVideoId(video.getId());
+                    homeRecommendedVideo.setId(null);
                     return homeRecommendedVideo;
                 }, recommendedVideoService, VideoConstant.VMS_HOME_RECOMMENDED_VIDEO_KEY);
     }
@@ -267,8 +297,8 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
         // 6.保存到缓存
         Map<String, Object> map = new HashMap<>(videoNum);
         videos.forEach(video -> map.put(video.getId().toString(), video));
-        redisService.putAll(redisKey, map);
-        redisService.expire(redisKey, VideoConstant.VMS_HOME_LATEST_VIDEO_EXPIRE);
+        redisService.hSetAll(redisKey, map);
+        redisService.expire(redisKey, VideoConstant.VMS_HOME_VIDEO_EXPIRE);
         return true;
     }
 

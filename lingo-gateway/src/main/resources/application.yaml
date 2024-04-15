@@ -12,6 +12,7 @@ spring:
           uri: lb://lingo-video
           predicates:
             - Path=/video/**
+            - Path=/home/**
         - id: lingo-admin
           uri: lb://lingo-admin
           predicates:
@@ -25,7 +26,19 @@ lingo:
       tokenTTL: 30m # 登录有效期
     auth:
       excludePaths: # 无需登录校验的路径
+        - /swagger-ui/
+        - /swagger-resources/**
+        - /**/v2/api-docs
+        - /**/*.html
+        - /**/*.js
+        - /**/*.css
+        - /**/*.png
+        - /**/*.jpg
+        - /**/*.mp4
         - /user/**
-
+        - /home/**
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
 
 

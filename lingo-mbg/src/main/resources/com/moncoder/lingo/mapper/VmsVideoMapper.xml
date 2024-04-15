@@ -14,7 +14,7 @@
         SELECT *
         FROM vms_video
         WHERE enable = 1
-        ORDER BY views DESC, comments DESC, likes DESC, favorites DESC;
+        ORDER BY views DESC, comments DESC, likes DESC, favorites DESC
             LIMIT #{num}
     </select>
 
@@ -22,7 +22,7 @@
         SELECT *
         FROM vms_video
         WHERE enable = 1
-        ORDER BY likes DESC, favorites DESC;
+        ORDER BY likes DESC, favorites DESC
             LIMIT #{num}
     </select>
 </mapper>

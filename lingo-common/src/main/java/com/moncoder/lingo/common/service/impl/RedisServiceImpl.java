@@ -59,13 +59,23 @@ public class RedisServiceImpl implements IRedisService {
     }
 
     @Override
-    public void put(String key, String hashKey, Object hashValue) {
+    public void hSet(String key, String hashKey, Object hashValue) {
         redisTemplate.opsForHash().put(key, hashKey, hashValue);
     }
 
     @Override
-    public void putAll(String key, Map<String, Object> map) {
+    public void hSetAll(String key, Map<String, Object> map) {
         redisTemplate.opsForHash().putAll(key, map);
+    }
+
+    @Override
+    public Object hGet(String key, String hashKey) {
+        return redisTemplate.opsForHash().get(key,hashKey);
+    }
+
+    @Override
+    public Map<Object, Object> hGetAll(String key) {
+        return redisTemplate.opsForHash().entries(key);
     }
 
 

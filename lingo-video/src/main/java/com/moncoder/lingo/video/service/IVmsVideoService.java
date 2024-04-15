@@ -21,13 +21,24 @@ public interface IVmsVideoService extends IService<VmsVideo> {
 
     /**
      * 上传视频
+     *
      * @param file
      * @return
      */
     UploadVideoVo uploadVideo(MultipartFile file);
 
     /**
+     * 上传视频和缩略图
+     *
+     * @param videoFile
+     * @param thumbnailFile
+     * @return
+     */
+    UploadVideoVo uploadVideo(MultipartFile videoFile, MultipartFile thumbnailFile);
+
+    /**
      * 保存视频
+     *
      * @param videoCreateDTO
      * @return
      */

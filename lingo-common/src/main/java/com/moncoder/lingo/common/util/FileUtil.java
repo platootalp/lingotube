@@ -1,6 +1,5 @@
 package com.moncoder.lingo.common.util;
 
-import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;

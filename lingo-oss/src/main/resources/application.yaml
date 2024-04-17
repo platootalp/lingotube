@@ -1,0 +1,34 @@
+server:
+  port: 8090
+spring:
+  servlet:
+    multipart:
+      max-file-size: 200MB # 单文件上传大小
+      max-request-size: 1GB # 总文件大小
+redis:
+  enabled: false
+aliyun:
+  oss:
+    endpoint: oss-cn-beijing.aliyuncs.com # oss对外服务的访问域名
+    accessKeyId: LTAI5tAvzVFDxkMLK3QRxsdM # 访问身份验证中用到用户标识
+    accessKeySecret: EbCxVANVFQNkZtOEjX1eqdKYDJNYR3 # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
+    bucketName: lingotube # oss的存储空间
+knife4j:
+  enable: true
+  openapi:
+    title: lingotube接口文档
+    description: "lingo-oss文档"
+    email: zhanghuyi@itcast.cn
+    concat: Moncoder
+    url: https://www.itcast.cn
+    version: v1.0.0
+    group:
+      default:
+        group-name: default
+        api-rule: package
+        api-rule-resources:
+          - com.moncoder.lingo.oss.controller
+logging:
+  level:
+    root: info
+    com.moncoder.lingo: debug

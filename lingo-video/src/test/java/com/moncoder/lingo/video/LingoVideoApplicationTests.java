@@ -16,9 +16,9 @@ class LingoVideoApplicationTests {
 
     @Test
     void contextLoads() {
-        videoService.saveTrendingVideos(4);
-        videoService.saveLatestVideos(4);
-        videoService.saveRecommendedVideos(4);
+        videoService.saveTrendingVideos(6);
+        videoService.saveLatestVideos(6);
+        videoService.saveRecommendedVideos(6);
     }
 
 }

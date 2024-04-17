@@ -20,14 +20,6 @@ import java.util.List;
 public interface IVmsVideoService extends IService<VmsVideo> {
 
     /**
-     * 上传视频
-     *
-     * @param file
-     * @return
-     */
-    UploadVideoVo uploadVideo(MultipartFile file);
-
-    /**
      * 上传视频和缩略图
      *
      * @param videoFile

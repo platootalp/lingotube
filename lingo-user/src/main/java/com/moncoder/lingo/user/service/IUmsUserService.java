@@ -1,12 +1,12 @@
 package com.moncoder.lingo.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.moncoder.lingo.api.domain.UserCommentInfoVO;
 import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.user.domain.dto.UserLoginDTO;
 import com.moncoder.lingo.user.domain.dto.UserPasswordUpdateDTO;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
+import com.moncoder.lingo.user.domain.vo.UserCommentInfoVO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,21 +36,22 @@ public interface IUmsUserService extends IService<UmsUser> {
 
     /**
      * 登陆
+     *
      * @param userLoginDTO
      * @return
      */
     String login(UserLoginDTO userLoginDTO);
 
     /**
-     * 获取用户信息
+     * 获取当前用户信息
      *
-     * @param id
+     * @param
      * @return
      */
-    UserInfoVO getInfo(Integer id);
+    UserInfoVO getInfo();
 
     /**
-     * 修改用户信息
+     * 修改当前用户信息
      *
      * @param userUpdateInfoDTO
      * @return
@@ -67,7 +68,7 @@ public interface IUmsUserService extends IService<UmsUser> {
     boolean verifyCode(String phone, String code);
 
     /**
-     * 修改用户密码
+     * 修改当前用户密码
      *
      * @param passwordUpdateDTO
      * @return
@@ -75,27 +76,23 @@ public interface IUmsUserService extends IService<UmsUser> {
     boolean updatePassword(UserPasswordUpdateDTO passwordUpdateDTO);
 
     /**
-     * 修改用户头像
+     * 修改当前用户头像
      *
-     * @param id
      * @param file
      * @return
      */
-    boolean updateAvatar(Integer id, MultipartFile file);
+    boolean updateAvatar(MultipartFile file);
 
     /**
-     * 获取用户头像
-     *
-     * @param id
+     * 获取当前用户头像
      */
-    String getAvatar(Integer id);
+    String getAvatar();
 
     /**
      * 获取用户评论时候需要的信息（昵称和头像）
      *
-     * @param id
      * @return
      */
-    UserCommentInfoVO getCommentInfo(Integer id);
+    UserCommentInfoVO getCommentInfo();
 
 }

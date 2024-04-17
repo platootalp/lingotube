@@ -59,8 +59,6 @@ public class VmsHomeRecommendedVideoServiceImpl extends ServiceImpl<VmsHomeRecom
         return videos.stream().map(video -> {
             VideoViewVO videoViewVO = new VideoViewVO();
             BeanUtils.copyProperties(video, videoViewVO);
-            String thumbnailUrl = videoViewVO.getThumbnailUrl();
-            videoViewVO.setThumbnailUrl("http://localhost:8082/" + thumbnailUrl);
             return videoViewVO;
         }).collect(Collectors.toList());
     }

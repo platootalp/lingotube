@@ -4,7 +4,6 @@ import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.entity.VmsUserFavoriteFolder;
 import com.moncoder.lingo.mapper.VmsUserFavoriteFolderMapper;
-import com.moncoder.lingo.api.client.UploadClient;
 import com.moncoder.lingo.video.domain.dto.FavoriteFolderCreateDTO;
 import com.moncoder.lingo.video.domain.dto.FavoriteFolderUpdateDTO;
 import com.moncoder.lingo.video.domain.vo.FavoriteFolderVO;

@@ -12,6 +12,7 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import com.moncoder.lingo.common.service.IRedisService;
 import com.moncoder.lingo.common.service.impl.RedisServiceImpl;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -32,6 +33,7 @@ import java.time.format.DateTimeFormatter;
  * @date 2024/3/20 16:38
  */
 @Configuration
+@ConditionalOnProperty(name = "redis.enabled", havingValue = "true", matchIfMissing = true)
 public class RedisConfig {
 
     @Bean

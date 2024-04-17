@@ -1,39 +1,35 @@
 package com.moncoder.lingo.user.service.impl;
 
-import cn.hutool.core.util.PhoneUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.mail.MailUtil;
-import cn.hutool.jwt.JWT;
-import cn.hutool.jwt.JWTUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.moncoder.lingo.api.domain.UserCommentInfoVO;
 import com.moncoder.lingo.common.constant.SystemConstant;
 import com.moncoder.lingo.common.constant.UserConstant;
 import com.moncoder.lingo.common.exception.*;
 import com.moncoder.lingo.common.exception.IllegalArgumentException;
 import com.moncoder.lingo.common.service.IRedisService;
-import com.moncoder.lingo.common.util.FileUtil;
 import com.moncoder.lingo.common.util.RegexUtil;
+import com.moncoder.lingo.common.util.UserContext;
 import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.mapper.UmsUserMapper;
+import com.moncoder.lingo.user.client.OssClient;
 import com.moncoder.lingo.user.config.JwtProperties;
 import com.moncoder.lingo.user.domain.dto.UserLoginDTO;
 import com.moncoder.lingo.user.domain.dto.UserPasswordUpdateDTO;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
+import com.moncoder.lingo.user.domain.vo.UserCommentInfoVO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 import com.moncoder.lingo.user.service.IUmsUserService;
 import com.moncoder.lingo.user.util.JwtTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -55,11 +51,11 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
-    private Environment environment;
-    @Autowired
     private JwtProperties jwtProperties;
     @Autowired
     private JwtTool jwtTool;
+    @Autowired
+    private OssClient ossClient;
 
     /**
      * 发送验证码到邮箱
@@ -156,10 +152,13 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     }
 
     @Override
-    public UserInfoVO getInfo(Integer id) {
+    public UserInfoVO getInfo() {
+        // 1.验证是否登陆
+        Integer id = UserContext.getUser();
         if (id == null) {
-            return null;
+            throw new UnauthorizedException();
         }
+        // 2.获取当前登陆用户id
         UmsUser user = lambdaQuery().eq(UmsUser::getId, id).one();
         UserInfoVO userInfoVO = new UserInfoVO();
         BeanUtils.copyProperties(user, userInfoVO);
@@ -168,11 +167,16 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
 
     @Override
     public boolean updateInfo(UserInfoUpdateDTO userUpdateInfoDTO) {
+        // 1.参数验证
         if (userUpdateInfoDTO == null) {
             throw new NullPointerException("参数不能为null！");
         }
-        // 进行修改
-        Integer id = userUpdateInfoDTO.getId();
+        // 2.验证是否登陆
+        Integer id = UserContext.getUser();
+        if (id == null) {
+            throw new UnauthorizedException();
+        }
+        // 3.进行修改
         String nickname = userUpdateInfoDTO.getNickname();
         String introduce = userUpdateInfoDTO.getIntroduce();
         Byte gender = userUpdateInfoDTO.getGender();
@@ -208,15 +212,16 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     }
 
     @Override
-    public boolean updateAvatar(Integer id, MultipartFile file) {
-        // 上传头像并获取uri
-        String avatar = null;
-        try {
-            avatar = FileUtil.saveFile(file, UserConstant.UMS_USER_AVATAR_PATH);
-        } catch (IOException e) {
-            throw new FileUploadException("文件上传失败！");
+    public boolean updateAvatar(MultipartFile file) {
+        // 1.验证是否登陆
+        Integer id = UserContext.getUser();
+        if (id == null) {
+            throw new UnauthorizedException();
         }
-        // 设置用户头像uri
+        // 2.上传头像并获取uri
+        String avatar = null;
+        avatar = ossClient.uploadUserAvatar(file).getData();
+        // 3.设置用户头像uri
         UmsUser umsUser = new UmsUser();
         umsUser.setId(id);
         umsUser.setAvatar(avatar);
@@ -224,18 +229,22 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     }
 
     @Override
-    public String getAvatar(Integer id) {
-        String avatarPath = getById(id).getAvatar();
-        // 获取服务器 IP 地址
-        String ipAddress = environment.getProperty("server.address");
-        // 获取服务器端口号
-        int port = environment.getProperty("server.port", Integer.class);
-        // 构建URL
-        return "http://" + ipAddress + ":" + port + "/" + avatarPath;
+    public String getAvatar() {
+        // 1.验证是否登陆
+        Integer id = UserContext.getUser();
+        if (id == null) {
+            throw new UnauthorizedException();
+        }
+        return getById(id).getAvatar();
     }
 
     @Override
-    public UserCommentInfoVO getCommentInfo(Integer id) {
+    public UserCommentInfoVO getCommentInfo() {
+        // 1.验证是否登陆
+        Integer id = UserContext.getUser();
+        if (id == null) {
+            throw new UnauthorizedException();
+        }
         UmsUser user = lambdaQuery().eq(UmsUser::getId, id)
                 .one();
         UserCommentInfoVO userCommentInfoVO = new UserCommentInfoVO();

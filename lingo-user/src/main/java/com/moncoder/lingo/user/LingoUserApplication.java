@@ -1,12 +1,12 @@
 package com.moncoder.lingo.user;
 
-import com.moncoder.lingo.api.config.DefaultFeignConfig;
+import com.moncoder.lingo.user.config.DefaultFeignConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 
 
-@EnableFeignClients(basePackages = "com.moncoder.lingo.api.client", defaultConfiguration = DefaultFeignConfig.class)
+@EnableFeignClients(defaultConfiguration = DefaultFeignConfig.class)
 @SpringBootApplication(scanBasePackages = {"com.moncoder.lingo"})
 public class LingoUserApplication {
 

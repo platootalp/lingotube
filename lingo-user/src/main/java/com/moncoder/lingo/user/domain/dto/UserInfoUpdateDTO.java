@@ -18,9 +18,6 @@ import java.time.LocalDate;
 @Setter
 @ApiModel("用户信息修改参数")
 public class UserInfoUpdateDTO {
-    @NotNull
-    @ApiModelProperty(value = "id",required = true)
-    private Integer id;
     @ApiModelProperty("昵称")
     private String nickname;
     @ApiModelProperty("个人介绍")

@@ -18,8 +18,8 @@
     <modules>
         <module>lingo-mbg</module>
         <module>lingo-common</module>
-        <module>lingo-api</module>
         <module>lingo-gateway</module>
+        <module>lingo-oss</module>
         <module>lingo-user</module>
         <module>lingo-video</module>
         <module>lingo-admin</module>
@@ -71,6 +71,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <optional>true</optional>
+        </dependency>
+        <!--日志-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-logging</artifactId>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -184,22 +189,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-thymeleaf</artifactId>
                 <version>2.7.15</version>
-            </dependency>
-            <!-- Sa-Token 权限认证（Reactor响应式集成）, 在线文档：https://sa-token.cc -->
-            <dependency>
-                <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-reactor-spring-boot-starter</artifactId>
-                <version>1.37.0</version>
-            </dependency>
-            <!-- Sa-Token 整合 Redis （使用 jackson 序列化方式） -->
-            <dependency>
-                <groupId>cn.dev33</groupId>
-                <artifactId>sa-token-redis-jackson</artifactId>
-                <version>1.37.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-pool2</artifactId>
             </dependency>
             <!-- json序列化依赖，解决localDateTime序列化问题-->
             <dependency>

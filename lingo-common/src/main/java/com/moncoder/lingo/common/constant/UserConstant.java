@@ -36,6 +36,6 @@ public interface UserConstant {
     /**
      * 头像存放路径
      */
-    String UMS_USER_AVATAR_PATH = "uploads/ums/avatars/";
+    String UMS_USER_AVATAR_PREFIX = "user_avatar_";
 
 }

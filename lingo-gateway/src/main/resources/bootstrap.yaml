@@ -1,8 +1,6 @@
 spring:
   application:
     name: lingo-gateway # 服务名称
-  profiles:
-    active: local
   cloud:
     nacos:
       server-addr: 192.168.10.100 # nacos地址

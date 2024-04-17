@@ -1,6 +1,5 @@
 server:
   port: 8081
-#  address: 127.0.0.1 会导致网关路由不到
 spring:
   mvc:
     pathmatch:
@@ -28,9 +27,8 @@ spring:
         max-wait: 1000ms
   servlet:
     multipart:
-      max-file-size: 2MB # 单文件上传大小
-      max-request-size: 12MB # 总文件大小
-
+      max-file-size: 20MB # 单文件上传大小
+      max-request-size: 100MB # 总文件大小
 knife4j:
   enable: true
   openapi:
@@ -46,6 +44,10 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.moncoder.lingo.user.controller
+logging:
+  level:
+    root: info
+    com.moncoder: debug
 lingo:
   tube:
     jwt:
@@ -53,7 +55,3 @@ lingo:
       alias: jwt # 秘钥别名
       password: lingotube # 秘钥文件密码
       tokenTTL: 30m # 登录有效期
-logging:
-  level:
-    root: info
-    com.moncoder: debug

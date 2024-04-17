@@ -9,6 +9,7 @@ import com.moncoder.lingo.common.service.IRedisService;
 import com.moncoder.lingo.common.util.FileUtil;
 import com.moncoder.lingo.entity.*;
 import com.moncoder.lingo.mapper.VmsVideoMapper;
+import com.moncoder.lingo.video.client.OssClient;
 import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
 import com.moncoder.lingo.video.domain.vo.UploadVideoVo;
 import com.moncoder.lingo.video.service.*;
@@ -53,50 +54,15 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
     private IVmsHomeTrendingVideoService trendingVideoService;
     @Autowired
     private IVmsHomeRecommendedVideoService recommendedVideoService;
-
-    @Override
-    public UploadVideoVo uploadVideo(MultipartFile file) {
-        // 1.上传视频到指定文件夹中
-        String videoUrl = "";
-        try {
-            videoUrl = FileUtil.saveFile(file, VideoConstant.VMS_VIDEO_PATH);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ApiException("视频上传失败！");
-        }
-        // 2.生成缩率图
-        String thumbnailUrl = "";
-//        try {
-//            thumbnailUrl = FileUtil.generateThumbnail(videoUrl, VideoConstant.VMS_THUMBNAIL_PATH);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            throw new ApiException("缩略图生成失败！");
-//        }
-        // 3.返回存储url
-        UploadVideoVo uploadVideoVo = new UploadVideoVo();
-        uploadVideoVo.setVideoUrl(videoUrl);
-        uploadVideoVo.setThumbnailUrl(thumbnailUrl);
-        return uploadVideoVo;
-    }
+    @Autowired
+    private OssClient ossClient;
 
     @Override
     public UploadVideoVo uploadVideo(MultipartFile videoFile, MultipartFile thumbnailFile) {
-        // 1.上传视频到指定文件夹中
-        String videoUrl = "";
-        try {
-            videoUrl = FileUtil.saveFile(videoFile, VideoConstant.VMS_VIDEO_PATH);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ApiException("视频上传失败！");
-        }
-        // 2.生成缩率图
-        String thumbnailUrl = "";
-        try {
-            thumbnailUrl = FileUtil.saveFile(thumbnailFile, VideoConstant.VMS_THUMBNAIL_PATH);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw new ApiException("缩略图生成失败！");
-        }
+        // 1.上传视频到
+        String videoUrl = ossClient.uploadVideo(videoFile).getData();
+        // 2.上传视频缩略图
+        String thumbnailUrl = ossClient.uploadVideoThumbnail(thumbnailFile).getData();
         // 3.返回存储url
         UploadVideoVo uploadVideoVo = new UploadVideoVo();
         uploadVideoVo.setVideoUrl(videoUrl);

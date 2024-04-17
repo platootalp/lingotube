@@ -3,10 +3,12 @@ package com.moncoder.lingo.gateway.filter;
 
 import cn.hutool.core.collection.CollUtil;
 import com.moncoder.lingo.common.api.ResultCode;
+import com.moncoder.lingo.common.constant.AuthConstant;
 import com.moncoder.lingo.common.exception.UnauthorizedException;
 import com.moncoder.lingo.gateway.component.AuthProperties;
 import com.moncoder.lingo.gateway.util.JwtTool;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -27,6 +29,7 @@ import java.util.List;
  * @description 自定义认证全局过滤器
  * @date 2023/11/23 14:45
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor
 @EnableConfigurationProperties(AuthProperties.class)
@@ -49,9 +52,9 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
         }
         // 3.获取请求头中的token
         String token = null;
-        List<String> headers = request.getHeaders().get("authorization");
+        List<String> headers = request.getHeaders().get(AuthConstant.JWT_TOKEN_HEADER);
         if (!CollUtil.isEmpty(headers)) {
-            token = headers.get(0);
+            token = headers.get(0).substring(AuthConstant.JWT_TOKEN_PREFIX.length());
         }
         // 4.校验并解析token
         Long userId = null;
@@ -65,11 +68,11 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
         }
 
         // 5.如果有效，传递用户信息
-        String userInfo = userId.toString();
+        String finalUserId = userId.toString();
         ServerWebExchange ex = exchange.mutate()
-                .request(builder -> builder.header("user-info", userInfo))
+                .request(builder -> builder.header(AuthConstant.USER_TOKEN_HEADER, finalUserId))
                 .build();
-        System.out.println("userId = " + userId);
+        log.debug(AuthConstant.USER_TOKEN_HEADER + "=" + finalUserId);
         // 6.放行
         return chain.filter(ex);
     }

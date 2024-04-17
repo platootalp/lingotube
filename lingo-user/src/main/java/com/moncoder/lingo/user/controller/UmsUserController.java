@@ -1,11 +1,11 @@
 package com.moncoder.lingo.user.controller;
 
-import com.moncoder.lingo.api.domain.UserCommentInfoVO;
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.user.domain.dto.UserLoginDTO;
 import com.moncoder.lingo.user.domain.dto.UserPasswordUpdateDTO;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
+import com.moncoder.lingo.user.domain.vo.UserCommentInfoVO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 import com.moncoder.lingo.user.service.IUmsUserService;
 import io.swagger.annotations.Api;
@@ -15,9 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -55,6 +53,7 @@ public class UmsUserController {
         }
         return Result.success("注册成功！", null);
     }
+
     @ApiOperation("用户登陆")
     @PostMapping("/login")
     public Result<String> login(@RequestBody @Valid UserLoginDTO userLoginDTO) {
@@ -63,16 +62,16 @@ public class UmsUserController {
     }
 
     @ApiOperation("获取当前用户信息")
-    @GetMapping("/info/{id}")
-    public Result<UserInfoVO> getUserInfo(@PathVariable @NotNull Integer id) {
-        UserInfoVO userInfoVo = userService.getInfo(id);
+    @GetMapping("/info")
+    public Result<UserInfoVO> getUserInfo() {
+        UserInfoVO userInfoVo = userService.getInfo();
         return Result.success(userInfoVo);
     }
 
     @ApiOperation("修改用户信息")
     @PutMapping("/info")
     public Result<String> updateInfo(@RequestBody @Valid UserInfoUpdateDTO userUpdateInfoDTO) {
-        Boolean flag = userService.updateInfo(userUpdateInfoDTO);
+        boolean flag = userService.updateInfo(userUpdateInfoDTO);
         if (!flag) {
             return Result.failed("更新失败！");
         }
@@ -80,9 +79,9 @@ public class UmsUserController {
     }
 
     @ApiOperation("修改用户密码")
-    @PutMapping("/password/reset")
+    @PutMapping("/reset/password")
     public Result<String> updatePassword(@RequestBody UserPasswordUpdateDTO passwordUpdateDTO) {
-        Boolean flag = userService.updatePassword(passwordUpdateDTO);
+        boolean flag = userService.updatePassword(passwordUpdateDTO);
         if (!flag) {
             return Result.failed("更新失败！");
         }
@@ -91,9 +90,8 @@ public class UmsUserController {
 
     @ApiOperation("修改用户头像")
     @PutMapping("/avatar")
-    public Result<String> updateAvatar(@RequestParam("id") @NotNull Integer id,
-                                       @RequestPart("avatar") @NotNull MultipartFile file) {
-        Boolean flag = userService.updateAvatar(id, file);
+    public Result<String> updateAvatar(@RequestPart("avatar") @NotNull MultipartFile file) {
+        boolean flag = userService.updateAvatar(file);
         if (!flag) {
             return Result.failed();
         }
@@ -102,19 +100,18 @@ public class UmsUserController {
 
     @ApiOperation("获取用户头像")
     @GetMapping("/avatar")
-    public Result<String> getAvatar(@RequestParam("id") @NotNull Integer id) {
-        String avatar = userService.getAvatar(id);
+    public Result<String> getAvatar() {
+        String avatar = userService.getAvatar();
         if (avatar == null) {
             return Result.failed();
         }
         return Result.success(avatar);
     }
 
-    /** Fegin 客户端 **/
     @ApiOperation("获取用户评论时所需信息")
-    @GetMapping("/comment/info/{id}")
-    public UserCommentInfoVO getUserCommentInfo(@PathVariable @NotNull Integer id) {
-        return userService.getCommentInfo(id);
+    @GetMapping("/comment/info")
+    public Result<UserCommentInfoVO> getUserCommentInfo() {
+        return Result.success(userService.getCommentInfo());
     }
 
 }

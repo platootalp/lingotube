@@ -7,26 +7,21 @@ package com.moncoder.lingo.common.constant;
  * @date 2024/3/30 13:09
  */
 public interface VideoConstant {
+
+    /**
+     * 视频存放前缀
+     */
+    String VMS_VIDEO_PREFIX = "video_";
+
+    /**
+     * 缩略图存放前缀
+     */
+    String VMS_VIDEO_THUMBNAIL_PREFIX = "video_thumbnail_";
+
     /**
      * 收藏夹封面存放路径
      */
-    String VMS_FAVORITE_FOLDER_PATH = "uploads/vms/favorites/";
-
-    /**
-     * 视频存放路径
-     */
-    String VMS_VIDEO_PATH = "uploads/video/";
-
-    /**
-     * 缩略图路径
-     */
-    String VMS_THUMBNAIL_PATH = "uploads/thumbnail/";
-
-    /**
-     * 视频缩略图存放路径
-     */
-    String VMS_VIDEO_THUMBNAIL_PATH = "uploads/vms/video/thumbnail/";
-
+    String VMS_FAVORITE_FOLDER_PREFIX = "video_favorites_";
 
     /**
      * 首页热门视频键名

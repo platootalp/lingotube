@@ -11,15 +11,15 @@
         <module name="lingo-mbg" />
         <module name="lingo-user" />
         <module name="lingo-admin" />
+        <module name="lingo-oss" />
         <module name="lingo-search" />
-        <module name="lingo-api" />
         <module name="lingo-video" />
         <module name="lingo-common" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="lingo-api" target="17" />
       <module name="lingo-auth" target="17" />
-      <module name="lingo-upload" target="17" />
       <module name="wrapper" target="1.5" />
     </bytecodeTargetLevel>
   </component>
@@ -31,8 +31,8 @@
       <module name="lingo-common" options="-parameters" />
       <module name="lingo-gateway" options="-parameters" />
       <module name="lingo-mbg" options="-parameters" />
+      <module name="lingo-oss" options="-parameters" />
       <module name="lingo-search" options="-parameters" />
-      <module name="lingo-upload" options="-parameters" />
       <module name="lingo-user" options="-parameters" />
       <module name="lingo-video" options="-parameters" />
       <module name="lingotube" options="-parameters" />

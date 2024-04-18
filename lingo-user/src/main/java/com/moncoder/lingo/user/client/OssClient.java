@@ -4,6 +4,7 @@ import com.moncoder.lingo.common.api.Result;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,5 +24,5 @@ public interface OssClient {
      * @return
      */
     @PostMapping(value = "/oss/upload/user/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    Result<String> uploadUserAvatar(MultipartFile file);
+    Result<String> uploadUserAvatar(@RequestPart("file") MultipartFile file);
 }

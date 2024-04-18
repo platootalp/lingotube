@@ -54,4 +54,4 @@ lingo:
       location: classpath:jwt.jks # 秘钥地址
       alias: jwt # 秘钥别名
       password: lingotube # 秘钥文件密码
-      tokenTTL: 30m # 登录有效期
+      tokenTTL: 300m # 登录有效期

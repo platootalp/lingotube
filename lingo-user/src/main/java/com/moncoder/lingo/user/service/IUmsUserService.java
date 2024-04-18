@@ -6,7 +6,7 @@ import com.moncoder.lingo.user.domain.dto.UserLoginDTO;
 import com.moncoder.lingo.user.domain.dto.UserPasswordUpdateDTO;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
-import com.moncoder.lingo.user.domain.vo.UserCommentInfoVO;
+import com.moncoder.lingo.user.domain.vo.UserShowInfoVO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -93,6 +93,6 @@ public interface IUmsUserService extends IService<UmsUser> {
      *
      * @return
      */
-    UserCommentInfoVO getCommentInfo();
+    UserShowInfoVO getShowInfo();
 
 }

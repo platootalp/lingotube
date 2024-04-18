@@ -16,9 +16,8 @@ public interface UserClient {
 
     /**
      * 获取用户评论信息
-     * @param userId
      * @return
      */
     @GetMapping("/user/comment/info")
-    Result<UserCommentInfoVO> getUserCommentInfo(Integer userId);
+    Result<UserCommentInfoVO> getUserCommentInfo();
 }

@@ -4,6 +4,7 @@ import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.mail.MailUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moncoder.lingo.common.annotation.RequireLogin;
 import com.moncoder.lingo.common.constant.SystemConstant;
 import com.moncoder.lingo.common.constant.UserConstant;
 import com.moncoder.lingo.common.exception.*;
@@ -19,7 +20,7 @@ import com.moncoder.lingo.user.domain.dto.UserLoginDTO;
 import com.moncoder.lingo.user.domain.dto.UserPasswordUpdateDTO;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
-import com.moncoder.lingo.user.domain.vo.UserCommentInfoVO;
+import com.moncoder.lingo.user.domain.vo.UserShowInfoVO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 import com.moncoder.lingo.user.service.IUmsUserService;
 import com.moncoder.lingo.user.util.JwtTool;
@@ -151,38 +152,29 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
         return jwtTool.createToken(Long.valueOf(user.getId()), jwtProperties.getTokenTTL());
     }
 
+    @RequireLogin
     @Override
     public UserInfoVO getInfo() {
-        // 1.验证是否登陆
-        Integer id = UserContext.getUser();
-        if (id == null) {
-            throw new UnauthorizedException();
-        }
-        // 2.获取当前登陆用户id
-        UmsUser user = lambdaQuery().eq(UmsUser::getId, id).one();
+        UmsUser user = lambdaQuery().eq(UmsUser::getId, UserContext.getUser()).one();
         UserInfoVO userInfoVO = new UserInfoVO();
         BeanUtils.copyProperties(user, userInfoVO);
         return userInfoVO;
     }
 
+    @RequireLogin
     @Override
     public boolean updateInfo(UserInfoUpdateDTO userUpdateInfoDTO) {
         // 1.参数验证
         if (userUpdateInfoDTO == null) {
             throw new NullPointerException("参数不能为null！");
         }
-        // 2.验证是否登陆
-        Integer id = UserContext.getUser();
-        if (id == null) {
-            throw new UnauthorizedException();
-        }
-        // 3.进行修改
+        // 2.进行修改
         String nickname = userUpdateInfoDTO.getNickname();
         String introduce = userUpdateInfoDTO.getIntroduce();
         Byte gender = userUpdateInfoDTO.getGender();
         LocalDate birthday = userUpdateInfoDTO.getBirthday();
         String address = userUpdateInfoDTO.getAddress();
-        return lambdaUpdate().eq(UmsUser::getId, id)
+        return lambdaUpdate().eq(UmsUser::getId, UserContext.getUser())
                 .set(StrUtil.isNotEmpty(nickname), UmsUser::getNickname, nickname)
                 .set(StrUtil.isNotEmpty(introduce), UmsUser::getIntroduce, introduce)
                 .set(gender != null, UmsUser::getGender, gender)
@@ -211,43 +203,32 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
                 .update();
     }
 
+    @RequireLogin
     @Override
     public boolean updateAvatar(MultipartFile file) {
-        // 1.验证是否登陆
-        Integer id = UserContext.getUser();
-        if (id == null) {
-            throw new UnauthorizedException();
+        // 1.上传头像并获取uri
+        String avatar = ossClient.uploadUserAvatar(file).getData();
+        if (avatar == null) {
+            throw new FileUploadException("文件上传失败！");
         }
-        // 2.上传头像并获取uri
-        String avatar = null;
-        avatar = ossClient.uploadUserAvatar(file).getData();
-        // 3.设置用户头像uri
+        // 2.设置用户头像uri
         UmsUser umsUser = new UmsUser();
-        umsUser.setId(id);
+        umsUser.setId(UserContext.getUser());
         umsUser.setAvatar(avatar);
         return updateById(umsUser);
     }
 
+    @RequireLogin
     @Override
     public String getAvatar() {
-        // 1.验证是否登陆
-        Integer id = UserContext.getUser();
-        if (id == null) {
-            throw new UnauthorizedException();
-        }
-        return getById(id).getAvatar();
+        return getById(UserContext.getUser()).getAvatar();
     }
 
+    @RequireLogin
     @Override
-    public UserCommentInfoVO getCommentInfo() {
-        // 1.验证是否登陆
-        Integer id = UserContext.getUser();
-        if (id == null) {
-            throw new UnauthorizedException();
-        }
-        UmsUser user = lambdaQuery().eq(UmsUser::getId, id)
-                .one();
-        UserCommentInfoVO userCommentInfoVO = new UserCommentInfoVO();
+    public UserShowInfoVO getShowInfo() {
+        UmsUser user = lambdaQuery().eq(UmsUser::getId, UserContext.getUser()).one();
+        UserShowInfoVO userCommentInfoVO = new UserShowInfoVO();
         BeanUtils.copyProperties(user, userCommentInfoVO);
         return userCommentInfoVO;
     }

@@ -7,13 +7,11 @@ import com.moncoder.lingo.oss.service.IOssService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author Moncoder
@@ -31,21 +29,28 @@ public class OssController {
 
     @ApiOperation("上传视频")
     @PostMapping("/upload/video")
-    public Result<String> uploadVideo(@RequestParam @NotNull MultipartFile file) {
+    public Result<String> uploadVideo(@RequestPart("file") @NotNull MultipartFile file) {
         String videoUrl = ossService.upload(file, VideoConstant.VMS_VIDEO_PREFIX);
         return Result.success(videoUrl);
     }
 
+    @ApiOperation("批量上传视频")
+    @PostMapping("/upload/video/s")
+    public Result<List<String>> uploadBatchVideo(@RequestPart("fileList") @NotNull List<MultipartFile> fileList) {
+        List<String> videoUrls = ossService.uploadBatch(fileList, VideoConstant.VMS_VIDEO_PREFIX);
+        return Result.success(videoUrls);
+    }
+
     @ApiOperation("上传视频缩略图")
     @PostMapping("/upload/video/thumbnail")
-    public Result<String> uploadVideoThumbnail(@RequestParam @NotNull MultipartFile file) {
+    public Result<String> uploadVideoThumbnail(@RequestPart("file") @NotNull MultipartFile file) {
         String videoUrl = ossService.upload(file, VideoConstant.VMS_VIDEO_THUMBNAIL_PREFIX);
         return Result.success(videoUrl);
     }
 
     @ApiOperation("上传用户头像")
     @PostMapping("/upload/user/avatar")
-    public Result<String> uploadUserAvatar(@RequestParam @NotNull MultipartFile file) {
+    public Result<String> uploadUserAvatar(@RequestPart("file") @NotNull MultipartFile file) {
         String videoUrl = ossService.upload(file, UserConstant.UMS_USER_AVATAR_PREFIX);
         return Result.success(videoUrl);
     }

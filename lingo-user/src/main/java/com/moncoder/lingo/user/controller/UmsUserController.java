@@ -5,7 +5,7 @@ import com.moncoder.lingo.user.domain.dto.UserLoginDTO;
 import com.moncoder.lingo.user.domain.dto.UserPasswordUpdateDTO;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
-import com.moncoder.lingo.user.domain.vo.UserCommentInfoVO;
+import com.moncoder.lingo.user.domain.vo.UserShowInfoVO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
 import com.moncoder.lingo.user.service.IUmsUserService;
 import io.swagger.annotations.Api;
@@ -64,8 +64,7 @@ public class UmsUserController {
     @ApiOperation("获取当前用户信息")
     @GetMapping("/info")
     public Result<UserInfoVO> getUserInfo() {
-        UserInfoVO userInfoVo = userService.getInfo();
-        return Result.success(userInfoVo);
+        return Result.success(userService.getInfo());
     }
 
     @ApiOperation("修改用户信息")
@@ -90,7 +89,7 @@ public class UmsUserController {
 
     @ApiOperation("修改用户头像")
     @PutMapping("/avatar")
-    public Result<String> updateAvatar(@RequestPart("avatar") @NotNull MultipartFile file) {
+    public Result<String> updateAvatar(@RequestPart("file") @NotNull MultipartFile file) {
         boolean flag = userService.updateAvatar(file);
         if (!flag) {
             return Result.failed();
@@ -101,17 +100,13 @@ public class UmsUserController {
     @ApiOperation("获取用户头像")
     @GetMapping("/avatar")
     public Result<String> getAvatar() {
-        String avatar = userService.getAvatar();
-        if (avatar == null) {
-            return Result.failed();
-        }
-        return Result.success(avatar);
+        return Result.success(userService.getAvatar());
     }
 
-    @ApiOperation("获取用户评论时所需信息")
-    @GetMapping("/comment/info")
-    public Result<UserCommentInfoVO> getUserCommentInfo() {
-        return Result.success(userService.getCommentInfo());
+    @ApiOperation("获取用户展示所需信息")
+    @GetMapping("/show/info")
+    public Result<UserShowInfoVO> getUserShowInfo() {
+        return Result.success(userService.getShowInfo());
     }
 
 }

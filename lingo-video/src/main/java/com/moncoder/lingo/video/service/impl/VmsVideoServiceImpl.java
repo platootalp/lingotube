@@ -59,7 +59,7 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
 
     @Override
     public UploadVideoVo uploadVideo(MultipartFile videoFile, MultipartFile thumbnailFile) {
-        // 1.上传视频到
+        // 1.上传视频
         String videoUrl = ossClient.uploadVideo(videoFile).getData();
         // 2.上传视频缩略图
         String thumbnailUrl = ossClient.uploadVideoThumbnail(thumbnailFile).getData();

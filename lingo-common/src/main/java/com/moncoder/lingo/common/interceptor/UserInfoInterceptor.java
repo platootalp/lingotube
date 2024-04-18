@@ -22,7 +22,7 @@ public class UserInfoInterceptor implements HandlerInterceptor {
         String userId = request.getHeader(AuthConstant.USER_TOKEN_HEADER);
         // 2.判断是否为空
         if (StrUtil.isNotBlank(userId)) {
-            // 不为空，保存到redis中
+            // 不为空，保存到threadLocal
             UserContext.setUser(Integer.valueOf(userId));
         }
         // 3.放行

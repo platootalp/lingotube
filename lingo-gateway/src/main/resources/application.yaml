@@ -34,6 +34,7 @@ lingo:
         - /**/*.png
         - /**/*.jpg
         - /**/*.mp4
+        - /user/verifyCode
         - /user/register
         - /user/login
         - /user/reset/password

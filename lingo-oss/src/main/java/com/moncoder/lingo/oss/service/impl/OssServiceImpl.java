@@ -11,6 +11,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Moncoder
@@ -47,5 +49,10 @@ public class OssServiceImpl implements IOssService {
             throw new ApiException(e);
         }
         return url;
+    }
+
+    @Override
+    public List<String> uploadBatch(List<MultipartFile> fileList, String prefix) {
+        return fileList.stream().map(file -> upload(file, prefix)).collect(Collectors.toList());
     }
 }

@@ -18,26 +18,22 @@ import java.time.LocalDateTime;
 @Getter
 @ApiModel("用户信息")
 public class UserInfoVO {
-
     @ApiModelProperty("用户名")
     private String username;
-
     @ApiModelProperty("昵称")
     private String nickname;
-
-    @ApiModelProperty("头像，存储url")
-    private String avatar;
-
-    @ApiModelProperty("个人介绍")
-    private String introduce;
-
     @ApiModelProperty("性别：0->未知；1->男；2->女")
     private Byte gender;
-
+    @ApiModelProperty("头像，存储url")
+    private String avatar;
+    @ApiModelProperty("个人介绍")
+    private String introduce;
     @ApiModelProperty("生日")
     private LocalDate birthday;
-
+    @ApiModelProperty("邮箱")
+    private String email;
+    @ApiModelProperty("电话号码")
+    private String phone;
     @ApiModelProperty("地址")
     private String address;
-
 }

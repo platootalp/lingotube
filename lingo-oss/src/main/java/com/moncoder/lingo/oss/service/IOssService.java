@@ -2,6 +2,8 @@ package com.moncoder.lingo.oss.service;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 /**
  * @author lenovo
  * @version 1.0
@@ -16,4 +18,12 @@ public interface IOssService {
      * @return
      */
     String upload(MultipartFile file, String prefix);
+
+    /**
+     *
+     * @param fileList
+     * @param prefix
+     * @return
+     */
+    List<String> uploadBatch(List<MultipartFile> fileList, String prefix);
 }

@@ -1,4 +1,4 @@
-package com.moncoder.lingo.common.advice;
+package com.moncoder.lingo.common.aspect;
 
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.common.exception.*;
@@ -6,7 +6,6 @@ import com.moncoder.lingo.common.exception.IllegalArgumentException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpClientErrorException;
 
 /**
  * @author Moncoder
@@ -16,7 +15,7 @@ import org.springframework.web.client.HttpClientErrorException;
  */
 @Slf4j
 @RestControllerAdvice
-public class GlobalExceptionAdvice {
+public class GlobalExceptionAspect {
 
     @ExceptionHandler(ApiException.class)
     public Result<String> handleApiException(ApiException e) {

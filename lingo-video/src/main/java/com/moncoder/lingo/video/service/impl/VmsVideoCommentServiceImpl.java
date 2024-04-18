@@ -61,7 +61,7 @@ public class VmsVideoCommentServiceImpl extends ServiceImpl<VmsVideoCommentMappe
         // 3. 增加评论记录
         Integer userId = videoCommentDTO.getUserId();
         // 查询出用户昵称和头像
-        UserCommentInfoVO userCommentInfo = userClient.getUserCommentInfo(userId).getData();
+        UserCommentInfoVO userCommentInfo = userClient.getUserCommentInfo().getData();
         VmsVideoComment videoComment = new VmsVideoComment();
         BeanUtils.copyProperties(videoCommentDTO, videoComment);
         videoComment.setNickname(userCommentInfo.getNickname());

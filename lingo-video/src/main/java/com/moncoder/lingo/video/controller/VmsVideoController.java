@@ -4,9 +4,12 @@ import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.entity.VmsVideo;
 import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
 import com.moncoder.lingo.video.domain.vo.UploadVideoVo;
+import com.moncoder.lingo.video.domain.vo.VideoPlayVO;
 import com.moncoder.lingo.video.service.IVmsVideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -73,5 +76,10 @@ public class VmsVideoController {
         return Result.success();
     }
 
-
+    @ApiOperation("根据id获取视频")
+    @GetMapping("/{id}")
+    public Result<VideoPlayVO> getVideo(@PathVariable("id") @NotNull Integer id){
+        VideoPlayVO videoPlayVO = videoService.getVideo(id);
+        return Result.success(videoPlayVO);
+    }
 }

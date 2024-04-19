@@ -93,6 +93,6 @@ public interface IUmsUserService extends IService<UmsUser> {
      *
      * @return
      */
-    UserShowInfoVO getShowInfo();
+    UserShowInfoVO getShowInfo(Integer id);
 
 }

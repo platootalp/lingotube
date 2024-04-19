@@ -2,7 +2,6 @@ package com.moncoder.lingo.video.controller;
 
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.video.domain.vo.VideoViewVO;
-import com.moncoder.lingo.video.service.IVmsHomeLatestVideoService;
 import com.moncoder.lingo.video.service.IVmsHomeTrendingVideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

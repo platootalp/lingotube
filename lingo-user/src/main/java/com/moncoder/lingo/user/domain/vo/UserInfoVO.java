@@ -18,6 +18,8 @@ import java.time.LocalDateTime;
 @Getter
 @ApiModel("用户信息")
 public class UserInfoVO {
+    @ApiModelProperty("id")
+    private Integer id;
     @ApiModelProperty("用户名")
     private String username;
     @ApiModelProperty("昵称")

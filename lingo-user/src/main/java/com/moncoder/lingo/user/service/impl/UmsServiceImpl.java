@@ -224,13 +224,11 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
         return getById(UserContext.getUser()).getAvatar();
     }
 
-    @RequireLogin
     @Override
-    public UserShowInfoVO getShowInfo() {
-        UmsUser user = lambdaQuery().eq(UmsUser::getId, UserContext.getUser()).one();
-        UserShowInfoVO userCommentInfoVO = new UserShowInfoVO();
-        BeanUtils.copyProperties(user, userCommentInfoVO);
-        return userCommentInfoVO;
+    public UserShowInfoVO getShowInfo(Integer id) {
+        UmsUser user = lambdaQuery().eq(UmsUser::getId, id).one();
+        UserShowInfoVO userShowInfoVO = new UserShowInfoVO();
+        BeanUtils.copyProperties(user, userShowInfoVO);
+        return userShowInfoVO;
     }
-
 }

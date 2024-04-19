@@ -15,7 +15,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @ApiModel("用户评论信息")
-public class UserCommentInfoVO {
+public class UserShowInfoVO {
     @ApiModelProperty("昵称")
     private String nickname;
     @ApiModelProperty("头像，存储url")

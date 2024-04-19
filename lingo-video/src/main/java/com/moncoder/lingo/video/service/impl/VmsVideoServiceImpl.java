@@ -10,8 +10,11 @@ import com.moncoder.lingo.common.util.FileUtil;
 import com.moncoder.lingo.entity.*;
 import com.moncoder.lingo.mapper.VmsVideoMapper;
 import com.moncoder.lingo.video.client.OssClient;
+import com.moncoder.lingo.video.client.UserClient;
 import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
 import com.moncoder.lingo.video.domain.vo.UploadVideoVo;
+import com.moncoder.lingo.video.domain.vo.UserShowInfoVO;
+import com.moncoder.lingo.video.domain.vo.VideoPlayVO;
 import com.moncoder.lingo.video.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +59,8 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
     private IVmsHomeRecommendedVideoService recommendedVideoService;
     @Autowired
     private OssClient ossClient;
+    @Autowired
+    private UserClient userClient;
 
     @Override
     public UploadVideoVo uploadVideo(MultipartFile videoFile, MultipartFile thumbnailFile) {
@@ -228,6 +233,20 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
                     homeRecommendedVideo.setId(null);
                     return homeRecommendedVideo;
                 }, recommendedVideoService, VideoConstant.VMS_HOME_RECOMMENDED_VIDEO_KEY);
+    }
+
+    @Override
+    public VideoPlayVO getVideo(Integer id) {
+        if (id == null || id < 0) {
+            throw new IllegalArgumentException("参数有误！");
+        }
+        VmsVideo video = getById(id);
+        VideoPlayVO videoPlayVO = new VideoPlayVO();
+        BeanUtils.copyProperties(video, videoPlayVO);
+        UserShowInfoVO userShowInfo = userClient.getUserShowInfo(video.getUploaderId()).getData();
+        videoPlayVO.setUploaderNickname(userShowInfo.getNickname());
+        videoPlayVO.setUploaderAvatar(userShowInfo.getAvatar());
+        return videoPlayVO;
     }
 
     /**

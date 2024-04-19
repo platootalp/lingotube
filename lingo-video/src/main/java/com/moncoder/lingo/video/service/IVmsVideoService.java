@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.entity.VmsVideo;
 import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
 import com.moncoder.lingo.video.domain.vo.UploadVideoVo;
+import com.moncoder.lingo.video.domain.vo.VideoPlayVO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -81,4 +82,10 @@ public interface IVmsVideoService extends IService<VmsVideo> {
     boolean saveRecommendedVideos(Integer videoNum);
 
 
+    /**
+     * 根据id获取视频播放信息
+     * @param id
+     * @return
+     */
+    VideoPlayVO getVideo(Integer id);
 }

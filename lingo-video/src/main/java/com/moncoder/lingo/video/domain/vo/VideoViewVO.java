@@ -19,7 +19,7 @@ import lombok.Setter;
 @ApiModel("视频展示")
 public class VideoViewVO {
     @ApiModelProperty("视频id")
-    private Integer videoId;
+    private Integer id;
     @ApiModelProperty("视频标题")
     private String title;
     @ApiModelProperty("缩略图URL或路径")

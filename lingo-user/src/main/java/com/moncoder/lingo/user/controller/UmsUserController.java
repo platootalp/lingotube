@@ -103,10 +103,10 @@ public class UmsUserController {
         return Result.success(userService.getAvatar());
     }
 
-    @ApiOperation("获取用户展示所需信息")
-    @GetMapping("/show/info")
-    public Result<UserShowInfoVO> getUserShowInfo() {
-        return Result.success(userService.getShowInfo());
+    @ApiOperation("获取指定用户展示所需信息")
+    @GetMapping("/show/info/{id}")
+    public Result<UserShowInfoVO> getUserShowInfo(@PathVariable("id")@NotNull Integer id) {
+        return Result.success(userService.getShowInfo(id));
     }
 
 }

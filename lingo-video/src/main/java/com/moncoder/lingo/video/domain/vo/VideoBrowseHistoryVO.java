@@ -24,6 +24,6 @@ public class VideoBrowseHistoryVO {
     private Integer viewDuration;
     @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
-    @ApiModelProperty("视频列表")
+    @ApiModelProperty("视频")
     private VmsVideo video;
 }

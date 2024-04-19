@@ -2,7 +2,6 @@ package com.moncoder.lingo.video.service.impl;
 
 import com.moncoder.lingo.common.constant.VideoConstant;
 import com.moncoder.lingo.common.service.IRedisService;
-import com.moncoder.lingo.entity.VmsHomeLatestVideo;
 import com.moncoder.lingo.entity.VmsHomeRecommendedVideo;
 import com.moncoder.lingo.mapper.VmsHomeRecommendedVideoMapper;
 import com.moncoder.lingo.video.domain.vo.VideoViewVO;

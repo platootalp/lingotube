@@ -29,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Api(tags = "收藏视频管理")
 @RestController
-@RequestMapping("/video/fav/video")
+@RequestMapping("/fav/video")
 public class VmsUserFavoriteFolderVideoController {
 
     @Autowired

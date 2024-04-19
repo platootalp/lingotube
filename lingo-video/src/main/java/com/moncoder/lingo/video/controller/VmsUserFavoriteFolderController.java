@@ -26,7 +26,7 @@ import java.util.List;
  */
 @Api(tags = "收藏夹管理")
 @RestController
-@RequestMapping("/video/fav/folder")
+@RequestMapping("/fav/folder")
 public class VmsUserFavoriteFolderController {
 
     @Autowired

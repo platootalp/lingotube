@@ -42,4 +42,10 @@ public interface VideoConstant {
      * 首页视频键过期时间
      */
     Long VMS_HOME_VIDEO_EXPIRE = 7 * 24 * 60 * 60L;
+
+
+    /**
+     * 每条视频下方最大相关视频数量
+     */
+    Integer VMS_RELATED_VIDEO_COUNT = 3;
 }

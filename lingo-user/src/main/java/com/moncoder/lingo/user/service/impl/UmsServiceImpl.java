@@ -146,7 +146,7 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
         }
         // 2.3 密码错误
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new BadRequestException("密码不正确！");
+            throw new BadRequestException("密码错误！");
         }
         // 3.返回token
         return jwtTool.createToken(Long.valueOf(user.getId()), jwtProperties.getTokenTTL());

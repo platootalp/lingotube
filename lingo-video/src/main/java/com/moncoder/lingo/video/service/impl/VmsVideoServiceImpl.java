@@ -6,15 +6,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.common.constant.VideoConstant;
 import com.moncoder.lingo.common.exception.ApiException;
 import com.moncoder.lingo.common.service.IRedisService;
-import com.moncoder.lingo.common.util.FileUtil;
 import com.moncoder.lingo.entity.*;
 import com.moncoder.lingo.mapper.VmsVideoMapper;
 import com.moncoder.lingo.video.client.OssClient;
 import com.moncoder.lingo.video.client.UserClient;
 import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
-import com.moncoder.lingo.video.domain.vo.UploadVideoVo;
 import com.moncoder.lingo.video.domain.vo.UserShowInfoVO;
 import com.moncoder.lingo.video.domain.vo.VideoPlayVO;
+import com.moncoder.lingo.video.domain.vo.VideoViewVO;
 import com.moncoder.lingo.video.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -63,24 +61,64 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
     private UserClient userClient;
 
     @Override
-    public UploadVideoVo uploadVideo(MultipartFile videoFile, MultipartFile thumbnailFile) {
-        // 1.上传视频
-        String videoUrl = ossClient.uploadVideo(videoFile).getData();
-        // 2.上传视频缩略图
-        String thumbnailUrl = ossClient.uploadVideoThumbnail(thumbnailFile).getData();
-        // 3.返回存储url
-        UploadVideoVo uploadVideoVo = new UploadVideoVo();
-        uploadVideoVo.setVideoUrl(videoUrl);
-        uploadVideoVo.setThumbnailUrl(thumbnailUrl);
-        return uploadVideoVo;
+    public String uploadVideo(MultipartFile videoFile) {
+        return ossClient.uploadVideo(videoFile).getData();
     }
 
+    @Override
+    public String uploadVideoThumbnail(MultipartFile thumbnailFile) {
+        return ossClient.uploadVideoThumbnail(thumbnailFile).getData();
+    }
 
     @Override
     public boolean saveVideo(VideoCreateDTO videoCreateDTO) {
         VmsVideo video = new VmsVideo();
         BeanUtils.copyProperties(videoCreateDTO, video);
         return save(video);
+    }
+
+    @Override
+    public VideoPlayVO getVideo(Integer id) {
+        // 1.参数验证
+        if (id == null || id < 0) {
+            throw new IllegalArgumentException("参数有误！");
+        }
+        // 2.从缓存中获取视频
+        // 3.缓存中没有则从数据库中获取并加载到缓存中
+        VmsVideo video = getById(id);
+        VideoPlayVO videoPlayVO = new VideoPlayVO();
+        BeanUtils.copyProperties(video, videoPlayVO);
+        UserShowInfoVO userShowInfo = userClient.getUserShowInfo(video.getUploaderId()).getData();
+        videoPlayVO.setUploaderNickname(userShowInfo.getNickname());
+        videoPlayVO.setUploaderAvatar(userShowInfo.getAvatar());
+        return videoPlayVO;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean likeVideo(Integer userId, Integer videoId) {
+        // 1.查询当前视频点赞数
+        VmsVideo video = lambdaQuery().eq(VmsVideo::getId, videoId).one();
+        Integer likes = video.getLikes();
+        // 2.查看点赞记录表是否有记录
+        VmsVideoLike videoLike = videoLikeService.getByUserIdAndVideoId(userId, videoId);
+        if (videoLike == null) {
+            // 2.1 点赞
+            VmsVideoLike newVideoLike = new VmsVideoLike();
+            newVideoLike.setUserId(userId);
+            newVideoLike.setVideoId(videoId);
+            newVideoLike.setCreateTime(LocalDateTime.now());
+            videoLikeService.save(newVideoLike);
+            // 当前视频点赞数 + 1
+            video.setLikes(likes + 1);
+        } else {
+            // 2.2 取消点赞
+            videoLikeService.removeById(videoLike.getId());
+            // 当前视频点赞数 - 1
+            video.setLikes(likes - 1);
+        }
+        // 3.修改点赞数
+        return updateById(video);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -156,33 +194,6 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean likeVideo(Integer userId, Integer videoId) {
-        // 1.查询当前视频点赞数
-        VmsVideo video = lambdaQuery().eq(VmsVideo::getId, videoId).one();
-        Integer likes = video.getLikes();
-        // 2.查看点赞记录表是否有记录
-        VmsVideoLike videoLike = videoLikeService.getByUserIdAndVideoId(userId, videoId);
-        if (videoLike == null) {
-            // 2.1 点赞
-            VmsVideoLike newVideoLike = new VmsVideoLike();
-            newVideoLike.setUserId(userId);
-            newVideoLike.setVideoId(videoId);
-            newVideoLike.setCreateTime(LocalDateTime.now());
-            videoLikeService.save(newVideoLike);
-            // 当前视频点赞数 + 1
-            video.setLikes(likes + 1);
-        } else {
-            // 2.2 取消点赞
-            videoLikeService.removeById(videoLike.getId());
-            // 当前视频点赞数 - 1
-            video.setLikes(likes - 1);
-        }
-        // 3.修改点赞数
-        return updateById(video);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    @Override
     public boolean saveLatestVideos(Integer videoNum) {
         // 1.参数验证
         if (videoNum == null || videoNum <= 0) {
@@ -236,18 +247,15 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
     }
 
     @Override
-    public VideoPlayVO getVideo(Integer id) {
-        if (id == null || id < 0) {
-            throw new IllegalArgumentException("参数有误！");
-        }
-        VmsVideo video = getById(id);
-        VideoPlayVO videoPlayVO = new VideoPlayVO();
-        BeanUtils.copyProperties(video, videoPlayVO);
-        UserShowInfoVO userShowInfo = userClient.getUserShowInfo(video.getUploaderId()).getData();
-        videoPlayVO.setUploaderNickname(userShowInfo.getNickname());
-        videoPlayVO.setUploaderAvatar(userShowInfo.getAvatar());
-        return videoPlayVO;
+    public List<VideoViewVO> getRelatedVideos(Integer id, String levelName, int num) {
+        List<VmsVideo> videos = videoMapper.selectRelatedVideos(id, levelName, num);
+        return videos.stream().map(video -> {
+            VideoViewVO videoViewVO = new VideoViewVO();
+            BeanUtils.copyProperties(video, videoViewVO);
+            return videoViewVO;
+        }).collect(Collectors.toList());
     }
+
 
     /**
      * 保存视频的通用辅助方法

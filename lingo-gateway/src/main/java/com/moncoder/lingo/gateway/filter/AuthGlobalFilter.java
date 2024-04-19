@@ -14,6 +14,9 @@ import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
 import org.springframework.stereotype.Component;
@@ -43,8 +46,18 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-        // 1.获取Request
+        // 1.允许跨域
+        ServerHttpResponse response = exchange.getResponse();
+        HttpHeaders httpHeaders = response.getHeaders();
+        httpHeaders.add(HttpHeaders.ACCESS_CONTROL_ALLOW_ORIGIN, "*");
+        httpHeaders.add(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, PUT, POST, DELETE, OPTIONS");
+        httpHeaders.add(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type, Authorization");
+
         ServerHttpRequest request = exchange.getRequest();
+        if (request.getMethod() == HttpMethod.OPTIONS) {
+            response.setStatusCode(HttpStatus.OK);
+            return Mono.empty();
+        }
         // 2.判断是否不需要拦截
         if (isExclude(request.getPath().toString())) {
             // 无需拦截，直接放行
@@ -56,24 +69,23 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
         if (!CollUtil.isEmpty(headers)) {
             token = headers.get(0).substring(AuthConstant.JWT_TOKEN_PREFIX.length());
         }
+        log.debug("token: " + token);
         // 4.校验并解析token
         Long userId = null;
         try {
             userId = jwtTool.parseToken(token);
         } catch (UnauthorizedException e) {
             // 如果无效，拦截
-            ServerHttpResponse response = exchange.getResponse();
             response.setRawStatusCode(ResultCode.UNAUTHORIZED.getCode());
             log.debug("无效的token");
             return response.setComplete();
         }
-
         // 5.如果有效，传递用户信息
         String finalUserId = userId.toString();
         ServerWebExchange ex = exchange.mutate()
                 .request(builder -> builder.header(AuthConstant.USER_TOKEN_HEADER, finalUserId))
                 .build();
-        log.debug(AuthConstant.USER_TOKEN_HEADER + "=" + finalUserId);
+        log.debug(AuthConstant.USER_TOKEN_HEADER + ": " + finalUserId);
         // 6.放行
         return chain.filter(ex);
     }

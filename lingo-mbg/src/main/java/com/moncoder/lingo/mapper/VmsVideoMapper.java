@@ -4,6 +4,7 @@ import com.moncoder.lingo.entity.VmsVideo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -19,6 +20,7 @@ public interface VmsVideoMapper extends BaseMapper<VmsVideo> {
 
     /**
      * 获取最新视频
+     *
      * @param videoNums
      * @return
      */
@@ -26,6 +28,7 @@ public interface VmsVideoMapper extends BaseMapper<VmsVideo> {
 
     /**
      * 获取最热视频
+     *
      * @param videoNums
      * @return
      */
@@ -34,8 +37,21 @@ public interface VmsVideoMapper extends BaseMapper<VmsVideo> {
 
     /**
      * 获取推荐视频
+     *
      * @param videoNums
      * @return
      */
     List<VmsVideo> selectRecommendedVideos(@Param("num") Integer videoNums);
+
+    /**
+     * 获取相关视频
+     *
+     * @param id
+     * @param levelName
+     * @return
+     */
+    @Select("SELECT * FROM vms_video WHERE enable = 1 AND id != #{id} AND level_name = #{levelName} LIMIT #{num}")
+    List<VmsVideo> selectRelatedVideos(@Param("id") Integer id,
+                                       @Param("levelName") String levelName,
+                                       @Param("num") Integer num);
 }

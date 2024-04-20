@@ -74,6 +74,9 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
     public boolean saveVideo(VideoCreateDTO videoCreateDTO) {
         VmsVideo video = new VmsVideo();
         BeanUtils.copyProperties(videoCreateDTO, video);
+        UserShowInfoVO userShowInfo = userClient.getUserShowInfo(video.getUploaderId()).getData();
+        video.setUploaderNickname(userShowInfo.getNickname());
+        video.setUploaderAvatar(userShowInfo.getAvatar());
         return save(video);
     }
 
@@ -84,42 +87,67 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
             throw new IllegalArgumentException("参数有误！");
         }
         // 2.从缓存中获取视频
-        // 3.缓存中没有则从数据库中获取并加载到缓存中
-        VmsVideo video = getById(id);
-        VideoPlayVO videoPlayVO = new VideoPlayVO();
-        BeanUtils.copyProperties(video, videoPlayVO);
-        UserShowInfoVO userShowInfo = userClient.getUserShowInfo(video.getUploaderId()).getData();
-        videoPlayVO.setUploaderNickname(userShowInfo.getNickname());
-        videoPlayVO.setUploaderAvatar(userShowInfo.getAvatar());
+        VideoPlayVO videoPlayVO = (VideoPlayVO) redisService.get(VideoConstant.VMS_VIDEO_PLAYER_KEY + id);
+        // 3.缓存中没有则从数据库中获取
+        if (videoPlayVO == null) {
+            VmsVideo video = getById(id);
+            videoPlayVO = new VideoPlayVO();
+            BeanUtils.copyProperties(video, videoPlayVO);
+            // 4.加载到缓存中
+            redisService.set(VideoConstant.VMS_VIDEO_PLAYER_KEY + id,
+                    videoPlayVO, VideoConstant.VMS_VIDEO_PLAYER_EXPIRE);
+        }
         return videoPlayVO;
     }
 
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean likeVideo(Integer userId, Integer videoId) {
-        // 1.查询当前视频点赞数
-        VmsVideo video = lambdaQuery().eq(VmsVideo::getId, videoId).one();
-        Integer likes = video.getLikes();
-        // 2.查看点赞记录表是否有记录
+        // 1. 从缓存中获取视频信息，如果缓存中没有，则从数据库获取
+        VideoPlayVO videoPlayVO = (VideoPlayVO) redisService.get(VideoConstant.VMS_VIDEO_PLAYER_KEY + videoId);
+        Integer likes;
+        if (videoPlayVO == null) {
+            likes = getById(videoId).getLikes();
+        } else {
+            likes = videoPlayVO.getLikes();
+        }
+
+        // 2. 查看点赞记录表是否有记录
         VmsVideoLike videoLike = videoLikeService.getByUserIdAndVideoId(userId, videoId);
         if (videoLike == null) {
             // 2.1 点赞
-            VmsVideoLike newVideoLike = new VmsVideoLike();
-            newVideoLike.setUserId(userId);
-            newVideoLike.setVideoId(videoId);
-            newVideoLike.setCreateTime(LocalDateTime.now());
-            videoLikeService.save(newVideoLike);
-            // 当前视频点赞数 + 1
-            video.setLikes(likes + 1);
+            videoLike = new VmsVideoLike();
+            videoLike.setUserId(userId);
+            videoLike.setVideoId(videoId);
+            videoLike.setIsLiked((byte) 1);
+            videoLike.setCreateTime(LocalDateTime.now());
+            videoLikeService.save(videoLike);
+            likes++;
+        } else if (videoLike.getIsLiked() == (byte) 0) {
+            // 2.2 更新为已点赞状态
+            videoLike.setIsLiked((byte) 1);
+            videoLikeService.updateById(videoLike);
+            likes++;
         } else {
-            // 2.2 取消点赞
-            videoLikeService.removeById(videoLike.getId());
-            // 当前视频点赞数 - 1
-            video.setLikes(likes - 1);
+            // 2.3 取消点赞
+            videoLike.setIsLiked((byte) 0);
+            videoLikeService.updateById(videoLike);
+            likes--;
         }
-        // 3.修改点赞数
-        return updateById(video);
+
+        // 3. 修改点赞数并保存到数据库
+        lambdaUpdate().eq(VmsVideo::getId, videoId).set(VmsVideo::getLikes, likes).update();
+        // 4. 删除缓存
+        redisService.delete(VideoConstant.VMS_VIDEO_PLAYER_KEY + videoId);
+        return true;
     }
+
+    @Override
+    public Integer getVideoLikes(Integer id) {
+        VideoPlayVO videoPlayVO = getVideo(id);
+        return videoPlayVO.getLikes();
+    }
+
 
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -133,7 +161,7 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
         Integer favorites = video.getFavorites();
 
         // 2.查看收藏夹是都存在
-        folderIds.stream().forEach(folderId -> {
+        folderIds.forEach(folderId -> {
             boolean exists = favoriteFolderService.lambdaQuery()
                     .eq(VmsUserFavoriteFolder::getId, folderId)
                     .exists();
@@ -207,7 +235,7 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
                     homeLatestVideo.setVideoId(video.getId());
                     homeLatestVideo.setId(null);
                     return homeLatestVideo;
-                }, latestVideoService, VideoConstant.VMS_HOME_LATEST_VIDEO_KEY);
+                }, latestVideoService, VideoConstant.VMS_VIDEO_HOME_LATEST_KEY);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -225,7 +253,7 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
                     homeTrendingVideo.setVideoId(video.getId());
                     homeTrendingVideo.setId(null);
                     return homeTrendingVideo;
-                }, trendingVideoService, VideoConstant.VMS_HOME_TRENDING_VIDEO_KEY);
+                }, trendingVideoService, VideoConstant.VMS_VIDEO_HOME_TRENDING_KEY);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -243,7 +271,7 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
                     homeRecommendedVideo.setVideoId(video.getId());
                     homeRecommendedVideo.setId(null);
                     return homeRecommendedVideo;
-                }, recommendedVideoService, VideoConstant.VMS_HOME_RECOMMENDED_VIDEO_KEY);
+                }, recommendedVideoService, VideoConstant.VMS_VIDEO_HOME_RECOMMENDED_KEY);
     }
 
     @Override
@@ -291,7 +319,7 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
         Map<String, Object> map = new HashMap<>(videoNum);
         videos.forEach(video -> map.put(video.getId().toString(), video));
         redisService.hSetAll(redisKey, map);
-        redisService.expire(redisKey, VideoConstant.VMS_HOME_VIDEO_EXPIRE);
+        redisService.expire(redisKey, VideoConstant.VMS_VIDEO_HOME_EXPIRE);
         return true;
     }
 

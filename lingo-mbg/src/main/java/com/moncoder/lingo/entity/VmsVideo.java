@@ -16,7 +16,7 @@ import lombok.Setter;
  * </p>
  *
  * @author moncoder
- * @since 2024-03-28 15:51:18
+ * @since 2024-04-20 13:33:34
  */
 @Getter
 @Setter
@@ -36,10 +36,10 @@ public class VmsVideo implements Serializable {
     @ApiModelProperty("视频描述")
     private String description;
 
-    @ApiModelProperty("视频URL或路径")
+    @ApiModelProperty("视频URL")
     private String videoUrl;
 
-    @ApiModelProperty("缩略图URL或路径")
+    @ApiModelProperty("缩略图URL")
     private String thumbnailUrl;
 
     @ApiModelProperty("视频类型（0：普通视频，1：电视剧，2：电影）")
@@ -71,6 +71,12 @@ public class VmsVideo implements Serializable {
 
     @ApiModelProperty("上传者ID，外键，关联用户表")
     private Integer uploaderId;
+
+    @ApiModelProperty("上传者昵称")
+    private String uploaderNickname;
+
+    @ApiModelProperty("上传者头像，存储url")
+    private String uploaderAvatar;
 
     @ApiModelProperty("上传时间")
     private LocalDateTime createTime;

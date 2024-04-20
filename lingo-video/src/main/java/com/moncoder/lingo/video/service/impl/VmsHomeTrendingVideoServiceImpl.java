@@ -36,7 +36,7 @@ public class VmsHomeTrendingVideoServiceImpl extends ServiceImpl<VmsHomeTrending
     @Override
     public List<VideoViewVO> getTrendingVideos() {
         // 1.从缓存中获取
-        Map<Object, Object> map = redisService.hGetAll(VideoConstant.VMS_HOME_TRENDING_VIDEO_KEY);
+        Map<Object, Object> map = redisService.hGetAll(VideoConstant.VMS_VIDEO_HOME_TRENDING_KEY);
         List<VmsHomeTrendingVideo> videos = new ArrayList<>();
         for (Object key : map.keySet()) {
             Object value = map.get(key);
@@ -50,9 +50,9 @@ public class VmsHomeTrendingVideoServiceImpl extends ServiceImpl<VmsHomeTrending
             // 加载到缓存
             HashMap<String, Object> newMap = new HashMap<>(videos.size());
             videos.forEach(video -> newMap.put(video.getId().toString(), video));
-            redisService.hSetAll(VideoConstant.VMS_HOME_TRENDING_VIDEO_KEY, newMap);
-            redisService.expire(VideoConstant.VMS_HOME_TRENDING_VIDEO_KEY,
-                    VideoConstant.VMS_HOME_VIDEO_EXPIRE);
+            redisService.hSetAll(VideoConstant.VMS_VIDEO_HOME_TRENDING_KEY, newMap);
+            redisService.expire(VideoConstant.VMS_VIDEO_HOME_TRENDING_KEY,
+                    VideoConstant.VMS_VIDEO_HOME_EXPIRE);
         }
         return videos.stream().map(video -> {
             VideoViewVO videoViewVO = new VideoViewVO();

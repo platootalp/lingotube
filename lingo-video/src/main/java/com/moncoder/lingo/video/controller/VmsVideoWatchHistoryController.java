@@ -31,7 +31,7 @@ public class VmsVideoWatchHistoryController {
     private IVmsVideoWatchHistoryService videoBrowseHistoryService;
 
     @ApiOperation("保存浏览历史")
-    @PostMapping("/add")
+    @PostMapping("/save")
     public Result<String> save(@RequestBody @Valid VideoBrowseHistoryDTO videoBrowseHistoryDTO) {
         boolean flag = videoBrowseHistoryService.save(videoBrowseHistoryDTO);
         if (!flag) {

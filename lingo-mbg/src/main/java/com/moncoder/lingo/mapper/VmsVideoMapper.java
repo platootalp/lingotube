@@ -2,7 +2,6 @@ package com.moncoder.lingo.mapper;
 
 import com.moncoder.lingo.entity.VmsVideo;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
@@ -55,3 +54,4 @@ public interface VmsVideoMapper extends BaseMapper<VmsVideo> {
                                        @Param("levelName") String levelName,
                                        @Param("num") Integer num);
 }
+

@@ -57,7 +57,7 @@ public class VmsVideoController {
         return Result.success();
     }
 
-    @ApiOperation("根据id获取视频")
+    @ApiOperation("根据id获取视频播放信息")
     @GetMapping("/watch/{id}")
     public Result<VideoPlayVO> getVideo(@PathVariable("id") @NotNull Integer id) {
         VideoPlayVO videoPlayVO = videoService.getVideo(id);
@@ -73,6 +73,11 @@ public class VmsVideoController {
             return Result.failed();
         }
         return Result.success();
+    }
+    @ApiOperation("获取视频点赞数")
+    @GetMapping("/like/{id}")
+    public Result<Integer> getVideoLikes(@PathVariable @NotNull Integer id) {
+        return Result.success(videoService.getVideoLikes(id));
     }
 
     @ApiOperation("收藏、取消收藏视频")

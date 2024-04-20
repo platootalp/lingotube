@@ -39,8 +39,8 @@ public class VmsVideoCommentLike implements Serializable {
     @ApiModelProperty("点赞来源，0：web、1：app	")
     private Byte source;
 
-    @ApiModelProperty("点赞状态，1：点赞，0：取消点赞")
-    private Byte isActive;
+    @ApiModelProperty("点赞状态，0：点赞，1：取消点赞")
+    private Byte isLiked;
 
     @ApiModelProperty("点赞时间")
     private LocalDateTime createTime;

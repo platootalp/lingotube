@@ -60,6 +60,13 @@ public interface IVmsVideoService extends IService<VmsVideo> {
     boolean likeVideo(Integer userId, Integer videoId);
 
     /**
+     * 获取视频点赞数
+     * @param id
+     * @return
+     */
+    Integer getVideoLikes(Integer id);
+
+    /**
      * 收藏、取消收藏视频
      *
      * @param userId
@@ -101,4 +108,5 @@ public interface IVmsVideoService extends IService<VmsVideo> {
      * @return
      */
     List<VideoViewVO> getRelatedVideos(Integer id, String levelName,int num);
+
 }

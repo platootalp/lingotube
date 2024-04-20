@@ -16,12 +16,12 @@ import lombok.Setter;
  * </p>
  *
  * @author moncoder
- * @since 2024-04-03 19:07:44
+ * @since 2024-04-20 11:55:04
  */
 @Getter
 @Setter
 @TableName("vms_video_like")
-@ApiModel(value = "VmsVideoLike对象", description = "赞过的视频表")
+@ApiModel(value = "VmsVideoLike对象", description = "视频点赞表")
 public class VmsVideoLike implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -36,6 +36,15 @@ public class VmsVideoLike implements Serializable {
     @ApiModelProperty("视频id，外键，关联视频表")
     private Integer videoId;
 
+    @ApiModelProperty("点赞来源，0：web、1：app")
+    private Byte source;
+
+    @ApiModelProperty("点赞状态，0：点赞，1：取消点赞")
+    private Byte isLiked;
+
     @ApiModelProperty("点赞时间")
     private LocalDateTime createTime;
+
+    @ApiModelProperty("点赞状态更新时间")
+    private LocalDateTime updateTime;
 }

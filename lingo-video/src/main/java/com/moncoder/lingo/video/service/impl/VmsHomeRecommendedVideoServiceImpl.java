@@ -36,7 +36,7 @@ public class VmsHomeRecommendedVideoServiceImpl extends ServiceImpl<VmsHomeRecom
     @Override
     public List<VideoViewVO> getRecommendedVideos() {
         // 1.从缓存中获取
-        Map<Object, Object> map = redisService.hGetAll(VideoConstant.VMS_HOME_RECOMMENDED_VIDEO_KEY);
+        Map<Object, Object> map = redisService.hGetAll(VideoConstant.VMS_VIDEO_HOME_RECOMMENDED_KEY);
         List<VmsHomeRecommendedVideo> videos = new ArrayList<>();
         for (Object key : map.keySet()) {
             Object value = map.get(key);
@@ -51,9 +51,9 @@ public class VmsHomeRecommendedVideoServiceImpl extends ServiceImpl<VmsHomeRecom
             // 加载到缓存
             HashMap<String, Object> newMap = new HashMap<>(videos.size());
             videos.forEach(video -> newMap.put(video.getId().toString(), video));
-            redisService.hSetAll(VideoConstant.VMS_HOME_RECOMMENDED_VIDEO_KEY, newMap);
-            redisService.expire(VideoConstant.VMS_HOME_RECOMMENDED_VIDEO_KEY,
-                    VideoConstant.VMS_HOME_VIDEO_EXPIRE);
+            redisService.hSetAll(VideoConstant.VMS_VIDEO_HOME_RECOMMENDED_KEY, newMap);
+            redisService.expire(VideoConstant.VMS_VIDEO_HOME_RECOMMENDED_KEY,
+                    VideoConstant.VMS_VIDEO_HOME_EXPIRE);
         }
         return videos.stream().map(video -> {
             VideoViewVO videoViewVO = new VideoViewVO();

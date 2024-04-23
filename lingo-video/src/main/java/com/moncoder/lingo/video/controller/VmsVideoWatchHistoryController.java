@@ -2,8 +2,8 @@ package com.moncoder.lingo.video.controller;
 
 import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.common.api.Result;
-import com.moncoder.lingo.video.domain.dto.VideoBrowseHistoryDTO;
-import com.moncoder.lingo.video.domain.vo.VideoBrowseHistoryVO;
+import com.moncoder.lingo.video.domain.dto.VideoWatchHistoryDTO;
+import com.moncoder.lingo.video.domain.vo.VideoWatchHistoryVO;
 import com.moncoder.lingo.video.service.IVmsVideoWatchHistoryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,12 +28,31 @@ import java.util.List;
 public class VmsVideoWatchHistoryController {
 
     @Autowired
-    private IVmsVideoWatchHistoryService videoBrowseHistoryService;
+    private IVmsVideoWatchHistoryService videoWatchHistoryService;
 
-    @ApiOperation("保存浏览历史")
+    @ApiOperation("保存观看历史")
     @PostMapping("/save")
-    public Result<String> save(@RequestBody @Valid VideoBrowseHistoryDTO videoBrowseHistoryDTO) {
-        boolean flag = videoBrowseHistoryService.save(videoBrowseHistoryDTO);
+    public Result<String> save(@RequestBody @Valid VideoWatchHistoryDTO videoWatchHistoryDTO) {
+        boolean flag = videoWatchHistoryService.save(videoWatchHistoryDTO);
+        if (!flag) {
+            return Result.failed();
+        }
+        return Result.success();
+    }
+
+    @ApiOperation("获取用户全部观看历史")
+    @GetMapping("/list")
+    public Result<List<VideoWatchHistoryVO>> getList(@RequestParam @NotNull Integer userId,
+                                                     @RequestParam(required = false) String titleKeyWord) {
+        List<VideoWatchHistoryVO> watchHistoryVOS
+                = videoWatchHistoryService.getListByUserId(userId, titleKeyWord);
+        return Result.success(watchHistoryVOS);
+    }
+
+    @ApiOperation("清空观看历史")
+    @DeleteMapping("/all")
+    public Result<String> clear(@RequestParam @NotNull Integer userId) {
+        boolean flag = videoWatchHistoryService.clear(userId);
         if (!flag) {
             return Result.failed();
         }
@@ -44,21 +63,21 @@ public class VmsVideoWatchHistoryController {
     @DeleteMapping("/s")
     public Result<String> deleteBatch(@RequestParam @NotNull Integer userId,
                                       @RequestParam @NotNull List<Integer> ids) {
-        boolean flag = videoBrowseHistoryService.deleteBatch(userId, ids);
+        boolean flag = videoWatchHistoryService.deleteBatch(userId, ids);
         if (!flag) {
             return Result.failed();
         }
         return Result.success();
     }
 
-    @ApiOperation("获取用户全部浏览历史")
+    @ApiOperation("分页获取用户全部浏览历史")
     @GetMapping("/page")
-    public Result<LPage<VideoBrowseHistoryVO>> getPage(@RequestParam @NotNull Integer userId,
-                                                       @RequestParam(defaultValue = "1") Long pageNum,
-                                                       @RequestParam(defaultValue = "5") Long pageSize,
-                                                       @RequestParam(required = false) String titleKeyWord) {
-        LPage<VideoBrowseHistoryVO> browseHistoryVOS
-                = videoBrowseHistoryService.getPageByUserId(userId, pageNum, pageSize,titleKeyWord);
+    public Result<LPage<VideoWatchHistoryVO>> getPage(@RequestParam @NotNull Integer userId,
+                                                      @RequestParam(defaultValue = "1") Long pageNum,
+                                                      @RequestParam(defaultValue = "5") Long pageSize,
+                                                      @RequestParam(required = false) String titleKeyWord) {
+        LPage<VideoWatchHistoryVO> browseHistoryVOS
+                = videoWatchHistoryService.getPageByUserId(userId, pageNum, pageSize, titleKeyWord);
         return Result.success(browseHistoryVOS);
     }
 }

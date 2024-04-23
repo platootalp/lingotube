@@ -59,7 +59,7 @@ public class Result<T> {
      * @return
      */
     public static <T> Result<T> failed(){
-        return new Result<>(ResultCode.FAILED.getMessage(), ResultCode.FAILED.getCode(), null);
+        return new Result<>(ResultCode.ERROR.getMessage(), ResultCode.ERROR.getCode(), null);
     }
 
     /**
@@ -68,7 +68,7 @@ public class Result<T> {
      * @return
     */
     public static <T> Result<T> failed(String message){
-        return new Result<>(message, ResultCode.FAILED.getCode(), null);
+        return new Result<>(message, ResultCode.ERROR.getCode(), null);
     }
 
 

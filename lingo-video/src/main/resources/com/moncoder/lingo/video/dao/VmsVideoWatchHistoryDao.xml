@@ -2,31 +2,66 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.moncoder.lingo.video.dao.VmsVideoWatchHistoryDao">
 
-    <resultMap id="videoBrowseHistoryVO" type="com.moncoder.lingo.video.domain.vo.VideoBrowseHistoryVO">
+    <resultMap id="videoWatchHistoryVO" type="com.moncoder.lingo.video.domain.vo.VideoWatchHistoryVO">
         <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="thumbnailUrl" column="thumbnail_url"/>
+        <result property="duration" column="duration"/>
+        <result property="views" column="views"/>
+        <result property="levelName" column="level_name"/>
         <result property="viewDuration" column="view_duration"/>
-        <result property="createTime" column="create_time" javaType="java.time.LocalDateTime"/>
-        <association property="video" javaType="com.moncoder.lingo.entity.VmsVideo">
-            <id property="id" column="id"/>
-            <result property="title" column="title"/>
-            <result property="videoUrl" column="video_url"/>
-            <result property="thumbnailUrl" column="thumbnail_url"/>
-        </association>
+        <result property="watchTime" column="watch_time" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
-    <select id="selectPageByUserId" resultMap="videoBrowseHistoryVO">
-        SELECT
-        h.id,h.view_duration,h.create_time,v.*
-        FROM
-        vms_video_browse_history h
+    <select id="selectPageByUserId" resultMap="videoWatchHistoryVO">
+        SELECT v.id,
+        v.title,
+        v.thumbnail_url,
+        v.duration,
+        v.views,
+        v.level_name,
+        h.view_duration,
+        h.watch_time
+        FROM (
+        SELECT video_id,
+        view_duration,
+        watch_time
+        FROM vms_video_watch_history
+        WHERE user_id = #{userId}
+        ) AS h
         LEFT JOIN
         vms_video v ON h.video_id = v.id
-        WHERE
-        h.user_id = #{userId}
-        <if test="titleKeyWord != null and titleKeyWord != ''">
-            AND v.title LIKE CONCAT('%', #{titleKeyWord}, '%')
-        </if>
-        ORDER BY
-        h.create_time DESC
+        <where>
+            <if test="titleKeyWord != null and titleKeyWord != ''">
+                v.title LIKE CONCAT('%', #{titleKeyWord}, '%')
+            </if>
+        </where>
+        ORDER BY h.watch_time DESC
+    </select>
+
+    <select id="selectListByUserId" resultMap="videoWatchHistoryVO">
+        SELECT v.id,
+            v.title,
+            v.thumbnail_url,
+            v.duration,
+            v.views,
+            v.level_name,
+            h.view_duration,
+            h.watch_time
+        FROM (
+            SELECT video_id,
+            view_duration,
+            watch_time
+            FROM vms_video_watch_history
+            WHERE user_id = #{userId}
+        ) AS h
+        LEFT JOIN
+            vms_video v ON h.video_id = v.id
+        <where>
+            <if test="titleKeyWord != null and titleKeyWord != ''">
+                v.title LIKE CONCAT('%', #{titleKeyWord}, '%')
+            </if>
+        </where>
+        ORDER BY h.watch_time DESC
     </select>
 </mapper>

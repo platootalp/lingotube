@@ -3,8 +3,8 @@ package com.moncoder.lingo.video.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.entity.VmsVideoWatchHistory;
-import com.moncoder.lingo.video.domain.dto.VideoBrowseHistoryDTO;
-import com.moncoder.lingo.video.domain.vo.VideoBrowseHistoryVO;
+import com.moncoder.lingo.video.domain.dto.VideoWatchHistoryDTO;
+import com.moncoder.lingo.video.domain.vo.VideoWatchHistoryVO;
 
 import java.util.List;
 
@@ -21,19 +21,10 @@ public interface IVmsVideoWatchHistoryService extends IService<VmsVideoWatchHist
     /**
      * 保存浏览历史
      *
-     * @param videoBrowseHistoryDTO
+     * @param videoWatchHistoryDTO
      * @return
      */
-    boolean save(VideoBrowseHistoryDTO videoBrowseHistoryDTO);
-
-    /**
-     * 批量删除视频浏览历史
-     *
-     * @param userId
-     * @param ids
-     * @return
-     */
-    boolean deleteBatch(Integer userId, List<Integer> ids);
+    boolean save(VideoWatchHistoryDTO videoWatchHistoryDTO);
 
     /**
      * 查询当前用户全部视频浏览历史
@@ -41,7 +32,14 @@ public interface IVmsVideoWatchHistoryService extends IService<VmsVideoWatchHist
      * @param userId
      * @return
      */
-    List<VideoBrowseHistoryVO> getListByUserId(Integer userId);
+    List<VideoWatchHistoryVO> getListByUserId(Integer userId,String titleKeyWord);
+
+    /**
+     * 清空视频观看历史
+     * @param userId
+     * @return
+     */
+    boolean clear(Integer userId);
 
     /**
      * 分页查询当前用户全部视频浏览历史
@@ -52,6 +50,14 @@ public interface IVmsVideoWatchHistoryService extends IService<VmsVideoWatchHist
      * @param titleKeyWord
      * @return
      */
-    LPage<VideoBrowseHistoryVO> getPageByUserId(Integer userId, Long pageNum, Long pageSize, String titleKeyWord);
+    LPage<VideoWatchHistoryVO> getPageByUserId(Integer userId, Long pageNum, Long pageSize, String titleKeyWord);
 
+    /**
+     * 批量删除视频浏览历史
+     *
+     * @param userId
+     * @param ids
+     * @return
+     */
+    boolean deleteBatch(Integer userId, List<Integer> ids);
 }

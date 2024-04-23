@@ -7,8 +7,8 @@ import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.entity.VmsVideoWatchHistory;
 import com.moncoder.lingo.mapper.VmsVideoWatchHistoryMapper;
 import com.moncoder.lingo.video.dao.VmsVideoWatchHistoryDao;
-import com.moncoder.lingo.video.domain.dto.VideoBrowseHistoryDTO;
-import com.moncoder.lingo.video.domain.vo.VideoBrowseHistoryVO;
+import com.moncoder.lingo.video.domain.dto.VideoWatchHistoryDTO;
+import com.moncoder.lingo.video.domain.vo.VideoWatchHistoryVO;
 import com.moncoder.lingo.video.service.IVmsVideoWatchHistoryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,27 +29,27 @@ import java.util.List;
 public class VmsVideoWatchHistoryServiceImpl extends ServiceImpl<VmsVideoWatchHistoryMapper, VmsVideoWatchHistory> implements IVmsVideoWatchHistoryService {
 
     @Autowired
-    private VmsVideoWatchHistoryDao videoBrowseHistoryDao;
+    private VmsVideoWatchHistoryDao videoWatchHistoryDao;
 
     @Override
-    public boolean save(VideoBrowseHistoryDTO videoBrowseHistoryDTO) {
+    public boolean save(VideoWatchHistoryDTO videoWatchHistoryDTO) {
         // 1.查询记录是否存在
-        Integer userId = videoBrowseHistoryDTO.getUserId();
-        Integer videoId = videoBrowseHistoryDTO.getVideoId();
-        Integer viewDuration = videoBrowseHistoryDTO.getViewDuration();
-        VmsVideoWatchHistory browseHistory = lambdaQuery().eq(VmsVideoWatchHistory::getUserId, userId)
+        Integer userId = videoWatchHistoryDTO.getUserId();
+        Integer videoId = videoWatchHistoryDTO.getVideoId();
+        Integer viewDuration = videoWatchHistoryDTO.getViewDuration();
+        VmsVideoWatchHistory watchHistory = lambdaQuery().eq(VmsVideoWatchHistory::getUserId, userId)
                 .eq(VmsVideoWatchHistory::getVideoId, videoId)
                 .one();
         // 2.记录存在就修改
-        if (browseHistory != null) {
-            browseHistory.setViewDuration(viewDuration);
-            browseHistory.setCreateTime(LocalDateTime.now());
-            return updateById(browseHistory);
+        if (watchHistory != null) {
+            watchHistory.setViewDuration(viewDuration);
+            watchHistory.setWatchTime(LocalDateTime.now());
+            return updateById(watchHistory);
         }
         // 3.不存在就新增
         VmsVideoWatchHistory newBrowseHistory = new VmsVideoWatchHistory();
-        BeanUtils.copyProperties(videoBrowseHistoryDTO, newBrowseHistory);
-        newBrowseHistory.setCreateTime(LocalDateTime.now());
+        BeanUtils.copyProperties(videoWatchHistoryDTO, newBrowseHistory);
+        newBrowseHistory.setWatchTime(LocalDateTime.now());
         return save(newBrowseHistory);
     }
 
@@ -61,17 +61,23 @@ public class VmsVideoWatchHistoryServiceImpl extends ServiceImpl<VmsVideoWatchHi
     }
 
     @Override
-    public List<VideoBrowseHistoryVO> getListByUserId(Integer userId) {
-        return null;
+    public List<VideoWatchHistoryVO> getListByUserId(Integer userId,String titleKeyWord) {
+        return videoWatchHistoryDao.selectListByUserId(userId, titleKeyWord);
     }
 
     @Override
-    public LPage<VideoBrowseHistoryVO> getPageByUserId(Integer userId, Long pageNum, Long pageSize,
-                                                       String titleKeyWord) {
+    public boolean clear(Integer userId) {
+        return lambdaUpdate().eq(VmsVideoWatchHistory::getUserId, userId)
+                .remove();
+    }
+
+    @Override
+    public LPage<VideoWatchHistoryVO> getPageByUserId(Integer userId, Long pageNum, Long pageSize,
+                                                      String titleKeyWord) {
         // 1.根据用户id查询出所有VideoBrowseHistoryVO
-        Page<VideoBrowseHistoryVO> page = new Page<>(pageNum, pageSize);
-        IPage<VideoBrowseHistoryVO> historyVos
-                = videoBrowseHistoryDao.selectPageByUserId(page, userId, titleKeyWord);
+        Page<VideoWatchHistoryVO> page = new Page<>(pageNum, pageSize);
+        IPage<VideoWatchHistoryVO> historyVos
+                = videoWatchHistoryDao.selectPageByUserId(page, userId, titleKeyWord);
         // 2.返回分页对象
         return LPage.restPage(historyVos);
     }

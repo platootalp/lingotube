@@ -39,6 +39,6 @@ public class VmsVideoWatchHistory implements Serializable {
     @ApiModelProperty("已观看的时长（秒）")
     private Integer viewDuration;
 
-    @ApiModelProperty("创建时间")
-    private LocalDateTime createTime;
+    @ApiModelProperty("观看时间")
+    private LocalDateTime watchTime;
 }

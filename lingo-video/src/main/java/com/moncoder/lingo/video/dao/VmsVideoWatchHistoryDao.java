@@ -1,8 +1,10 @@
 package com.moncoder.lingo.video.dao;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.moncoder.lingo.video.domain.vo.VideoBrowseHistoryVO;
+import com.moncoder.lingo.video.domain.vo.VideoWatchHistoryVO;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 
 /**
@@ -14,14 +16,24 @@ import org.apache.ibatis.annotations.Param;
 public interface VmsVideoWatchHistoryDao {
 
     /**
-     * 查询当前用户全部视频浏览历史
+     * 分页查询当前用户全部视频浏览历史
      *
      * @param page
      * @param userId
      * @param titleKeyWord
      * @return
      */
-    IPage<VideoBrowseHistoryVO> selectPageByUserId(IPage<VideoBrowseHistoryVO> page,
-                                                   @Param("userId") Integer userId,
-                                                   @Param("titleKeyWord") String titleKeyWord);
+    IPage<VideoWatchHistoryVO> selectPageByUserId(IPage<VideoWatchHistoryVO> page,
+                                                  @Param("userId") Integer userId,
+                                                  @Param("titleKeyWord") String titleKeyWord);
+
+    /**
+     * 查询当前用户全部视频观看历史
+     *
+     * @param userId
+     * @param titleKeyWord
+     * @return
+     */
+    List<VideoWatchHistoryVO> selectListByUserId(@Param("userId") Integer userId,
+                                                 @Param("titleKeyWord") String titleKeyWord);
 }

@@ -6,14 +6,17 @@ package com.moncoder.lingo.common.api;
  * @description 返回结果状态码及信息
  * @date 2024/3/9 16:35
  */
-public enum ResultCode implements IStatusCode{
+public enum ResultCode implements IStatusCode {
 
-    SUCCESS(200,"操作成功"),
-    FAILED(500, "操作失败"),
-    BADREQUEST(400,"请求错误"),
+    SUCCESS(200, "操作成功"),
+    // 重定向
+    REDIRECT(301, "redirect"),
+    BADREQUEST(400, "请求错误"),
     UNAUTHORIZED(401, "未登录或token已经过期"),
-    FORBIDDEN(403, "无权限"),
-    NOT_FOUND(404, "资源不存在");
+    FORBIDDEN(403, "无权限访问"),
+    NOT_FOUND(404, "资源不存在"),
+    ERROR(500, "服务器错误"),
+    ;
     /**
      * 状态码
      */
@@ -23,7 +26,7 @@ public enum ResultCode implements IStatusCode{
      */
     private String message;
 
-   ResultCode(Integer code, String message){
+    ResultCode(Integer code, String message) {
         this.code = code;
         this.message = message;
     }

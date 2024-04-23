@@ -3,7 +3,6 @@ package com.moncoder.lingo.video.controller;
 import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.video.domain.dto.VideoWatchLaterDTO;
-import com.moncoder.lingo.video.domain.vo.VideoBrowseHistoryVO;
 import com.moncoder.lingo.video.domain.vo.VideoWatchLaterVO;
 import com.moncoder.lingo.video.service.IVmsVideoWatchLaterService;
 import io.swagger.annotations.Api;

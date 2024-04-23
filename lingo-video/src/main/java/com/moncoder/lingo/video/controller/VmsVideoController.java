@@ -94,8 +94,8 @@ public class VmsVideoController {
 
     @ApiOperation("获取当前视频相关视频")
     @GetMapping("/related/s")
-    public Result<List<VideoViewVO>> getRelatedVideos(@RequestParam @NotNull Integer id,
-                                                      @RequestParam @NotBlank String levelName) {
+    public Result<List<VideoViewVO>> getRelatedVideoList(@RequestParam @NotNull Integer id,
+                                                         @RequestParam @NotBlank String levelName) {
         List<VideoViewVO> videos = videoService.getRelatedVideos(id, levelName,
                 VideoConstant.VMS_RELATED_VIDEO_COUNT);
         return Result.success(videos);

@@ -42,6 +42,15 @@ public interface IVmsVideoWatchHistoryService extends IService<VmsVideoWatchHist
     boolean clear(Integer userId);
 
     /**
+     * 批量删除视频浏览历史
+     *
+     * @param userId
+     * @param videoIds
+     * @return
+     */
+    boolean deleteBatch(Integer userId, List<Integer> videoIds);
+
+    /**
      * 分页查询当前用户全部视频浏览历史
      *
      * @param userId
@@ -51,13 +60,4 @@ public interface IVmsVideoWatchHistoryService extends IService<VmsVideoWatchHist
      * @return
      */
     LPage<VideoWatchHistoryVO> getPageByUserId(Integer userId, Long pageNum, Long pageSize, String titleKeyWord);
-
-    /**
-     * 批量删除视频浏览历史
-     *
-     * @param userId
-     * @param ids
-     * @return
-     */
-    boolean deleteBatch(Integer userId, List<Integer> ids);
 }

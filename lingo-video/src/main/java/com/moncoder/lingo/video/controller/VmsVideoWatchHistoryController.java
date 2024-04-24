@@ -62,8 +62,8 @@ public class VmsVideoWatchHistoryController {
     @ApiOperation("批量删除浏览历史")
     @DeleteMapping("/s")
     public Result<String> deleteBatch(@RequestParam @NotNull Integer userId,
-                                      @RequestParam @NotNull List<Integer> ids) {
-        boolean flag = videoWatchHistoryService.deleteBatch(userId, ids);
+                                      @RequestParam @NotNull List<Integer> videoIds) {
+        boolean flag = videoWatchHistoryService.deleteBatch(userId, videoIds);
         if (!flag) {
             return Result.failed();
         }

@@ -54,20 +54,20 @@ public class VmsVideoWatchHistoryServiceImpl extends ServiceImpl<VmsVideoWatchHi
     }
 
     @Override
-    public boolean deleteBatch(Integer userId, List<Integer> ids) {
-        return lambdaUpdate().eq(VmsVideoWatchHistory::getUserId, userId)
-                .in(VmsVideoWatchHistory::getId, ids)
-                .remove();
-    }
-
-    @Override
-    public List<VideoWatchHistoryVO> getListByUserId(Integer userId,String titleKeyWord) {
+    public List<VideoWatchHistoryVO> getListByUserId(Integer userId, String titleKeyWord) {
         return videoWatchHistoryDao.selectListByUserId(userId, titleKeyWord);
     }
 
     @Override
     public boolean clear(Integer userId) {
         return lambdaUpdate().eq(VmsVideoWatchHistory::getUserId, userId)
+                .remove();
+    }
+
+    @Override
+    public boolean deleteBatch(Integer userId, List<Integer> videoIds) {
+        return lambdaUpdate().eq(VmsVideoWatchHistory::getUserId, userId)
+                .in(VmsVideoWatchHistory::getVideoId, videoIds)
                 .remove();
     }
 

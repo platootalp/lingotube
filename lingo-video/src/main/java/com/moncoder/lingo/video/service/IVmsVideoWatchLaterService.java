@@ -19,12 +19,28 @@ import java.util.List;
 public interface IVmsVideoWatchLaterService extends IService<VmsVideoWatchLater> {
 
     /**
+     * 查看记录是否存在
+     * @param userId
+     * @param videoId
+     * @return
+     */
+    boolean exist(Integer userId, Integer videoId);
+
+    /**
      * 保存稍后再看记录
      *
      * @param videoWatchLaterDTO
      * @return
      */
     boolean save(VideoWatchLaterDTO videoWatchLaterDTO);
+
+    /**
+     * 删除稍后再看记录
+     * @param userId
+     * @param videoId
+     * @return
+     */
+    boolean delete(Integer userId, Integer videoId);
 
     /**
      * 批量删除稍后再看记录
@@ -62,4 +78,5 @@ public interface IVmsVideoWatchLaterService extends IService<VmsVideoWatchLater>
      */
     LPage<VideoWatchLaterVO> getPageByUserId(Integer userId, Long pageNum, Long pageSize, String titleKeyWord);
 
+    List<VideoWatchLaterVO> getListByUserId(Integer userId, Integer sort);
 }

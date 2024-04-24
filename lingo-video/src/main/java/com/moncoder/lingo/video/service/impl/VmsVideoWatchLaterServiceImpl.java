@@ -32,6 +32,13 @@ public class VmsVideoWatchLaterServiceImpl extends ServiceImpl<VmsVideoWatchLate
     private VmsVideoWatchLaterDao videoWatchLaterDao;
 
     @Override
+    public boolean exist(Integer userId, Integer videoId) {
+        return lambdaQuery().eq(VmsVideoWatchLater::getUserId, userId)
+                .eq(VmsVideoWatchLater::getVideoId, videoId)
+                .exists();
+    }
+
+    @Override
     public boolean save(VideoWatchLaterDTO videoWatchLaterDTO) {
         // 1.查询记录是否存在
         Integer userId = videoWatchLaterDTO.getUserId();
@@ -66,6 +73,13 @@ public class VmsVideoWatchLaterServiceImpl extends ServiceImpl<VmsVideoWatchLate
     }
 
     @Override
+    public boolean delete(Integer userId, Integer videoId) {
+        return lambdaUpdate().eq(VmsVideoWatchLater::getUserId, userId)
+                .eq(VmsVideoWatchLater::getVideoId, videoId)
+                .remove();
+    }
+
+    @Override
     public boolean deleteBatch(Integer userId, List<Integer> ids) {
         return lambdaUpdate().eq(VmsVideoWatchLater::getUserId, userId)
                 .in(VmsVideoWatchLater::getId, ids)
@@ -91,7 +105,7 @@ public class VmsVideoWatchLaterServiceImpl extends ServiceImpl<VmsVideoWatchLate
         // 1.根据用户id查询出所有记录
         Page<VideoWatchLaterVO> page = new Page<>(pageNum, pageSize);
         IPage<VideoWatchLaterVO> watchLaterVos = videoWatchLaterDao.selectPageByUserId(
-                page,userId, titleKeyWord);
+                page, userId, titleKeyWord);
         // 2.返回分页对象
         return LPage.restPage(watchLaterVos);
 

@@ -1,6 +1,5 @@
 package com.moncoder.lingo.video.domain.vo;
 
-import com.moncoder.lingo.entity.VmsVideo;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -17,15 +16,11 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ApiModel("视频稍后再看返回值")
-public class VideoWatchLaterVO {
-    @ApiModelProperty("主键")
-    private Integer id;
+public class VideoWatchLaterVO extends VideoViewVO{
     @ApiModelProperty("是否已观看：0->未观看 ；1->已观看")
     private Byte isWatched;
     @ApiModelProperty("已观看的时长（秒）")
     private Integer viewDuration;
     @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
-    @ApiModelProperty("视频列表")
-    private VmsVideo video;
 }

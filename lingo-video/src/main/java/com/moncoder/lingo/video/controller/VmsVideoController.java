@@ -58,7 +58,7 @@ public class VmsVideoController {
     }
 
     @ApiOperation("根据id获取视频播放信息")
-    @GetMapping("/watch/{id}")
+    @GetMapping("/{id}")
     public Result<VideoPlayVO> getVideo(@PathVariable("id") @NotNull Integer id) {
         VideoPlayVO videoPlayVO = videoService.getVideo(id);
         return Result.success(videoPlayVO);

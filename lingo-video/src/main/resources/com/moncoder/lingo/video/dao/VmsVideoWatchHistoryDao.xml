@@ -9,17 +9,23 @@
         <result property="duration" column="duration"/>
         <result property="views" column="views"/>
         <result property="levelName" column="level_name"/>
+        <result property="uploaderId" column="uploader_id"/>
+        <result property="uploaderNickname" column="uploader_nickname"/>
+        <result property="uploaderAvatar" column="uploader_avatar"/>
         <result property="viewDuration" column="view_duration"/>
         <result property="watchTime" column="watch_time" javaType="java.time.LocalDateTime"/>
     </resultMap>
 
-    <select id="selectPageByUserId" resultMap="videoWatchHistoryVO">
+    <select id="selectListByUserId" resultMap="videoWatchHistoryVO">
         SELECT v.id,
         v.title,
         v.thumbnail_url,
         v.duration,
         v.views,
         v.level_name,
+        v.uploader_id,
+        v.uploader_nickname,
+        v.uploader_avatar,
         h.view_duration,
         h.watch_time
         FROM (
@@ -39,24 +45,27 @@
         ORDER BY h.watch_time DESC
     </select>
 
-    <select id="selectListByUserId" resultMap="videoWatchHistoryVO">
+    <select id="selectPageByUserId" resultMap="videoWatchHistoryVO">
         SELECT v.id,
-            v.title,
-            v.thumbnail_url,
-            v.duration,
-            v.views,
-            v.level_name,
-            h.view_duration,
-            h.watch_time
+        v.title,
+        v.thumbnail_url,
+        v.duration,
+        v.views,
+        v.level_name,
+        v.uploader_id,
+        v.uploader_nickname,
+        v.uploader_avatar,
+        h.view_duration,
+        h.watch_time
         FROM (
-            SELECT video_id,
-            view_duration,
-            watch_time
-            FROM vms_video_watch_history
-            WHERE user_id = #{userId}
+        SELECT video_id,
+        view_duration,
+        watch_time
+        FROM vms_video_watch_history
+        WHERE user_id = #{userId}
         ) AS h
         LEFT JOIN
-            vms_video v ON h.video_id = v.id
+        vms_video v ON h.video_id = v.id
         <where>
             <if test="titleKeyWord != null and titleKeyWord != ''">
                 v.title LIKE CONCAT('%', #{titleKeyWord}, '%')

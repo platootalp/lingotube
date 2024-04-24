@@ -3,6 +3,7 @@ package com.moncoder.lingo.video.controller;
 import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.video.domain.dto.VideoWatchLaterDTO;
+import com.moncoder.lingo.video.domain.vo.VideoWatchHistoryVO;
 import com.moncoder.lingo.video.domain.vo.VideoWatchLaterVO;
 import com.moncoder.lingo.video.service.IVmsVideoWatchLaterService;
 import io.swagger.annotations.Api;
@@ -29,14 +30,41 @@ public class VmsVideoWatchLaterController {
     @Autowired
     private IVmsVideoWatchLaterService videoWatchLaterService;
 
+    @ApiOperation("查看观看历史是否存在")
+    @GetMapping("/exist")
+    public Result<Boolean> exist(@RequestParam @NotNull Integer userId,
+                                @RequestParam @NotNull Integer videoId) {
+        return Result.success(videoWatchLaterService.exist(userId, videoId));
+    }
+
     @ApiOperation("保存稍后再看记录")
-    @PostMapping("/add")
+    @PostMapping("/save")
     public Result<String> save(@RequestBody @Valid VideoWatchLaterDTO videoWatchLaterDTO) {
         boolean flag = videoWatchLaterService.save(videoWatchLaterDTO);
         if (!flag) {
             return Result.failed();
         }
         return Result.success();
+    }
+
+    @ApiOperation("删除稍后再看记录")
+    @DeleteMapping("")
+    public Result<String> deleteBatch(@RequestParam @NotNull Integer userId,
+                                      @RequestParam @NotNull Integer videoId) {
+        boolean flag = videoWatchLaterService.delete(userId, videoId);
+        if (!flag) {
+            return Result.failed();
+        }
+        return Result.success();
+    }
+
+    @ApiOperation("获取用户全部观看历史")
+    @GetMapping("/list")
+    public Result<List<VideoWatchLaterVO>> getList(@RequestParam @NotNull Integer userId,
+                                                   @RequestParam(required = false) Integer sort) {
+        List<VideoWatchLaterVO> watchHistoryVOS
+                = videoWatchLaterService.getListByUserId(userId, sort);
+        return Result.success(watchHistoryVOS);
     }
 
     @ApiOperation("批量删除稍后再看记录")
@@ -77,7 +105,7 @@ public class VmsVideoWatchLaterController {
                                                     @RequestParam(defaultValue = "5") Long pageSize,
                                                     @RequestParam(required = false) String titleKeyWord) {
         LPage<VideoWatchLaterVO> videoWatchLaterVOLPage
-                = videoWatchLaterService.getPageByUserId(userId, pageNum, pageSize,titleKeyWord);
+                = videoWatchLaterService.getPageByUserId(userId, pageNum, pageSize, titleKeyWord);
         return Result.success(videoWatchLaterVOLPage);
     }
 }

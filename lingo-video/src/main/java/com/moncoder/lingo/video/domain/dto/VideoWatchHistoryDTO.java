@@ -21,10 +21,10 @@ import java.time.LocalDateTime;
 @ApiModel("视频观看历史创建参数")
 public class VideoWatchHistoryDTO {
     @NotNull
-    @ApiModelProperty("用户ID，外键，关联用户表")
+    @ApiModelProperty("用户id，外键，关联用户表")
     private Integer userId;
     @NotNull
-    @ApiModelProperty("视频ID，外键，关联视频表")
+    @ApiModelProperty("视频id，外键，关联视频表")
     private Integer videoId;
     @NotNull
     @ApiModelProperty("已观看的时长（秒）")

@@ -39,7 +39,7 @@ lingo:
         - /user/login
         - /user/reset/password
         - /home/**
-        - /video/watch/**
+        - /video/**
 logging:
   level:
     root: info

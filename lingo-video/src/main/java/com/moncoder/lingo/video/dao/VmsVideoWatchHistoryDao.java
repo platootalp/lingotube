@@ -16,6 +16,16 @@ import java.util.List;
 public interface VmsVideoWatchHistoryDao {
 
     /**
+     * 查询当前用户全部视频观看历史
+     *
+     * @param userId
+     * @param titleKeyWord
+     * @return
+     */
+    List<VideoWatchHistoryVO> selectListByUserId(@Param("userId") Integer userId,
+                                                 @Param("titleKeyWord") String titleKeyWord);
+
+    /**
      * 分页查询当前用户全部视频浏览历史
      *
      * @param page
@@ -26,14 +36,4 @@ public interface VmsVideoWatchHistoryDao {
     IPage<VideoWatchHistoryVO> selectPageByUserId(IPage<VideoWatchHistoryVO> page,
                                                   @Param("userId") Integer userId,
                                                   @Param("titleKeyWord") String titleKeyWord);
-
-    /**
-     * 查询当前用户全部视频观看历史
-     *
-     * @param userId
-     * @param titleKeyWord
-     * @return
-     */
-    List<VideoWatchHistoryVO> selectListByUserId(@Param("userId") Integer userId,
-                                                 @Param("titleKeyWord") String titleKeyWord);
 }

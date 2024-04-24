@@ -30,4 +30,10 @@ public class VideoViewVO {
     private Integer views;
     @ApiModelProperty("视频等级")
     private String levelName;
+    @ApiModelProperty("上传者ID，外键，关联用户表")
+    private Integer uploaderId;
+    @ApiModelProperty("上传者昵称")
+    private String uploaderNickname;
+    @ApiModelProperty("上传者头像")
+    private String uploaderAvatar;
 }

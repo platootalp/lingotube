@@ -51,15 +51,6 @@ public interface IVmsVideoService extends IService<VmsVideo> {
     VideoPlayVO getVideo(Integer id);
 
     /**
-     * 点赞、取消点赞视频
-     *
-     * @param userId
-     * @param videoId
-     * @return
-     */
-    boolean likeVideo(Integer userId, Integer videoId);
-
-    /**
      * 获取视频点赞数
      * @param id
      * @return

@@ -18,26 +18,28 @@
     </resultMap>
 
     <select id="selectListByUserId" resultMap="videoWatchHistoryVO">
-        SELECT v.id,
-        v.title,
-        v.thumbnail_url,
-        v.duration,
-        v.views,
-        v.level_name,
-        v.uploader_id,
-        v.uploader_nickname,
-        v.uploader_avatar,
-        h.view_duration,
-        h.watch_time
+        SELECT
+            v.id,
+            v.title,
+            v.thumbnail_url,
+            v.duration,
+            v.views,
+            v.level_name,
+            v.uploader_id,
+            v.uploader_nickname,
+            v.uploader_avatar,
+            h.view_duration,
+            h.watch_time
         FROM (
-        SELECT video_id,
-        view_duration,
-        watch_time
-        FROM vms_video_watch_history
-        WHERE user_id = #{userId}
+                SELECT
+                    video_id,
+                    view_duration,
+                    watch_time
+                FROM vms_video_watch_history
+                WHERE user_id = #{userId}
         ) AS h
         LEFT JOIN
-        vms_video v ON h.video_id = v.id
+            vms_video v ON h.video_id = v.id
         <where>
             <if test="titleKeyWord != null and titleKeyWord != ''">
                 v.title LIKE CONCAT('%', #{titleKeyWord}, '%')

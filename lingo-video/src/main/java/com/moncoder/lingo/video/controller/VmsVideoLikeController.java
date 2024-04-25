@@ -22,13 +22,64 @@ import java.util.List;
  */
 @Api(tags = "赞过的视频管理")
 @RestController
-@RequestMapping("/video/like/log")
+@RequestMapping("/video/like")
 public class VmsVideoLikeController {
 
     @Autowired
     private IVmsVideoLikeService videoLikeService;
 
-    @ApiOperation("批量删除赞过的视频记录")
+
+    @ApiOperation("查看点赞记录是否存在")
+    @GetMapping("/exist")
+    public Result<Boolean> exist(@RequestParam @NotNull Integer userId,
+                                 @RequestParam @NotNull Integer videoId) {
+        return Result.success(videoLikeService.exist(userId, videoId));
+    }
+
+
+    @ApiOperation("点赞、取消点赞视频")
+    @PostMapping("/save")
+    public Result<String> likeVideo(@RequestParam @NotNull Integer userId,
+                                    @RequestParam @NotNull Integer videoId) {
+        boolean flag = videoLikeService.likeVideo(userId, videoId);
+        if (!flag) {
+            return Result.failed();
+        }
+        return Result.success();
+    }
+
+    @ApiOperation("获取用户全部点赞记录")
+    @GetMapping("/list")
+    public Result<List<VideoLikeVO>> getList(@RequestParam @NotNull Integer userId,
+                                              @RequestParam(required = false) String titleKeyWord) {
+        List<VideoLikeVO> videoLikeVOS =
+                videoLikeService.getListByUserId(userId, titleKeyWord);
+        return Result.success(videoLikeVOS);
+    }
+
+
+    @ApiOperation("删除点赞记录")
+    @DeleteMapping("")
+    public Result<String> deleteOne(@RequestParam @NotNull Integer userId,
+                                    @RequestParam @NotNull Integer videoId) {
+        boolean flag = videoLikeService.deleteOne(userId, videoId);
+        if (!flag) {
+            return Result.failed();
+        }
+        return Result.success();
+    }
+
+    @ApiOperation("清空点赞记录")
+    @DeleteMapping("/all")
+    public Result<String> clear(@RequestParam @NotNull Integer userId) {
+        boolean flag = videoLikeService.clear(userId);
+        if (!flag) {
+            return Result.failed();
+        }
+        return Result.success();
+    }
+
+    @ApiOperation("批量删除点赞记录")
     @DeleteMapping("/s")
     public Result<String> deleteBatch(@RequestParam @NotNull Integer userId,
                                       @RequestParam @NotNull List<Integer> ids) {
@@ -40,7 +91,7 @@ public class VmsVideoLikeController {
     }
 
 
-    @ApiOperation("查询全部点赞记录")
+    @ApiOperation("获取用户全部点赞记录（分页）")
     @GetMapping("/page")
     public Result<LPage<VideoLikeVO>> getPage(@RequestParam @NotNull Integer userId,
                                               @RequestParam(defaultValue = "1") Long pageNum,

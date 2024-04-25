@@ -49,9 +49,8 @@ public class VmsVideoWatchLaterController {
 
     @ApiOperation("获取用户全部稍后再看记录")
     @GetMapping("/list")
-    public Result<List<VideoWatchLaterVO>> getList(
-            @ApiParam(value = "用户ID", required = true) @RequestParam @NotNull Integer userId,
-            @ApiParam(value = "排序方式。可选值：1-按添加时间（从新到旧），2-按添加时间（从旧到新），" +
+    public Result<List<VideoWatchLaterVO>> getList(@RequestParam @NotNull Integer userId,
+            @ApiParam(value = "排序方式，可选值：1-按添加时间（从新到旧），2-按添加时间（从旧到新），" +
                     "3-热度最高，4-按上传时间（从新到旧），5-按上传时间（从旧到新）", defaultValue = "1")
             @RequestParam(defaultValue = "1") @NotNull Integer sort) {
         List<VideoWatchLaterVO> watchHistoryVOs
@@ -59,7 +58,7 @@ public class VmsVideoWatchLaterController {
         return Result.success(watchHistoryVOs);
     }
 
-    @ApiOperation("删除已观看记录")
+    @ApiOperation("删除已观看视频")
     @DeleteMapping("/watched")
     public Result<String> deleteWatched(@RequestParam @NotNull Integer userId) {
         boolean flag = videoWatchLaterService.deleteWatch(userId);
@@ -101,7 +100,7 @@ public class VmsVideoWatchLaterController {
         return Result.success();
     }
 
-    @ApiOperation("查询全部稍后再看记录")
+    @ApiOperation("获取用户全部稍后再看记录（分页）")
     @GetMapping("/page")
     public Result<LPage<VideoWatchLaterVO>> getPage(@RequestParam @NotNull Integer userId,
                                                     @RequestParam(defaultValue = "1") Long pageNum,

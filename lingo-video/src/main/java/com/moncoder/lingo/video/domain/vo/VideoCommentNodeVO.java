@@ -18,7 +18,6 @@ import java.util.List;
 @Setter
 @ApiModel("视频评论结点")
 public class VideoCommentNodeVO extends VideoCommentVO {
-
     @ApiModelProperty("子评论列表")
     private List<VideoCommentNodeVO> childrenNodes;
 }

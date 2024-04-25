@@ -19,15 +19,56 @@ public interface IVmsVideoLikeService extends IService<VmsVideoLike> {
 
 
     /**
+     * 查看点赞记录是否存在
      *
      * @param userId
      * @param videoId
      * @return
      */
-    VmsVideoLike getByUserIdAndVideoId(Integer userId, Integer videoId);
+    boolean exist(Integer userId, Integer videoId);
 
     /**
+     * 点赞、取消点赞视频
      *
+     * @param userId
+     * @param videoId
+     * @return
+     */
+    boolean likeVideo(Integer userId, Integer videoId);
+
+
+    /**
+     * 获取用户全部点赞记录
+     *
+     * @param userId
+     * @param titleKeyWord
+     * @return
+     */
+    List<VideoLikeVO> getListByUserId(Integer userId, String titleKeyWord);
+
+    /**
+     * @param userId
+     * @param videoId
+     * @return
+     */
+    VmsVideoLike getOne(Integer userId, Integer videoId);
+
+    /**
+     * 删除点赞记录
+     * @param userId
+     * @param videoId
+     * @return
+     */
+    boolean deleteOne(Integer userId, Integer videoId);
+
+    /**
+     * 清空点赞记录
+     * @param userId
+     * @return
+     */
+    boolean clear(Integer userId);
+
+    /**
      * @param userId
      * @param ids
      * @return
@@ -35,7 +76,6 @@ public interface IVmsVideoLikeService extends IService<VmsVideoLike> {
     boolean deleteBatch(Integer userId, List<Integer> ids);
 
     /**
-     *
      * @param userId
      * @param pageNum
      * @param pageSize
@@ -43,4 +83,6 @@ public interface IVmsVideoLikeService extends IService<VmsVideoLike> {
      * @return
      */
     LPage<VideoLikeVO> getPageByUserId(Integer userId, Long pageNum, Long pageSize, String titleKeyWord);
+
+
 }

@@ -4,30 +4,77 @@
 
     <resultMap id="videoLikeVO" type="com.moncoder.lingo.video.domain.vo.VideoLikeVO">
         <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="thumbnailUrl" column="thumbnail_url"/>
+        <result property="duration" column="duration"/>
+        <result property="views" column="views"/>
+        <result property="levelName" column="level_name"/>
+        <result property="uploaderId" column="uploader_id"/>
+        <result property="uploaderNickname" column="uploader_nickname"/>
+        <result property="uploaderAvatar" column="uploader_avatar"/>
+        <result property="uploadTime" column="upload_time" javaType="java.time.LocalDateTime"/>
         <result property="createTime" column="create_time" javaType="java.time.LocalDateTime"/>
-        <association property="video" javaType="com.moncoder.lingo.entity.VmsVideo">
-            <id property="id" column="id"/>
-            <result property="title" column="title"/>
-            <result property="videoUrl" column="video_url"/>
-            <result property="thumbnailUrl" column="thumbnail_url"/>
-            <result property="duration" column="duration"/>
-        </association>
     </resultMap>
+
+    <select id="selectListByUserId" resultMap="videoLikeVO">
+        SELECT
+            v.id,
+            v.title,
+            v.thumbnail_url,
+            v.duration,
+            v.views,
+            v.level_name,
+            v.uploader_id,
+            v.uploader_nickname,
+            v.uploader_avatar,
+            v.upload_time,
+            l.create_time
+            FROM (
+                SELECT
+                    video_id,
+                    create_time
+                FROM vms_video_like
+                WHERE
+                      user_id = #{userId}
+                AND is_liked = 1
+            ) AS l
+        LEFT JOIN
+            vms_video v ON l.video_id = v.id
+        <where>
+            <if test="titleKeyWord != null and titleKeyWord != ''">
+                v.title LIKE CONCAT('%', #{titleKeyWord}, '%')
+            </if>
+        </where>
+        ORDER BY l.create_time DESC
+    </select>
 
     <select id="selectPageByUserId" resultMap="videoLikeVO">
         SELECT
-        vl.id, vl.create_time,
-        v.id, v.title, v.video_url, v.thumbnail_url, v.duration, v.views
-        FROM
-        vms_video_like vl
+        v.id,
+        v.title,
+        v.thumbnail_url,
+        v.duration,
+        v.views,
+        v.level_name,
+        v.uploader_id,
+        v.uploader_nickname,
+        v.uploader_avatar,
+        l.create_time
+        FROM (
+        SELECT
+        video_id,
+        create_time
+        FROM vms_video_like
+        WHERE user_id = #{userId}
+        AND is_liked = 1
+        ) AS l
         LEFT JOIN
-        vms_video v ON vl.video_id = v.id
-        WHERE
-        vl.user_id = #{userId}
-        <if test="titleKeyWord != null and titleKeyWord != ''">
-            AND v.title LIKE CONCAT('%', #{titleKeyWord}, '%')
-        </if>
-        ORDER BY
-        vl.create_time DESC
+        vms_video v ON l.video_id = v.id
+        <where>
+            <if test="titleKeyWord != null and titleKeyWord != ''">
+                v.title LIKE CONCAT('%', #{titleKeyWord}, '%')
+            </if>
+        </where>
+        ORDER BY l.create_time DESC
     </select>
 </mapper>

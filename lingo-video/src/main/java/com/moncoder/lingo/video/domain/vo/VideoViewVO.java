@@ -13,12 +13,12 @@ import java.time.LocalDateTime;
 /**
  * @author Moncoder
  * @version 1.0
- * @description 视频视图，用于显示视频
+ * @description 视频视图，用于展示视频
  * @date 2024/4/14 13:22
  */
 @Getter
 @Setter
-@ApiModel("视频展示")
+@ApiModel("视频视图")
 public class VideoViewVO {
     @ApiModelProperty("视频id")
     private Integer id;

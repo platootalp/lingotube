@@ -64,18 +64,8 @@ public class VmsVideoController {
         return Result.success(videoPlayVO);
     }
 
-    @ApiOperation("点赞、取消点赞视频")
-    @PostMapping("/like")
-    public Result<String> likeVideo(@RequestParam @NotNull Integer userId,
-                                    @RequestParam @NotNull Integer videoId) {
-        boolean flag = videoService.likeVideo(userId, videoId);
-        if (!flag) {
-            return Result.failed();
-        }
-        return Result.success();
-    }
     @ApiOperation("获取视频点赞数")
-    @GetMapping("/like/{id}")
+    @GetMapping("/likes/{id}")
     public Result<Integer> getVideoLikes(@PathVariable @NotNull Integer id) {
         return Result.success(videoService.getVideoLikes(id));
     }

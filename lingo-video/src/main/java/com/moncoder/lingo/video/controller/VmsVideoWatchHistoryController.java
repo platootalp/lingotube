@@ -59,7 +59,7 @@ public class VmsVideoWatchHistoryController {
         return Result.success();
     }
 
-    @ApiOperation("批量删除浏览历史")
+    @ApiOperation("批量删除观看历史")
     @DeleteMapping("/s")
     public Result<String> deleteBatch(@RequestParam @NotNull Integer userId,
                                       @RequestParam @NotNull List<Integer> videoIds) {
@@ -70,7 +70,7 @@ public class VmsVideoWatchHistoryController {
         return Result.success();
     }
 
-    @ApiOperation("分页获取用户全部浏览历史")
+    @ApiOperation("获取用户全部观看历史（分页）")
     @GetMapping("/page")
     public Result<LPage<VideoWatchHistoryVO>> getPage(@RequestParam @NotNull Integer userId,
                                                       @RequestParam(defaultValue = "1") Long pageNum,

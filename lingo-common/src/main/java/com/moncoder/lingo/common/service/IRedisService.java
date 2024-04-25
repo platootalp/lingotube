@@ -1,5 +1,7 @@
 package com.moncoder.lingo.common.service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -44,6 +46,13 @@ public interface IRedisService {
      * @param key
      */
     Boolean delete(String key);
+
+    /**
+     * 删除键
+     *
+     * @param key
+     */
+    Long deleteBatch(Collection<String> keys);
 
     /**
      * 判断键是否存在

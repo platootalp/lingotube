@@ -17,11 +17,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ApiModel("赞过的视频返回值")
-public class VideoLikeVO {
-    @ApiModelProperty("主键")
-    private Integer id;
+public class VideoLikeVO extends VideoViewVO{
     @ApiModelProperty("点赞时间")
     private LocalDateTime createTime;
-    @ApiModelProperty("视频列表")
-    private VmsVideo video;
 }

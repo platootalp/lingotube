@@ -44,8 +44,6 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
     @Autowired
     private IVmsUserFavoriteFolderVideoService favoriteFolderVideoService;
     @Autowired
-    private IVmsVideoLikeService videoLikeService;
-    @Autowired
     private VmsVideoMapper videoMapper;
     @Autowired
     private IRedisService redisService;
@@ -100,54 +98,11 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
         return videoPlayVO;
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    @Override
-    public boolean likeVideo(Integer userId, Integer videoId) {
-        // 1. 从缓存中获取视频信息，如果缓存中没有，则从数据库获取
-        VideoPlayVO videoPlayVO = (VideoPlayVO) redisService.get(VideoConstant.VMS_VIDEO_PLAYER_KEY + videoId);
-        Integer likes;
-        if (videoPlayVO == null) {
-            likes = getById(videoId).getLikes();
-        } else {
-            likes = videoPlayVO.getLikes();
-        }
-
-        // 2. 查看点赞记录表是否有记录
-        VmsVideoLike videoLike = videoLikeService.getByUserIdAndVideoId(userId, videoId);
-        if (videoLike == null) {
-            // 2.1 点赞
-            videoLike = new VmsVideoLike();
-            videoLike.setUserId(userId);
-            videoLike.setVideoId(videoId);
-            videoLike.setIsLiked((byte) 1);
-            videoLike.setCreateTime(LocalDateTime.now());
-            videoLikeService.save(videoLike);
-            likes++;
-        } else if (videoLike.getIsLiked() == (byte) 0) {
-            // 2.2 更新为已点赞状态
-            videoLike.setIsLiked((byte) 1);
-            videoLikeService.updateById(videoLike);
-            likes++;
-        } else {
-            // 2.3 取消点赞
-            videoLike.setIsLiked((byte) 0);
-            videoLikeService.updateById(videoLike);
-            likes--;
-        }
-
-        // 3. 修改点赞数并保存到数据库
-        lambdaUpdate().eq(VmsVideo::getId, videoId).set(VmsVideo::getLikes, likes).update();
-        // 4. 删除缓存
-        redisService.delete(VideoConstant.VMS_VIDEO_PLAYER_KEY + videoId);
-        return true;
-    }
-
     @Override
     public Integer getVideoLikes(Integer id) {
         VideoPlayVO videoPlayVO = getVideo(id);
         return videoPlayVO.getLikes();
     }
-
 
     @Transactional(rollbackFor = Exception.class)
     @Override

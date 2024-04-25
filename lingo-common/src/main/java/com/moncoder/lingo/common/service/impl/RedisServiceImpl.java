@@ -4,6 +4,7 @@ import com.moncoder.lingo.common.service.IRedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -36,6 +37,11 @@ public class RedisServiceImpl implements IRedisService {
     @Override
     public Boolean delete(String key) {
         return redisTemplate.delete(key);
+    }
+
+    @Override
+    public Long deleteBatch(Collection<String> keys) {
+        return redisTemplate.delete(keys);
     }
 
     @Override

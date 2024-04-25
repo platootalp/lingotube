@@ -19,12 +19,10 @@ import java.time.LocalDateTime;
 @Setter
 @ApiModel("用户收藏夹视频返回值")
 public class FavoriteFolderVideoVO {
-
     @ApiModelProperty("主键")
     private Integer id;
     @ApiModelProperty("收藏时间")
     private LocalDateTime favoriteTime;
     @ApiModelProperty("视频列表")
     private VmsVideo video;
-
 }

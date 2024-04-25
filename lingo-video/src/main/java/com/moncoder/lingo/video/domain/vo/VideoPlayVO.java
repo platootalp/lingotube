@@ -41,14 +41,14 @@ public class VideoPlayVO {
     private Integer shares;
     @ApiModelProperty("评论次数")
     private Integer comments;
-    @ApiModelProperty("上传时间")
-    private LocalDateTime createTime;
-    @ApiModelProperty("视频等级")
-    private String levelName;
     @ApiModelProperty("上传者ID，外键，关联用户表")
     private Integer uploaderId;
     @ApiModelProperty("上传者昵称")
     private String uploaderNickname;
     @ApiModelProperty("上传者头像")
     private String uploaderAvatar;
+    @ApiModelProperty("上传时间")
+    private LocalDateTime uploadTime;
+    @ApiModelProperty("视频等级")
+    private String levelName;
 }

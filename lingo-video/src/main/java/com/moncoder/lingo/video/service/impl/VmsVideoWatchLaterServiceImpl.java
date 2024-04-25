@@ -73,16 +73,28 @@ public class VmsVideoWatchLaterServiceImpl extends ServiceImpl<VmsVideoWatchLate
     }
 
     @Override
-    public boolean delete(Integer userId, Integer videoId) {
+    public List<VideoWatchLaterVO> getListByUserId(Integer userId, Integer sort) {
+        return videoWatchLaterDao.selectListByUserId(userId, sort);
+    }
+
+    @Override
+    public boolean deleteWatch(Integer userId) {
+        return lambdaUpdate().eq(VmsVideoWatchLater::getUserId, userId)
+                .eq(VmsVideoWatchLater::getIsWatched, (byte) 1)
+                .remove();
+    }
+
+    @Override
+    public boolean deleteOne(Integer userId, Integer videoId) {
         return lambdaUpdate().eq(VmsVideoWatchLater::getUserId, userId)
                 .eq(VmsVideoWatchLater::getVideoId, videoId)
                 .remove();
     }
 
     @Override
-    public boolean deleteBatch(Integer userId, List<Integer> ids) {
+    public boolean deleteBatch(Integer userId, List<Integer> videoIds) {
         return lambdaUpdate().eq(VmsVideoWatchLater::getUserId, userId)
-                .in(VmsVideoWatchLater::getId, ids)
+                .in(VmsVideoWatchLater::getVideoId, videoIds)
                 .remove();
     }
 
@@ -92,12 +104,6 @@ public class VmsVideoWatchLaterServiceImpl extends ServiceImpl<VmsVideoWatchLate
                 .remove();
     }
 
-    @Override
-    public boolean deleteWatch(Integer userId) {
-        return lambdaUpdate().eq(VmsVideoWatchLater::getUserId, userId)
-                .eq(VmsVideoWatchLater::getIsWatched, (byte) 1)
-                .remove();
-    }
 
     @Override
     public LPage<VideoWatchLaterVO> getPageByUserId(Integer userId, Long pageNum, Long pageSize,

@@ -12,6 +12,7 @@
         <result property="uploaderId" column="uploader_id"/>
         <result property="uploaderNickname" column="uploader_nickname"/>
         <result property="uploaderAvatar" column="uploader_avatar"/>
+        <result property="uploadTime" column="upload_time" javaType="java.time.LocalDateTime"/>
         <result property="viewDuration" column="view_duration"/>
         <result property="watchTime" column="watch_time" javaType="java.time.LocalDateTime"/>
     </resultMap>

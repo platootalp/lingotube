@@ -4,32 +4,114 @@
 
     <resultMap id="videoWatchLaterVO" type="com.moncoder.lingo.video.domain.vo.VideoWatchLaterVO">
         <id property="id" column="id"/>
-        <result property="isWatched" column="is_watch" javaType="java.lang.Byte"/>
+        <result property="title" column="title"/>
+        <result property="thumbnailUrl" column="thumbnail_url"/>
+        <result property="duration" column="duration"/>
+        <result property="views" column="views"/>
+        <result property="levelName" column="level_name"/>
+        <result property="uploaderId" column="uploader_id"/>
+        <result property="uploaderNickname" column="uploader_nickname"/>
+        <result property="uploaderAvatar" column="uploader_avatar"/>
+        <result property="uploadTime" column="upload_time" javaType="java.time.LocalDateTime"/>
+        <result property="isWatched" column="is_watched" javaType="java.lang.Byte"/>
         <result property="viewDuration" column="view_duration"/>
         <result property="createTime" column="create_time" javaType="java.time.LocalDateTime"/>
-        <association property="video" javaType="com.moncoder.lingo.entity.VmsVideo">
-            <id property="id" column="id"/>
-            <result property="title" column="title"/>
-            <result property="videoUrl" column="video_url"/>
-            <result property="thumbnailUrl" column="thumbnail_url"/>
-            <result property="duration" column="duration"/>
-        </association>
     </resultMap>
 
-    <select id="selectPageByUserId" resultMap="videoWatchLaterVO">
-        SELECT
-        vwl.id, vwl.is_watched, vwl.view_duration, vwl.create_time,
-        v.id, v.title, v.video_url, v.thumbnail_url, v.duration
-        FROM
-        vms_video_watch_later vwl
+    <select id="selectListByUserId" resultMap="videoWatchLaterVO">
+        SELECT v.id,
+        v.title,
+        v.thumbnail_url,
+        v.duration,
+        v.views,
+        v.level_name,
+        v.uploader_id,
+        v.uploader_nickname,
+        v.uploader_avatar,
+        v.upload_time,
+        l.is_watched,
+        l.view_duration,
+        l.create_time
+        FROM (
+            SELECT  video_id,
+                    is_watched,
+                    view_duration,
+                    create_time
+            FROM vms_video_watch_later
+            WHERE user_id = #{userId}
+        ) AS l
         LEFT JOIN
-        vms_video v ON vwl.video_id = v.id
-        WHERE
-        vwl.user_id = #{userId}
-        <if test="titleKeyWord != null and titleKeyWord != ''">
-            AND v.title LIKE CONCAT('%', #{titleKeyWord}, '%')
+        vms_video v ON l.video_id = v.id
+        <if test="sort != null">
+            <choose>
+                <when test="sort == 1">
+                    ORDER BY l.create_time DESC
+                </when>
+                <when test="sort == 2">
+                    ORDER BY l.create_time ASC
+                </when>
+                <when test="sort == 3">
+                    ORDER BY v.views DESC
+                </when>
+                <when test="sort == 4">
+                    ORDER BY v.upload_time DESC
+                </when>
+                <when test="sort == 5">
+                    ORDER BY v.upload_time ASC
+                </when>
+                <otherwise>
+                    ORDER BY l.create_time DESC
+                </otherwise>
+            </choose>
         </if>
-        ORDER BY
-        vwl.create_time DESC
     </select>
+
+    <select id="selectPageByUserId" resultMap="videoWatchLaterVO">
+        SELECT v.id,
+        v.title,
+        v.thumbnail_url,
+        v.duration,
+        v.views,
+        v.level_name,
+        v.uploader_id,
+        v.uploader_nickname,
+        v.uploader_avatar,
+        v.upload_time,
+        l.is_watched,
+        l.view_duration,
+        l.watch_time
+        FROM (
+        SELECT  video_id,
+        is_watched,
+        view_duration,
+        create_time
+        FROM vms_video_watch_later
+        WHERE user_id = #{userId}
+        ) AS l
+        LEFT JOIN
+        vms_video v ON l.video_id = v.id
+        <if test="sort != null">
+            <choose>
+                <when test="sort == 1">
+                    ORDER BY l.create_time DSC
+                </when>
+                <when test="sort == 2">
+                    ORDER BY l.create_time ASC
+                </when>
+                <when test="sort == 3">
+                    ORDER BY v.views DESC
+                </when>
+                <when test="sort == 4">
+                    ORDER BY v.upload_time DESC
+                </when>
+                <when test="sort == 5">
+                    ORDER BY v.upload_time ASC
+                </when>
+                <otherwise>
+                    ORDER BY l.create_time DSC
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
 </mapper>

@@ -7,6 +7,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 
 /**
  * @author Moncoder
@@ -36,4 +38,6 @@ public class VideoViewVO {
     private String uploaderNickname;
     @ApiModelProperty("上传者头像")
     private String uploaderAvatar;
+    @ApiModelProperty("上传时间")
+    private LocalDateTime uploadTime;
 }

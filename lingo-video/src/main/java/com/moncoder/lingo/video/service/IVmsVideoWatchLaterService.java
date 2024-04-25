@@ -35,29 +35,12 @@ public interface IVmsVideoWatchLaterService extends IService<VmsVideoWatchLater>
     boolean save(VideoWatchLaterDTO videoWatchLaterDTO);
 
     /**
-     * 删除稍后再看记录
+     * 根据用户id获取全部记录
      * @param userId
-     * @param videoId
+     * @param sort
      * @return
      */
-    boolean delete(Integer userId, Integer videoId);
-
-    /**
-     * 批量删除稍后再看记录
-     *
-     * @param userId
-     * @param ids
-     * @return
-     */
-    boolean deleteBatch(Integer userId, List<Integer> ids);
-
-    /**
-     * 删除全部稍后再看记录
-     *
-     * @param userId
-     * @return
-     */
-    boolean deleteAll(Integer userId);
+    List<VideoWatchLaterVO> getListByUserId(Integer userId, Integer sort);
 
     /**
      * 删除已观看记录
@@ -66,6 +49,31 @@ public interface IVmsVideoWatchLaterService extends IService<VmsVideoWatchLater>
      * @return
      */
     boolean deleteWatch(Integer userId);
+
+    /**
+     * 删除稍后再看记录
+     * @param userId
+     * @param videoId
+     * @return
+     */
+    boolean deleteOne(Integer userId, Integer videoId);
+
+    /**
+     * 批量删除稍后再看记录
+     *
+     * @param userId
+     * @param videoIds
+     * @return
+     */
+    boolean deleteBatch(Integer userId, List<Integer> videoIds);
+
+    /**
+     * 删除全部稍后再看记录
+     *
+     * @param userId
+     * @return
+     */
+    boolean deleteAll(Integer userId);
 
     /**
      * 分页查询全部稍后再看记录
@@ -78,5 +86,4 @@ public interface IVmsVideoWatchLaterService extends IService<VmsVideoWatchLater>
      */
     LPage<VideoWatchLaterVO> getPageByUserId(Integer userId, Long pageNum, Long pageSize, String titleKeyWord);
 
-    List<VideoWatchLaterVO> getListByUserId(Integer userId, Integer sort);
 }

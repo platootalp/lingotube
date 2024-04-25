@@ -79,7 +79,7 @@ public class VmsVideo implements Serializable {
     private String uploaderAvatar;
 
     @ApiModelProperty("上传时间")
-    private LocalDateTime createTime;
+    private LocalDateTime uploadTime;
 
     @ApiModelProperty("更新时间")
     private LocalDateTime updateTime;

@@ -3,8 +3,10 @@ package com.moncoder.lingo.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -16,7 +18,7 @@ import lombok.Setter;
  * </p>
  *
  * @author moncoder
- * @since 2024-04-20 13:33:34
+ * @since 2024-04-26 11:07:03
  */
 @Getter
 @Setter
@@ -45,8 +47,8 @@ public class VmsVideo implements Serializable {
     @ApiModelProperty("视频类型（0：普通视频，1：电视剧，2：电影）")
     private Byte type;
 
-    @ApiModelProperty("视频是否下架（0：下架，1：上架）")
-    private Byte enable;
+    @ApiModelProperty("视频是否下架，0：下架，1：上架")
+    private Byte isEnable;
 
     @ApiModelProperty("视频时长（秒）")
     private Integer duration;
@@ -87,6 +89,15 @@ public class VmsVideo implements Serializable {
     @ApiModelProperty("电视剧的第几集")
     private Integer episode;
 
-    @ApiModelProperty("视频等级")
+    @ApiModelProperty("视频等级id，外键，关联等级表")
+    private Integer levelId;
+
+    @ApiModelProperty("等级名称")
     private String levelName;
+
+    @ApiModelProperty("视频分类id，外键，关联分类表")
+    private Integer categoryId;
+
+    @ApiModelProperty("分类名称")
+    private String categoryName;
 }

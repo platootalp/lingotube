@@ -50,6 +50,16 @@
             <artifactId>spring-security-rsa</artifactId>
             <version>1.0.9.RELEASE</version>
         </dependency>
+        <!--open feign-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <!-- load balancer-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

@@ -1,7 +1,6 @@
 package com.moncoder.lingo.common.service;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -111,6 +110,7 @@ public interface IRedisService {
 
     /**
      * 直接获取整个Hash结构
+     * @return
      */
     Map<Object, Object> hGetAll(String key);
 }

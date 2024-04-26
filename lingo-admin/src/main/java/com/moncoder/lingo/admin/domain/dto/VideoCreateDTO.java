@@ -1,4 +1,4 @@
-package com.moncoder.lingo.video.domain.dto;
+package com.moncoder.lingo.admin.domain.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -41,6 +41,12 @@ public class VideoCreateDTO {
     private Integer uploaderId;
     @ApiModelProperty("电视剧的第几集")
     private Integer episode;
-    @ApiModelProperty("视频等级")
+    @ApiModelProperty("视频等级id，外键，关联等级表")
+    private Integer levelId;
+    @ApiModelProperty("等级名称")
     private String levelName;
+    @ApiModelProperty("视频分类id，外键，关联分类表")
+    private Integer categoryId;
+    @ApiModelProperty("分类名称")
+    private String categoryName;
 }

@@ -4,10 +4,14 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: lingo-user # 路由规则id，自定义，唯一
-          uri: lb://lingo-user # 路由的目标服务，lb代表负载均衡，会从注册中心拉取服务列表
+        - id: lingo-admin # 路由规则id，自定义，唯一
+          uri: lb://lingo-admin # 路由的目标服务，lb代表负载均衡，会从注册中心拉取服务列表
           predicates: # 路由断言，判断当前请求是否符合当前规则，符合则路由到目标服务
-            - Path=/user/** # 这里是以请求路径作为判断规则
+            - Path=/admin/** # 这里是以请求路径作为判断规则
+        - id: lingo-user
+          uri: lb://lingo-user
+          predicates:
+            - Path=/user/**
         - id: lingo-video
           uri: lb://lingo-video
           predicates:
@@ -38,6 +42,7 @@ lingo:
         - /user/register
         - /user/login
         - /user/reset/password
+        - /admin/**
         - /home/**
         - /video/**
 logging:

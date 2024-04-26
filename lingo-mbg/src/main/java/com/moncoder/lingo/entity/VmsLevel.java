@@ -16,7 +16,7 @@ import lombok.Setter;
  * </p>
  *
  * @author moncoder
- * @since 2024-04-14 15:08:48
+ * @since 2024-04-26 11:40:11
  */
 @Getter
 @Setter
@@ -26,7 +26,7 @@ public class VmsLevel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("唯一标识")
+    @ApiModelProperty("等级唯一标识ID	")
     @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
 
@@ -35,6 +35,9 @@ public class VmsLevel implements Serializable {
 
     @ApiModelProperty("等级描述")
     private String description;
+
+    @ApiModelProperty("是否有效，0：无效，1：有效")
+    private Byte isEnable;
 
     @ApiModelProperty("创建时间")
     private LocalDateTime createdTime;

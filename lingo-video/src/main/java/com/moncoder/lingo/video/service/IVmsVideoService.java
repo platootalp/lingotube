@@ -2,10 +2,8 @@ package com.moncoder.lingo.video.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.entity.VmsVideo;
-import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
 import com.moncoder.lingo.video.domain.vo.VideoPlayVO;
 import com.moncoder.lingo.video.domain.vo.VideoViewVO;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -19,29 +17,6 @@ import java.util.List;
  * @since 2024-03-20 14:59:05
  */
 public interface IVmsVideoService extends IService<VmsVideo> {
-
-    /**
-     * 上传视频
-     *
-     * @param videoFile
-     * @return
-     */
-    String uploadVideo(MultipartFile videoFile);
-
-    /**
-     * 上传视频缩略图
-     * @param thumbnailFile
-     * @return
-     */
-    String uploadVideoThumbnail(MultipartFile thumbnailFile);
-
-    /**
-     * 保存视频
-     *
-     * @param videoCreateDTO
-     * @return
-     */
-    boolean saveVideo(VideoCreateDTO videoCreateDTO);
 
     /**
      * 根据id获取视频播放信息

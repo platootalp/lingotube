@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @since 2024-03-20 14:59:05
  */
 @RestController
-@RequestMapping("/umsRole")
+@RequestMapping("/admin/role")
 public class UmsRoleController {
 
 }

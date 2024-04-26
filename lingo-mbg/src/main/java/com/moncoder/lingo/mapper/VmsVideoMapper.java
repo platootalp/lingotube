@@ -49,9 +49,10 @@ public interface VmsVideoMapper extends BaseMapper<VmsVideo> {
      * @param levelName
      * @return
      */
-    @Select("SELECT * FROM vms_video WHERE enable = 1 AND id != #{id} AND level_name = #{levelName} LIMIT #{num}")
+    @Select("SELECT * FROM vms_video WHERE is_enable = 1 AND id != #{id} AND level_name = #{levelName} LIMIT #{num}")
     List<VmsVideo> selectRelatedVideos(@Param("id") Integer id,
                                        @Param("levelName") String levelName,
                                        @Param("num") Integer num);
 }
+
 

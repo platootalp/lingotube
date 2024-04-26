@@ -2,6 +2,9 @@ package com.moncoder.lingo.video.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.entity.VmsLevel;
+import com.moncoder.lingo.video.domain.vo.LevelVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,9 @@ import com.moncoder.lingo.entity.VmsLevel;
  */
 public interface IVmsLevelService extends IService<VmsLevel> {
 
+    /**
+     * 获取全部视频等级
+     * @return
+     */
+    List<LevelVO> getAllLevel();
 }

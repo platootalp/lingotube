@@ -1,6 +1,5 @@
 server:
   port: 8083
-
 spring:
   mvc:
     pathmatch:
@@ -26,7 +25,10 @@ spring:
         max-active: 8
         # 连接池最大阻塞等待时间 负值表示没有限制
         max-wait: 1000ms
-
+  servlet:
+    multipart:
+      max-file-size: 200MB # 单文件上传大小
+      max-request-size: 1GB # 总文件大小
 knife4j:
   enable: true
   openapi:
@@ -42,3 +44,7 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.moncoder.lingo.admin.controller
+logging:
+  level:
+    root: info
+    com.moncoder: debug

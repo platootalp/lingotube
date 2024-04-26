@@ -57,4 +57,15 @@ public interface VideoConstant {
      * 首页视频键过期时间
      */
     Long VMS_VIDEO_HOME_EXPIRE = 7 * 24 * 60 * 60L;
+
+
+    /**
+     * 视频分类键名
+     */
+    String VMS_VIDEO_CATEGORY_KEY = "lingo:vms:video:category";
+
+    /**
+     * 视频等级键名
+     */
+    String VMS_VIDEO_LEVEL_KEY = "lingo:vms:video:level";
 }

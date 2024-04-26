@@ -1,18 +1,18 @@
 package com.moncoder.lingo.video.controller;
 
+import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.common.constant.VideoConstant;
-import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
 import com.moncoder.lingo.video.domain.vo.VideoPlayVO;
 import com.moncoder.lingo.video.domain.vo.VideoViewVO;
+import com.moncoder.lingo.video.domain.vo.VideoWatchLaterVO;
 import com.moncoder.lingo.video.service.IVmsVideoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -32,30 +32,6 @@ public class VmsVideoController {
 
     @Autowired
     private IVmsVideoService videoService;
-
-    @ApiOperation("上传视频")
-    @PostMapping("/upload")
-    public Result<String> uploadVideo(@RequestParam("file") MultipartFile videoFile) {
-        String videoUrl = videoService.uploadVideo(videoFile);
-        return Result.success(videoUrl);
-    }
-
-    @ApiOperation("上传视频缩略图")
-    @PostMapping("/thumbnail/upload")
-    public Result<String> uploadVideoThumbnail(@RequestParam("file") MultipartFile thumbnailFile) {
-        String thumbnailUrl = videoService.uploadVideoThumbnail(thumbnailFile);
-        return Result.success(thumbnailUrl);
-    }
-
-    @ApiOperation("保存视频信息")
-    @PostMapping("/save")
-    public Result<String> saveVideo(@RequestBody @Valid VideoCreateDTO videoCreateDTO) {
-        boolean flag = videoService.saveVideo(videoCreateDTO);
-        if (!flag) {
-            return Result.failed();
-        }
-        return Result.success();
-    }
 
     @ApiOperation("根据id获取视频播放信息")
     @GetMapping("/{id}")
@@ -89,5 +65,16 @@ public class VmsVideoController {
         List<VideoViewVO> videos = videoService.getRelatedVideos(id, levelName,
                 VideoConstant.VMS_RELATED_VIDEO_COUNT);
         return Result.success(videos);
+    }
+
+    @ApiOperation("获取分类id下所有视频（分页）")
+    @GetMapping("/category/page")
+    public Result<LPage<VideoViewVO>> getPage(@RequestParam @NotNull Integer categoryId,
+                                              @RequestParam(defaultValue = "1") Long pageNum,
+                                              @RequestParam(defaultValue = "10") Long pageSize,
+                                              @RequestParam(required = false) List<Integer> levelIds,
+                                              @RequestParam List<Integer> duration,
+                                              @RequestParam Integer sortBy) {
+        return Result.failed();
     }
 }

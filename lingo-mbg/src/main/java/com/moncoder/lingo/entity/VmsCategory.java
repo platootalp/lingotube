@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -11,16 +12,16 @@ import lombok.Setter;
 
 /**
  * <p>
- * 电影分类表
+ * 视频分类表
  * </p>
  *
  * @author moncoder
- * @since 2024-03-28 15:51:18
+ * @since 2024-04-26 14:07:41
  */
 @Getter
 @Setter
 @TableName("vms_category")
-@ApiModel(value = "VmsCategory对象", description = "电影分类表")
+@ApiModel(value = "VmsCategory对象", description = "视频分类表")
 public class VmsCategory implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -35,6 +36,12 @@ public class VmsCategory implements Serializable {
     @ApiModelProperty("分类描述")
     private String description;
 
-    @ApiModelProperty("父分类ID（用于支持多级分类）")
-    private Integer parentId;
+    @ApiModelProperty("是否有效，0：无效，1：有效")
+    private Byte isEnable;
+
+    @ApiModelProperty("创建时间")
+    private LocalDateTime createdTime;
+
+    @ApiModelProperty("更新时间")
+    private LocalDateTime updateTime;
 }

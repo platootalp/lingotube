@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
  * <p>
- * 电影分类表 Mapper 接口
+ * 视频分类表 Mapper 接口
  * </p>
  *
  * @author moncoder
- * @since 2024-03-28 15:51:18
+ * @since 2024-04-26 14:07:41
  */
 public interface VmsCategoryMapper extends BaseMapper<VmsCategory> {
 

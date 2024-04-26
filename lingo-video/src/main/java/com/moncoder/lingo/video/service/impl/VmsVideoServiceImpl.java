@@ -10,8 +10,6 @@ import com.moncoder.lingo.entity.*;
 import com.moncoder.lingo.mapper.VmsVideoMapper;
 import com.moncoder.lingo.video.client.OssClient;
 import com.moncoder.lingo.video.client.UserClient;
-import com.moncoder.lingo.video.domain.dto.VideoCreateDTO;
-import com.moncoder.lingo.video.domain.vo.UserShowInfoVO;
 import com.moncoder.lingo.video.domain.vo.VideoPlayVO;
 import com.moncoder.lingo.video.domain.vo.VideoViewVO;
 import com.moncoder.lingo.video.service.*;
@@ -19,9 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,26 +53,6 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
     private OssClient ossClient;
     @Autowired
     private UserClient userClient;
-
-    @Override
-    public String uploadVideo(MultipartFile videoFile) {
-        return ossClient.uploadVideo(videoFile).getData();
-    }
-
-    @Override
-    public String uploadVideoThumbnail(MultipartFile thumbnailFile) {
-        return ossClient.uploadVideoThumbnail(thumbnailFile).getData();
-    }
-
-    @Override
-    public boolean saveVideo(VideoCreateDTO videoCreateDTO) {
-        VmsVideo video = new VmsVideo();
-        BeanUtils.copyProperties(videoCreateDTO, video);
-        UserShowInfoVO userShowInfo = userClient.getUserShowInfo(video.getUploaderId()).getData();
-        video.setUploaderNickname(userShowInfo.getNickname());
-        video.setUploaderAvatar(userShowInfo.getAvatar());
-        return save(video);
-    }
 
     @Override
     public VideoPlayVO getVideo(Integer id) {

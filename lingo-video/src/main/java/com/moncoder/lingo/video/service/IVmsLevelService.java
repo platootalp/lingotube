@@ -18,7 +18,16 @@ public interface IVmsLevelService extends IService<VmsLevel> {
 
     /**
      * 获取全部视频等级
+     *
      * @return
      */
     List<LevelVO> getAllLevel();
+
+    /**
+     * 根据id获取等级
+     *
+     * @param id
+     * @return
+     */
+    LevelVO getLevelById(Integer id);
 }

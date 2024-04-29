@@ -38,7 +38,7 @@ public class VmsCategoryController {
         return Result.success(categoryVOS);
     }
 
-    @ApiOperation("根据id获取分类")
+    @ApiOperation("根据id获取分类信息")
     @GetMapping("/{id}")
     public Result<CategoryVO> getCategoryById(@PathVariable @NotNull Integer id) {
         CategoryVO categoryVO = categoryService.getCategoryById(id);

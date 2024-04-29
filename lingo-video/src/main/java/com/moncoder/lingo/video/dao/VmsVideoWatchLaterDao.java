@@ -22,7 +22,8 @@ public interface VmsVideoWatchLaterDao {
      * @param sort
      * @return
      */
-    List<VideoWatchLaterVO> selectListByUserId(Integer userId, Integer sort);
+    List<VideoWatchLaterVO> selectListByUserId(@Param("userId") Integer userId,
+                                               @Param("sort") Integer sort);
 
     /**
      * 根据用户id查询所有稍后再看记录（分页）

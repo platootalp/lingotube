@@ -8,9 +8,11 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -34,5 +36,12 @@ public class VmsLevelController {
     public Result<List<LevelVO>> getAllLevel() {
         List<LevelVO> levelVOS = levelService.getAllLevel();
         return Result.success(levelVOS);
+    }
+
+    @ApiOperation("根据id获取分类信息")
+    @GetMapping("/{id}")
+    public Result<LevelVO> getLevelById(@PathVariable @NotNull Integer id) {
+        LevelVO levelVO = levelService.getLevelById(id);
+        return Result.success(levelVO);
     }
 }

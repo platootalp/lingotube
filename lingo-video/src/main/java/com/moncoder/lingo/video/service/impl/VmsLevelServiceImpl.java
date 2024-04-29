@@ -55,9 +55,28 @@ public class VmsLevelServiceImpl extends ServiceImpl<VmsLevelMapper, VmsLevel> i
         }).collect(Collectors.toList());
         // 加载到缓存
         Map<String, Object> levelVOMap = levelVOS.stream()
-                .collect(Collectors.toMap(levelVO-> String.valueOf(levelVO.getId())
+                .collect(Collectors.toMap(levelVO -> String.valueOf(levelVO.getId())
                         , levelVO -> levelVO));
         redisService.hSetAll(VideoConstant.VMS_VIDEO_LEVEL_KEY, levelVOMap);
         return levelVOS;
+    }
+
+    @Override
+    public LevelVO getLevelById(Integer id) {
+        // 1. 从缓存中获取
+        Object value = redisService.hGet(VideoConstant.VMS_VIDEO_LEVEL_KEY, String.valueOf(id));
+        // 检查value是否为LevelVO类型
+        if (value instanceof LevelVO levelVO) {
+            return levelVO;
+        } else {
+            // 2. 缓存中没有再从数据库中获取
+            VmsLevel level = lambdaQuery().eq(VmsLevel::getId, id)
+                    .eq(VmsLevel::getIsEnable, (byte) 1)
+                    .one();
+            LevelVO levelVO = new LevelVO();
+            BeanUtils.copyProperties(level, levelVO);
+            redisService.hSet(VideoConstant.VMS_VIDEO_LEVEL_KEY, String.valueOf(id), levelVO);
+            return levelVO;
+        }
     }
 }

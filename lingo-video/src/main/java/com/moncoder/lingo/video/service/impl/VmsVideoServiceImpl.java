@@ -1,8 +1,11 @@
 package com.moncoder.lingo.video.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.common.constant.VideoConstant;
 import com.moncoder.lingo.common.exception.ApiException;
 import com.moncoder.lingo.common.service.IRedisService;
@@ -10,8 +13,10 @@ import com.moncoder.lingo.entity.*;
 import com.moncoder.lingo.mapper.VmsVideoMapper;
 import com.moncoder.lingo.video.client.OssClient;
 import com.moncoder.lingo.video.client.UserClient;
+import com.moncoder.lingo.video.dao.VmsVideoDao;
 import com.moncoder.lingo.video.domain.vo.VideoPlayVO;
 import com.moncoder.lingo.video.domain.vo.VideoViewVO;
+import com.moncoder.lingo.video.domain.vo.VideoWatchHistoryVO;
 import com.moncoder.lingo.video.service.*;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,23 +41,21 @@ import java.util.stream.Collectors;
 public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> implements IVmsVideoService {
 
     @Autowired
-    private IVmsUserFavoriteFolderService favoriteFolderService;
-    @Autowired
-    private IVmsUserFavoriteFolderVideoService favoriteFolderVideoService;
-    @Autowired
-    private VmsVideoMapper videoMapper;
-    @Autowired
-    private IRedisService redisService;
-    @Autowired
     private IVmsHomeLatestVideoService latestVideoService;
     @Autowired
     private IVmsHomeTrendingVideoService trendingVideoService;
     @Autowired
     private IVmsHomeRecommendedVideoService recommendedVideoService;
     @Autowired
-    private OssClient ossClient;
+    private IVmsUserFavoriteFolderService favoriteFolderService;
     @Autowired
-    private UserClient userClient;
+    private IVmsUserFavoriteFolderVideoService favoriteFolderVideoService;
+    @Autowired
+    private IRedisService redisService;
+    @Autowired
+    private VmsVideoMapper videoMapper;
+    @Autowired
+    private VmsVideoDao videoDao;
 
     @Override
     public VideoPlayVO getVideo(Integer id) {
@@ -215,6 +218,28 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
         }).collect(Collectors.toList());
     }
 
+    @Override
+    public LPage<VideoViewVO> getPageByCategoryId(Integer categoryId, Long curPage, Long pageSize, Integer sort) {
+        IPage<VideoViewVO> page = new Page<>(curPage, pageSize);
+        IPage<VideoViewVO> videoViewVOIPage
+                = videoDao.selectPageByCategoryId(page, categoryId, sort);
+        return LPage.restPage(videoViewVOIPage);
+    }
+
+    @Override
+    public LPage<VideoViewVO> getPageByLevelId(Integer levelId, Long curPage, Long pageSize, Integer sort) {
+        IPage<VideoViewVO> page = new Page<>(curPage, pageSize);
+        IPage<VideoViewVO> videoViewVOIPage
+                = videoDao.selectPageByLevelId(page, levelId, sort);
+        return LPage.restPage(videoViewVOIPage);
+    }
+
+    @Override
+    public boolean addVideoViews(Integer id, Integer num) {
+        return lambdaUpdate().eq(VmsVideo::getId, id)
+                .setIncrBy(VmsVideo::getViews, num)
+                .update();
+    }
 
     /**
      * 保存视频的通用辅助方法

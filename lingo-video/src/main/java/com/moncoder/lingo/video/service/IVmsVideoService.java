@@ -1,9 +1,11 @@
 package com.moncoder.lingo.video.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.entity.VmsVideo;
 import com.moncoder.lingo.video.domain.vo.VideoPlayVO;
 import com.moncoder.lingo.video.domain.vo.VideoViewVO;
+import io.swagger.models.auth.In;
 
 import java.util.List;
 
@@ -75,4 +77,31 @@ public interface IVmsVideoService extends IService<VmsVideo> {
      */
     List<VideoViewVO> getRelatedVideos(Integer id, String levelName,int num);
 
+    /**
+     * 获取分类视频（分页）
+     * @param categoryId
+     * @param curPage
+     * @param pageSize
+     * @param sort
+     * @return
+     */
+    LPage<VideoViewVO> getPageByCategoryId(Integer categoryId, Long curPage, Long pageSize, Integer sort);
+
+    /**
+     * 获取分等级的视频（分页）
+     * @param levelId
+     * @param curPage
+     * @param pageSize
+     * @param sort
+     * @return
+     */
+    LPage<VideoViewVO> getPageByLevelId(Integer levelId, Long curPage, Long pageSize, Integer sort);
+
+    /**
+     * 增加视频播放量
+     * @param id
+     * @param num
+     * @return
+     */
+    boolean addVideoViews(Integer id, Integer num);
 }

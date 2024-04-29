@@ -75,7 +75,7 @@ public class VmsVideoWatchHistoryServiceImpl extends ServiceImpl<VmsVideoWatchHi
     public LPage<VideoWatchHistoryVO> getPageByUserId(Integer userId, Long pageNum, Long pageSize,
                                                       String titleKeyWord) {
         // 1.根据用户id查询出所有VideoBrowseHistoryVO
-        Page<VideoWatchHistoryVO> page = new Page<>(pageNum, pageSize);
+        IPage<VideoWatchHistoryVO> page = new Page<>(pageNum, pageSize);
         IPage<VideoWatchHistoryVO> historyVos
                 = videoWatchHistoryDao.selectPageByUserId(page, userId, titleKeyWord);
         // 2.返回分页对象

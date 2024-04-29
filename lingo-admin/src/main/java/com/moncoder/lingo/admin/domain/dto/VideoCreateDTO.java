@@ -34,14 +34,12 @@ public class VideoCreateDTO {
     @ApiModelProperty("视频时长（秒）")
     private Integer duration;
     @NotNull
-    @ApiModelProperty("上传者ID，外键，关联用户表")
-    private Integer uploaderId;
-    @ApiModelProperty("视频等级id，外键，关联等级表")
-    private Integer levelId;
-    @ApiModelProperty("等级名称")
-    private String levelName;
     @ApiModelProperty("视频分类id，外键，关联分类表")
     private Integer categoryId;
-    @ApiModelProperty("分类名称")
-    private String categoryName;
+    @NotNull
+    @ApiModelProperty("视频等级id，外键，关联等级表")
+    private Integer levelId;
+    @NotNull
+    @ApiModelProperty("上传者ID，外键，关联用户表")
+    private Integer uploaderId;
 }

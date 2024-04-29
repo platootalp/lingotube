@@ -38,10 +38,17 @@ public class VmsLevelController {
         return Result.success(levelVOS);
     }
 
-    @ApiOperation("根据id获取分类信息")
+    @ApiOperation("根据id获取等级信息")
     @GetMapping("/{id}")
     public Result<LevelVO> getLevelById(@PathVariable @NotNull Integer id) {
         LevelVO levelVO = levelService.getLevelById(id);
         return Result.success(levelVO);
+    }
+
+    @ApiOperation("根据id获取等级名称")
+    @GetMapping("/name/{id}")
+    public Result<String> getLevelName(@PathVariable @NotNull Integer id) {
+        String levelName = levelService.getLevelName(id);
+        return Result.success(levelName);
     }
 }

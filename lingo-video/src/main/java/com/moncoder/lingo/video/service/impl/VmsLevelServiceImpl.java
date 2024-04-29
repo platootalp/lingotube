@@ -79,4 +79,11 @@ public class VmsLevelServiceImpl extends ServiceImpl<VmsLevelMapper, VmsLevel> i
             return levelVO;
         }
     }
+
+    @Override
+    public String getLevelName(Integer id) {
+        return lambdaQuery().eq(VmsLevel::getId, id)
+                .eq(VmsLevel::getIsEnable, (byte) 1)
+                .one().getName();
+    }
 }

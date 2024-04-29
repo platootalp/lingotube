@@ -85,5 +85,12 @@ public class VmsCategoryServiceImpl extends ServiceImpl<VmsCategoryMapper, VmsCa
         }
     }
 
+    @Override
+    public String getCategoryName(Integer id) {
+        return lambdaQuery().eq(VmsCategory::getId, id)
+                .eq(VmsCategory::getIsEnable, (byte) 1)
+                .one().getName();
+    }
+
 
 }

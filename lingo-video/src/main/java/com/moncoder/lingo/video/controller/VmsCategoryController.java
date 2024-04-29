@@ -44,4 +44,12 @@ public class VmsCategoryController {
         CategoryVO categoryVO = categoryService.getCategoryById(id);
         return Result.success(categoryVO);
     }
+
+    @ApiOperation("根据id获取分类名称")
+    @GetMapping("/name/{id}")
+    public Result<String> getCategoryName(@PathVariable @NotNull Integer id) {
+        String categoryName = categoryService.getCategoryName(id);
+        return Result.success(categoryName);
+    }
+
 }

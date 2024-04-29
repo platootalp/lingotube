@@ -3,6 +3,7 @@ package com.moncoder.lingo.admin.service.impl;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.moncoder.lingo.admin.client.OssClient;
 import com.moncoder.lingo.admin.client.UserClient;
+import com.moncoder.lingo.admin.client.VideoClient;
 import com.moncoder.lingo.admin.domain.dto.VideoCreateDTO;
 import com.moncoder.lingo.admin.domain.vo.UserShowInfoVO;
 import com.moncoder.lingo.admin.service.IVmsVideoService;
@@ -29,6 +30,8 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
     private OssClient ossClient;
     @Autowired
     private UserClient userClient;
+    @Autowired
+    private VideoClient videoClient;
 
     @Override
     public String uploadVideo(MultipartFile videoFile) {
@@ -42,9 +45,18 @@ public class VmsVideoServiceImpl extends ServiceImpl<VmsVideoMapper, VmsVideo> i
 
     @Override
     public boolean saveVideo(VideoCreateDTO videoCreateDTO) {
+        Integer categoryId = videoCreateDTO.getCategoryId();
+        Integer levelId = videoCreateDTO.getLevelId();
+        Integer uploaderId = videoCreateDTO.getUploaderId();
+
+        String categoryName = videoClient.getCategoryName(categoryId).getData();
+        String levelName = videoClient.getLevelName(levelId).getData();
+        UserShowInfoVO userShowInfo = userClient.getUserShowInfo(uploaderId).getData();
+
         VmsVideo video = new VmsVideo();
         BeanUtils.copyProperties(videoCreateDTO, video);
-        UserShowInfoVO userShowInfo = userClient.getUserShowInfo(video.getUploaderId()).getData();
+        video.setCategoryName(categoryName);
+        video.setLevelName(levelName);
         video.setUploaderNickname(userShowInfo.getNickname());
         video.setUploaderAvatar(userShowInfo.getAvatar());
         return save(video);

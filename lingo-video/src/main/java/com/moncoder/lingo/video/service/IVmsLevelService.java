@@ -30,4 +30,12 @@ public interface IVmsLevelService extends IService<VmsLevel> {
      * @return
      */
     LevelVO getLevelById(Integer id);
+
+    /**
+     * 根据id获取等级名称
+     *
+     * @param id
+     * @return
+     */
+    String getLevelName(Integer id);
 }

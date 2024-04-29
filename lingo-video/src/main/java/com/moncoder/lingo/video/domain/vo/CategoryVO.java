@@ -15,7 +15,7 @@ import lombok.Setter;
 @Setter
 @ApiModel("视频分类返回值")
 public class CategoryVO {
-    @ApiModelProperty("分类唯一标识ID")
+    @ApiModelProperty("分类唯一标识id")
     private Integer id;
     @ApiModelProperty("分类名称")
     private String name;

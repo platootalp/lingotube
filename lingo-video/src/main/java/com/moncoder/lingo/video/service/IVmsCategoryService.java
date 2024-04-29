@@ -30,4 +30,12 @@ public interface IVmsCategoryService extends IService<VmsCategory> {
      * @return
      */
     CategoryVO getCategoryById(Integer id);
+
+    /**
+     * 根据id获取分类名
+     *
+     * @param id
+     * @return
+     */
+    String getCategoryName(Integer id);
 }

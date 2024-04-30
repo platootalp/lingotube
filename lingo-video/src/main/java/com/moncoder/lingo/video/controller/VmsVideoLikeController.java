@@ -71,12 +71,9 @@ public class VmsVideoLikeController {
 
     @ApiOperation("清空点赞记录")
     @DeleteMapping("/all")
-    public Result<String> clear(@RequestParam @NotNull Integer userId) {
-        boolean flag = videoLikeService.clear(userId);
-        if (!flag) {
-            return Result.failed();
-        }
-        return Result.success();
+    public Result<Integer> clear(@RequestParam @NotNull Integer userId) {
+        int num = videoLikeService.clear(userId);
+        return Result.success(num);
     }
 
     @ApiOperation("批量删除点赞记录")

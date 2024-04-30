@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -78,10 +79,15 @@ public class VmsVideoWatchLaterServiceImpl extends ServiceImpl<VmsVideoWatchLate
     }
 
     @Override
-    public boolean deleteWatch(Integer userId) {
-        return lambdaUpdate().eq(VmsVideoWatchLater::getUserId, userId)
+    public int deleteWatched(Integer userId) {
+        List<Integer> ids = lambdaQuery().eq(VmsVideoWatchLater::getUserId, userId)
                 .eq(VmsVideoWatchLater::getIsWatched, (byte) 1)
-                .remove();
+                .list()
+                .stream().map(VmsVideoWatchLater::getId).collect(Collectors.toList());
+        if (ids.size() == 0) {
+            return 0;
+        }
+        return removeBatchByIds(ids) ? ids.size() : 0;
     }
 
     @Override

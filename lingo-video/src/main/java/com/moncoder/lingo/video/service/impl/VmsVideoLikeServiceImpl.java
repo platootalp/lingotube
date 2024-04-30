@@ -51,7 +51,7 @@ public class VmsVideoLikeServiceImpl extends ServiceImpl<VmsVideoLikeMapper, Vms
     public boolean likeVideo(Integer userId, Integer videoId) {
         // 1. 从缓存中获取视频信息，如果缓存中没有，则从数据库获取
         VideoPlayVO videoPlayVO = (VideoPlayVO) redisService.get(VideoConstant.VMS_VIDEO_PLAYER_KEY + videoId);
-        Integer likes = 0;
+        Integer likes;
         if (videoPlayVO == null) {
             likes = videoService.getById(videoId).getLikes();
         } else {
@@ -114,24 +114,28 @@ public class VmsVideoLikeServiceImpl extends ServiceImpl<VmsVideoLikeMapper, Vms
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean clear(Integer userId) {
-        // 获取点赞记录中的videoId
+    public int clear(Integer userId) {
+        // 1.获取点赞记录中的videoId
         List<Integer> videoIds = lambdaQuery().eq(VmsVideoLike::getUserId, userId)
                 .eq(VmsVideoLike::getIsLiked, (byte) 1).list()
                 .stream().map(VmsVideoLike::getVideoId).collect(Collectors.toList());
-        // 更新数据库
+        // 2.判断点赞记录是否为0
+        if(videoIds.size() == 0){
+            return 0;
+        }
+        // 3.更新数据库
         lambdaUpdate().eq(VmsVideoLike::getUserId, userId)
                 .eq(VmsVideoLike::getIsLiked, (byte) 1)
                 .remove();
         videoService.lambdaUpdate().in(VmsVideo::getId, videoIds)
                 .setSql("likes = likes - 1")
                 .update();
-        // 删除缓存
+        // 4.删除缓存
         List<String> keys = videoIds.stream()
                 .map(videoId -> VideoConstant.VMS_VIDEO_PLAYER_KEY + videoId)
                 .collect(Collectors.toList());
         redisService.deleteBatch(keys);
-        return true;
+        return videoIds.size();
     }
 
     @Override

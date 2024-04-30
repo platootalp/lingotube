@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * <p>
@@ -29,14 +30,14 @@ public class VmsVideoController {
 
     @ApiOperation("上传视频")
     @PostMapping("/upload")
-    public Result<String> uploadVideo(@RequestParam("file") MultipartFile videoFile) {
+    public Result<String> uploadVideo(@RequestParam("file") @NotNull MultipartFile videoFile) {
         String videoUrl = videoService.uploadVideo(videoFile);
         return Result.success(videoUrl);
     }
 
     @ApiOperation("上传视频缩略图")
     @PostMapping("/thumbnail/upload")
-    public Result<String> uploadVideoThumbnail(@RequestParam("file") MultipartFile thumbnailFile) {
+    public Result<String> uploadVideoThumbnail(@RequestParam("file") @NotNull MultipartFile thumbnailFile) {
         String thumbnailUrl = videoService.uploadVideoThumbnail(thumbnailFile);
         return Result.success(thumbnailUrl);
     }

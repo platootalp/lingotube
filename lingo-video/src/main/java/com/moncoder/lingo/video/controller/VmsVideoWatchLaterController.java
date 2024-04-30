@@ -8,6 +8,7 @@ import com.moncoder.lingo.video.service.IVmsVideoWatchLaterService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,12 +61,9 @@ public class VmsVideoWatchLaterController {
 
     @ApiOperation("删除已观看视频")
     @DeleteMapping("/watched")
-    public Result<String> deleteWatched(@RequestParam @NotNull Integer userId) {
-        boolean flag = videoWatchLaterService.deleteWatch(userId);
-        if (!flag) {
-            return Result.failed();
-        }
-        return Result.success();
+    public Result<Integer> deleteWatched(@RequestParam @NotNull Integer userId) {
+        int num = videoWatchLaterService.deleteWatched(userId);
+        return Result.success(num);
     }
 
     @ApiOperation("删除稍后再看记录")

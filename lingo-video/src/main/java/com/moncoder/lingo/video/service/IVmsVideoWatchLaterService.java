@@ -48,7 +48,7 @@ public interface IVmsVideoWatchLaterService extends IService<VmsVideoWatchLater>
      * @param userId
      * @return
      */
-    boolean deleteWatch(Integer userId);
+    int deleteWatched(Integer userId);
 
     /**
      * 删除稍后再看记录

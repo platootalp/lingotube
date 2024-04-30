@@ -55,6 +55,7 @@ public interface IVmsVideoLikeService extends IService<VmsVideoLike> {
 
     /**
      * 删除点赞记录
+     *
      * @param userId
      * @param videoId
      * @return
@@ -63,10 +64,11 @@ public interface IVmsVideoLikeService extends IService<VmsVideoLike> {
 
     /**
      * 清空点赞记录
+     *
      * @param userId
      * @return
      */
-    boolean clear(Integer userId);
+    int clear(Integer userId);
 
     /**
      * @param userId

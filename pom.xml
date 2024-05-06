@@ -22,6 +22,7 @@
         <module>lingo-oss</module>
         <module>lingo-user</module>
         <module>lingo-video</module>
+        <module>lingo-vocabulary</module>
         <module>lingo-admin</module>
         <module>lingo-search</module>
     </modules>

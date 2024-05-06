@@ -17,4 +17,11 @@ import java.util.List;
 public interface IVmsHomeTrendingVideoService extends IService<VmsHomeTrendingVideo> {
 
     List<VideoViewVO> getTrendingVideos();
+
+    /**
+     * 取消首页推荐
+     *
+     * @return
+     */
+    boolean disableTrendingVideos();
 }

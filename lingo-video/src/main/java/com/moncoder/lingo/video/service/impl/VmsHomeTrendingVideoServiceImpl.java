@@ -27,7 +27,8 @@ import java.util.stream.Collectors;
  * @since 2024-04-14 13:18:20
  */
 @Service
-public class VmsHomeTrendingVideoServiceImpl extends ServiceImpl<VmsHomeTrendingVideoMapper, VmsHomeTrendingVideo> implements IVmsHomeTrendingVideoService {
+public class VmsHomeTrendingVideoServiceImpl extends ServiceImpl<VmsHomeTrendingVideoMapper, VmsHomeTrendingVideo>
+        implements IVmsHomeTrendingVideoService {
 
     @Autowired
     private IRedisService redisService;
@@ -59,5 +60,18 @@ public class VmsHomeTrendingVideoServiceImpl extends ServiceImpl<VmsHomeTrending
             BeanUtils.copyProperties(video, videoViewVO);
             return videoViewVO;
         }).collect(Collectors.toList());
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean disableTrendingVideos() {
+        // 1.取消所有推荐视频
+        lambdaUpdate().eq(VmsHomeTrendingVideo::getStatus,(byte)1)
+                .set(VmsHomeTrendingVideo::getStatus,(byte)0)
+                .update();
+
+        // 2.删除缓存
+        redisService.delete(VideoConstant.VMS_VIDEO_HOME_TRENDING_KEY);
+        return true;
     }
 }

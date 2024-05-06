@@ -6,7 +6,7 @@
         SELECT *
         FROM vms_video
         WHERE is_enable = 1
-        ORDER BY create_time DESC
+        ORDER BY upload_time DESC
             LIMIT #{num}
     </select>
 
@@ -14,7 +14,7 @@
         SELECT *
         FROM vms_video
         WHERE is_enable = 1
-        ORDER BY views DESC, comments DESC, likes DESC, favorites DESC
+        ORDER BY views DESC, comments DESC, shares DESC, likes DESC, favorites DESC
             LIMIT #{num}
     </select>
 

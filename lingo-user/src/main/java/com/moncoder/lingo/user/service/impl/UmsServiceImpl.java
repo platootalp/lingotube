@@ -95,12 +95,12 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
         if (userRegisterDTO == null) {
             throw new NullPointerException("参数不能为null！");
         }
-        // 2.手机号格式验证
+        // 2.邮箱号格式验证
         String email = userRegisterDTO.getEmail();
         if (!RegexUtil.isEmail(email)) {
             throw new IllegalArgumentException("邮箱格式不正确！");
         }
-        // 3.判断电话是否已经被注册
+        // 3.判断邮箱是否已经被注册
         List<UmsUser> list = lambdaQuery().eq(UmsUser::getEmail, email).list();
         if (list.size() > 0) {
             throw new ApiException("邮箱已经注册过了！");

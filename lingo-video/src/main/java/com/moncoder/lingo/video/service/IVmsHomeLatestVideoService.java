@@ -17,4 +17,6 @@ import java.util.List;
 public interface IVmsHomeLatestVideoService extends IService<VmsHomeLatestVideo> {
 
     List<VideoViewVO> getLatestVideos();
+
+    boolean disableLatestVideos();
 }

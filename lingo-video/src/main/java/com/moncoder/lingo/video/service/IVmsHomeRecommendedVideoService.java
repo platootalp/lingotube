@@ -21,4 +21,10 @@ public interface IVmsHomeRecommendedVideoService extends IService<VmsHomeRecomme
      * @return
      */
     List<VideoViewVO> getRecommendedVideos();
+
+    /**
+     * 取消首页推荐
+     * @return
+     */
+    boolean disableRecommendedVideos();
 }

@@ -3,6 +3,7 @@ package com.moncoder.lingo.video.service.impl;
 import com.moncoder.lingo.common.constant.VideoConstant;
 import com.moncoder.lingo.common.service.IRedisService;
 import com.moncoder.lingo.entity.VmsHomeRecommendedVideo;
+import com.moncoder.lingo.entity.VmsHomeTrendingVideo;
 import com.moncoder.lingo.mapper.VmsHomeRecommendedVideoMapper;
 import com.moncoder.lingo.video.domain.vo.VideoViewVO;
 import com.moncoder.lingo.video.service.IVmsHomeRecommendedVideoService;
@@ -60,5 +61,17 @@ public class VmsHomeRecommendedVideoServiceImpl extends ServiceImpl<VmsHomeRecom
             BeanUtils.copyProperties(video, videoViewVO);
             return videoViewVO;
         }).collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean disableRecommendedVideos() {
+        // 1.取消所有推荐视频
+        lambdaUpdate().eq(VmsHomeRecommendedVideo::getStatus,(byte)1)
+                .set(VmsHomeRecommendedVideo::getStatus,(byte)0)
+                .update();
+
+        // 2.删除缓存
+        redisService.delete(VideoConstant.VMS_VIDEO_HOME_RECOMMENDED_KEY);
+        return true;
     }
 }

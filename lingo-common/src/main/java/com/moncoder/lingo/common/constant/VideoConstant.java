@@ -44,14 +44,29 @@ public interface VideoConstant {
     String VMS_VIDEO_HOME_TRENDING_KEY = "lingo:vms:video:home:trending:";
 
     /**
+     * 首页热门视频个数
+     */
+    Integer VMS_VIDEO_HOME_TRENDING_NUM = 6;
+
+    /**
      * 首页最新视频键名
      */
     String VMS_VIDEO_HOME_LATEST_KEY = "lingo:vms:video:home:latest:";
 
     /**
+     * 首页最新视频个数
+     */
+    Integer VMS_VIDEO_HOME_LATEST_NUM = 6;
+
+    /**
      * 首页推荐视频键名
      */
     String VMS_VIDEO_HOME_RECOMMENDED_KEY = "lingo:vms:video:home:recommended:";
+
+    /**
+     * 首页推荐视频个数
+     */
+    Integer VMS_VIDEO_HOME_RECOMMENDED_NUM = 6;
 
     /**
      * 首页视频键过期时间

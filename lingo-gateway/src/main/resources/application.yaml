@@ -20,6 +20,14 @@ spring:
           uri: lb://lingo-oss
           predicates:
             - Path=/oss/**
+        - id: lingo-search
+          uri: lb://lingo-search
+          predicates:
+            - Path=/search/**
+        - id: lingo-vocabulary
+          uri: lb://lingo-vocabulary
+          predicates:
+            - Path=/vocabulary/**
 lingo:
   tube:
     jwt:

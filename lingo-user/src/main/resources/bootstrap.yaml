@@ -5,4 +5,4 @@ spring:
     active: local
   cloud:
     nacos:
-      server-addr: 192.168.10.100 # nacos地址
+      server-addr: 127.0.0.1 # nacos地址

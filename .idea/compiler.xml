@@ -8,6 +8,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="lingo-gateway" />
+        <module name="lingo-vocabulary" />
         <module name="lingo-mbg" />
         <module name="lingo-user" />
         <module name="lingo-admin" />
@@ -35,6 +36,7 @@
       <module name="lingo-search" options="-parameters" />
       <module name="lingo-user" options="-parameters" />
       <module name="lingo-video" options="-parameters" />
+      <module name="lingo-vocabulary" options="-parameters" />
       <module name="lingotube" options="-parameters" />
     </option>
   </component>

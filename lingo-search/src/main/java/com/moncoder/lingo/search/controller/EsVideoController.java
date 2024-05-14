@@ -64,14 +64,14 @@ public class EsVideoController {
     @GetMapping("/search")
     public Result<List<EsVideo>> search(
             @RequestParam(value = "key", required = false) String key,
-            @RequestParam(value = "levelName", required = false) String levelName,
-            @RequestParam(value = "categoryName", required = false) String categoryName,
+            @RequestParam(value = "levels", required = false) List<String> levels,
+            @RequestParam(value = "categories", required = false) List<String> categories,
             @RequestParam(value = "minDuration", defaultValue = "0") Integer minDuration,
             @RequestParam(value = "maxDuration", required = false) Integer maxDuration,
             @RequestParam(value = "sortBy", defaultValue = "1") Integer sortBy,
             @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
             @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize) {
-        List<EsVideo> result = esVideoService.search(key, levelName, categoryName,
+        List<EsVideo> result = esVideoService.search(key, levels, categories,
                 minDuration, maxDuration, sortBy, pageNum, pageSize);
         return Result.success(result);
     }

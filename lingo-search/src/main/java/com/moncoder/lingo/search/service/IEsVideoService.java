@@ -53,14 +53,14 @@ public interface IEsVideoService {
      * 搜索
      *
      * @param key
-     * @param levelName
-     * @param categoryName
+     * @param levels
+     * @param categories
      * @param sortBy
      * @param pageNum
      * @param pageSize
      * @return
      */
-    List<EsVideo> search(String key, String levelName, String categoryName,
+    List<EsVideo> search(String key, List<String> levels, List<String> categories,
                          Integer minDuration, Integer maxDuration,
                          Integer sortBy, Integer pageNum, Integer pageSize);
 }

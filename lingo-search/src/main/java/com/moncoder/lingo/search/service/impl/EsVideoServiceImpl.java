@@ -1,6 +1,7 @@
 package com.moncoder.lingo.search.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
@@ -12,6 +13,7 @@ import com.moncoder.lingo.search.domain.EsVideo;
 import com.moncoder.lingo.search.repository.EsVideoRepository;
 import com.moncoder.lingo.search.service.IElasticSearchService;
 import com.moncoder.lingo.search.service.IEsVideoService;
+import org.apache.lucene.queryparser.xml.QueryBuilder;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
@@ -22,7 +24,6 @@ import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -119,7 +120,7 @@ public class EsVideoServiceImpl implements IEsVideoService {
     }
 
     @Override
-    public List<EsVideo> search(String key, String levelName, String categoryName,
+    public List<EsVideo> search(String key, List<String> levels, List<String> categories,
                                 Integer minDuration, Integer maxDuration,
                                 Integer sortBy, Integer pageNum, Integer pageSize) {
         // 1.准备Request对象
@@ -129,11 +130,11 @@ public class EsVideoServiceImpl implements IEsVideoService {
         if (StrUtil.isNotBlank(key)) {
             boolQuery.must(QueryBuilders.multiMatchQuery(key, "title", "description", "uploaderNickname"));
         }
-        if (StrUtil.isNotBlank(levelName)) {
-            boolQuery.filter(QueryBuilders.termQuery("levelName", levelName));
+        if (CollUtil.isNotEmpty(levels)) {
+            boolQuery.filter(QueryBuilders.termsQuery("levelName", levels));
         }
-        if (StrUtil.isNotBlank(categoryName)) {
-            boolQuery.filter(QueryBuilders.termQuery("categoryName", categoryName));
+        if (CollUtil.isNotEmpty(categories)) {
+            boolQuery.filter(QueryBuilders.termsQuery("categoryName", categories));
         }
         if (minDuration != null) {
             boolQuery.filter(QueryBuilders.rangeQuery("duration").gte(minDuration));

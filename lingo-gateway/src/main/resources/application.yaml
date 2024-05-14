@@ -53,6 +53,7 @@ lingo:
         - /admin/**
         - /home/**
         - /video/**
+        - /search/**
 logging:
   level:
     root: info

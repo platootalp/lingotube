@@ -47,6 +47,9 @@
         <knife4j.version>4.1.0</knife4j.version>
         <org.projectlombok.version>1.18.20</org.projectlombok.version>
         <hutool.version>5.8.11</hutool.version>
+        <elasticsearch.version>7.12.1</elasticsearch.version>
+        <!-- 这个版本适用于Elasticsearch 7.12.1 -->
+        <spring-data-elasticsearch.version>4.3.3</spring-data-elasticsearch.version>
     </properties>
 
     <dependencies>
@@ -202,6 +205,22 @@
                 <groupId>com.aliyun.oss</groupId>
                 <artifactId>aliyun-sdk-oss</artifactId>
                 <version>3.10.2</version>
+            </dependency>
+            <!-- Elasticsearch client -->
+            <dependency>
+                <groupId>org.elasticsearch</groupId>
+                <artifactId>elasticsearch</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-elasticsearch</artifactId>
+                <version>${spring-data-elasticsearch.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

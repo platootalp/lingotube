@@ -2,7 +2,7 @@ spring:
   application:
     name: lingo-search # 服务名称
   profiles:
-    active: dev
+    active: local
   cloud:
     nacos:
       server-addr: 127.0.0.1 # nacos地址

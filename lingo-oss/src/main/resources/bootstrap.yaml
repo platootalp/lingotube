@@ -1,7 +1,6 @@
 spring:
   application:
     name: lingo-oss # 服务名称
-spring:
   cloud:
     nacos:
       server-addr: 127.0.0.1 # nacos地址

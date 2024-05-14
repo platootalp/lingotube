@@ -40,5 +40,13 @@ public interface IElasticSearchService {
     void update(String index, Integer id, Map<String, Object> map);
 
     /****** 批量操作 ******/
-    void bulkCreate(String index, List<Integer> id, List<Object> source, Class targetClass);
+
+    /**
+     * 批量导入
+     * @param index
+     * @param map
+     * @param targetClass
+     */
+    void bulkCreate(String index, Map<Integer,Object> map, Class<?> targetClass);
+
 }

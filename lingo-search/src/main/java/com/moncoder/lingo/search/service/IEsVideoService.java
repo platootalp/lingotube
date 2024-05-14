@@ -1,6 +1,7 @@
 package com.moncoder.lingo.search.service;
 
 import com.moncoder.lingo.search.domain.EsVideo;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -14,6 +15,7 @@ public interface IEsVideoService {
 
     /**
      * 根据id导入视频到ES中
+     *
      * @param id
      * @return
      */
@@ -21,25 +23,44 @@ public interface IEsVideoService {
 
     /**
      * 从数据库中导入所有视频到ES中
+     *
      * @return
      */
     int importAll();
 
     /**
      * 删除ES中所有视频
+     *
      * @return
      */
     void deleteAll();
 
     /**
+     * 根据id删除
      *
      * @param id
      */
     void deleteById(Integer id);
 
     /**
+     * 批量删除
      *
      * @param ids
      */
     void deleteBatch(List<Integer> ids);
+
+    /**
+     * 搜索
+     *
+     * @param key
+     * @param levelName
+     * @param categoryName
+     * @param sortBy
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    List<EsVideo> search(String key, String levelName, String categoryName,
+                         Integer minDuration, Integer maxDuration,
+                         Integer sortBy, Integer pageNum, Integer pageSize);
 }

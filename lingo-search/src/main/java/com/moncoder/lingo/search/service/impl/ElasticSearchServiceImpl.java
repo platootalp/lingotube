@@ -1,5 +1,6 @@
 package com.moncoder.lingo.search.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.json.JSONUtil;
 import com.moncoder.lingo.search.service.IElasticSearchService;
 import lombok.extern.slf4j.Slf4j;
@@ -74,8 +75,21 @@ public class ElasticSearchServiceImpl implements IElasticSearchService {
     }
 
     @Override
-    public void bulkCreate(String index, List<Integer> id, List<Object> source, Class targetClass) {
-        BulkRequest bulkRequest = new BulkRequest(index);
+    public void bulkCreate(String index, Map<Integer, Object> map, Class<?> targetClass) {
+        BulkRequest request = new BulkRequest(index);
+        for (Integer id : map.keySet()) {
+            Object source = map.get(id);
+            Object target = BeanUtil.copyProperties(source, targetClass);
+            request.add(new IndexRequest(id.toString())
+                    .source(JSONUtil.toJsonStr(target),XContentType.JSON));
+        }
+        try {
+            restHighLevelClient.bulk(request, RequestOptions.DEFAULT);
+        } catch (IOException e) {
 
+            e.printStackTrace();
+        }
     }
+
+
 }

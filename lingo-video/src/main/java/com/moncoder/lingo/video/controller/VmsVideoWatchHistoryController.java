@@ -22,7 +22,7 @@ import java.util.List;
  * @author moncoder
  * @since 2024-04-03 13:40:30
  */
-@Api(tags = "视频浏览历史管理")
+@Api(tags = "视频观看历史管理")
 @RestController
 @RequestMapping("/video/history")
 public class VmsVideoWatchHistoryController {

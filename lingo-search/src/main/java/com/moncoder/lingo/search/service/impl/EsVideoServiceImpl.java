@@ -1,10 +1,9 @@
 package com.moncoder.lingo.search.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.json.JSON;
 import cn.hutool.json.JSONUtil;
+import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.common.constant.ElasticSearchConstant;
 import com.moncoder.lingo.entity.VmsVideo;
 import com.moncoder.lingo.mapper.VmsVideoMapper;
@@ -13,32 +12,30 @@ import com.moncoder.lingo.search.domain.EsVideo;
 import com.moncoder.lingo.search.repository.EsVideoRepository;
 import com.moncoder.lingo.search.service.IElasticSearchService;
 import com.moncoder.lingo.search.service.IEsVideoService;
-import org.apache.lucene.queryparser.xml.QueryBuilder;
+import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.FieldSortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 /**
@@ -47,6 +44,7 @@ import java.util.stream.Collectors;
  * @description TODO
  * @date 2024/5/13 14:30
  */
+@Slf4j
 @Service
 public class EsVideoServiceImpl implements IEsVideoService {
 
@@ -120,12 +118,12 @@ public class EsVideoServiceImpl implements IEsVideoService {
     }
 
     @Override
-    public List<EsVideo> search(String key, List<String> levels, List<String> categories,
-                                Integer minDuration, Integer maxDuration,
-                                Integer sortBy, Integer pageNum, Integer pageSize) {
+    public LPage<EsVideo> search(String key, List<String> levels, List<String> categories,
+                                 Integer minDuration, Integer maxDuration, Integer sortBy,
+                                 Integer pageNum, Integer pageSize) {
         // 1.准备Request对象
         SearchRequest request = new SearchRequest(ElasticSearchConstant.VIDEO_INDEX);
-        // 构建查询条件
+        // 2.构建查询条件
         BoolQueryBuilder boolQuery = QueryBuilders.boolQuery();
         if (StrUtil.isNotBlank(key)) {
             boolQuery.must(QueryBuilders.multiMatchQuery(key, "title", "description", "uploaderNickname"));
@@ -151,16 +149,19 @@ public class EsVideoServiceImpl implements IEsVideoService {
         } else {
             sortBuilder = SortBuilders.fieldSort("uploadTime").order(SortOrder.DESC);
         }
-        // 构建分页
+        // 设置分页参数
         int from = (pageNum - 1) * pageSize;
-        request.source().query(boolQuery)
+        request.source()
+                .query(boolQuery)
                 .sort(sortBuilder)
                 .from(from)
                 .size(pageSize);
         // 3.发送请求
         List<EsVideo> videos = new ArrayList<>();
+        long total = 0;
         try {
             SearchResponse response = restHighLevelClient.search(request, RequestOptions.DEFAULT);
+            total = response.getHits().getTotalHits().value;
             for (SearchHit hit : response.getHits().getHits()) {
                 EsVideo video = JSONUtil.toBean(hit.getSourceAsString(), EsVideo.class);
                 videos.add(video);
@@ -168,6 +169,8 @@ public class EsVideoServiceImpl implements IEsVideoService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return videos;
+        // 4.构建分页
+        long totalPage = (long) Math.ceil((double) total / pageSize);
+        return new LPage<>((long) pageNum, (long) pageSize, totalPage, total, videos);
     }
 }

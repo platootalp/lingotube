@@ -1,5 +1,6 @@
 package com.moncoder.lingo.search.controller;
 
+import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.search.domain.EsVideo;
 import com.moncoder.lingo.search.service.IEsVideoService;
@@ -26,7 +27,7 @@ public class EsVideoController {
     private IEsVideoService esVideoService;
 
     @ApiOperation("根据id导入视频到ES中")
-    @PostMapping("/")
+    @PostMapping("")
     public Result<EsVideo> create(@RequestParam Integer id) {
         EsVideo video = esVideoService.create(id);
         return Result.success(video);
@@ -61,8 +62,8 @@ public class EsVideoController {
     }
 
     @ApiOperation("搜索")
-    @GetMapping("/search")
-    public Result<List<EsVideo>> search(
+    @GetMapping("")
+    public Result<LPage<EsVideo>> search(
             @RequestParam(value = "key", required = false) String key,
             @RequestParam(value = "levels", required = false) List<String> levels,
             @RequestParam(value = "categories", required = false) List<String> categories,
@@ -71,7 +72,7 @@ public class EsVideoController {
             @RequestParam(value = "sortBy", defaultValue = "1") Integer sortBy,
             @RequestParam(value = "pageNum", defaultValue = "1") Integer pageNum,
             @RequestParam(value = "pageSize", defaultValue = "5") Integer pageSize) {
-        List<EsVideo> result = esVideoService.search(key, levels, categories,
+        LPage<EsVideo> result = esVideoService.search(key, levels, categories,
                 minDuration, maxDuration, sortBy, pageNum, pageSize);
         return Result.success(result);
     }

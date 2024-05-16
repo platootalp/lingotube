@@ -54,4 +54,5 @@ public class LPage<T> {
         result.setList(page.getRecords());
         return result;
     }
+
 }

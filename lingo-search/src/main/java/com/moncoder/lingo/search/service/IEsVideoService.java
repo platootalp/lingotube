@@ -1,5 +1,6 @@
 package com.moncoder.lingo.search.service;
 
+import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.search.domain.EsVideo;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -60,7 +61,7 @@ public interface IEsVideoService {
      * @param pageSize
      * @return
      */
-    List<EsVideo> search(String key, List<String> levels, List<String> categories,
-                         Integer minDuration, Integer maxDuration,
-                         Integer sortBy, Integer pageNum, Integer pageSize);
+    LPage<EsVideo> search(String key, List<String> levels, List<String> categories,
+                          Integer minDuration, Integer maxDuration,
+                          Integer sortBy, Integer pageNum, Integer pageSize);
 }

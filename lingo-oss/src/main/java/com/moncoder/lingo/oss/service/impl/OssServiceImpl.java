@@ -55,4 +55,9 @@ public class OssServiceImpl implements IOssService {
     public List<String> uploadBatch(List<MultipartFile> fileList, String prefix) {
         return fileList.stream().map(file -> upload(file, prefix)).collect(Collectors.toList());
     }
+
+    @Override
+    public void delete(String url) {
+        return;
+    }
 }

@@ -42,10 +42,10 @@ public class VmsVideoComment implements Serializable {
     private Integer parentId;
 
     @ApiModelProperty("用户昵称")
-    private String nickname;
+    private String userNickname;
 
     @ApiModelProperty("用户头像")
-    private String avatar;
+    private String userAvatar;
 
     @ApiModelProperty("评论的具体内容")
     private String content;

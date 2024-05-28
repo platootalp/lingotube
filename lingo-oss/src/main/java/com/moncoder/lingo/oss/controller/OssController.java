@@ -41,6 +41,13 @@ public class OssController {
         return Result.success(videoUrls);
     }
 
+    @ApiOperation("删除视频")
+    @DeleteMapping("/video")
+    public Result<String> deleteVideo(@RequestParam @NotNull String url) {
+        ossService.delete(url);
+        return Result.success();
+    }
+
     @ApiOperation("上传视频缩略图")
     @PostMapping("/upload/video/thumbnail")
     public Result<String> uploadVideoThumbnail(@RequestPart("file") @NotNull MultipartFile file) {
@@ -48,10 +55,24 @@ public class OssController {
         return Result.success(videoUrl);
     }
 
+    @ApiOperation("删除视频缩略图")
+    @DeleteMapping("video/thumbnail")
+    public Result<String> deleteVideoThumbnail(@RequestParam @NotNull String url) {
+        ossService.delete(url);
+        return Result.success();
+    }
+
     @ApiOperation("上传用户头像")
     @PostMapping("/upload/user/avatar")
     public Result<String> uploadUserAvatar(@RequestPart("file") @NotNull MultipartFile file) {
         String videoUrl = ossService.upload(file, UserConstant.UMS_USER_AVATAR_PREFIX);
         return Result.success(videoUrl);
+    }
+
+    @ApiOperation("删除头像")
+    @DeleteMapping("/user/avatar")
+    public Result<String> deleteUserAvatar(@RequestParam @NotNull String url) {
+        ossService.delete(url);
+        return Result.success();
     }
 }

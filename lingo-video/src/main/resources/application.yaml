@@ -29,6 +29,19 @@ spring:
     multipart:
       max-file-size: 200MB # 单文件上传大小
       max-request-size: 1GB # 总文件大小
+  kafka:
+    bootstrap-servers: 192.168.10.100:9092
+    producer:
+      retries: 0
+      properties:
+        linger.ms: 1
+    consumer:
+      group-id: lingo.video.consumer
+      enable-auto-commit: true
+      auto-commit-interval: 100ms
+      properties:
+        session.timeout.ms: 15000
+
 knife4j:
   enable: true
   openapi:

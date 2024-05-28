@@ -26,4 +26,6 @@ public interface IOssService {
      * @return
      */
     List<String> uploadBatch(List<MultipartFile> fileList, String prefix);
+
+    void delete(String url);
 }

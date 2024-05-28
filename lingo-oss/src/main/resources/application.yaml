@@ -16,7 +16,7 @@ aliyun:
 knife4j:
   enable: true
   openapi:
-    title: lingotube接口文档
+    title: lingotube文件模块文档
     description: "lingo-oss文档"
     email: zhanghuyi@itcast.cn
     concat: Moncoder

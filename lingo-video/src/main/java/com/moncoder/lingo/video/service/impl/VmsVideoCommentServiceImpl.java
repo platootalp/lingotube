@@ -64,8 +64,8 @@ public class VmsVideoCommentServiceImpl extends ServiceImpl<VmsVideoCommentMappe
         UserShowInfoVO userCommentInfo = userClient.getUserShowInfo(userId).getData();
         VmsVideoComment videoComment = new VmsVideoComment();
         BeanUtils.copyProperties(videoCommentDTO, videoComment);
-        videoComment.setNickname(userCommentInfo.getNickname());
-        videoComment.setAvatar(userCommentInfo.getAvatar());
+        videoComment.setUserNickname(userCommentInfo.getNickname());
+        videoComment.setUserAvatar(userCommentInfo.getAvatar());
         videoComment.setStatus((byte) 1);
         videoComment.setLikes(0);
         videoComment.setReplies(0);

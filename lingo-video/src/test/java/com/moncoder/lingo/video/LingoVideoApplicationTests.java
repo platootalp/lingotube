@@ -1,5 +1,6 @@
 package com.moncoder.lingo.video;
 
+import com.moncoder.lingo.video.producer.KafkaProducer;
 import com.moncoder.lingo.video.service.IVmsVideoService;
 import com.moncoder.lingo.video.service.impl.VmsVideoServiceImpl;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,8 @@ class LingoVideoApplicationTests {
 
     @Autowired
     IVmsVideoService videoService;
-
+    @Autowired
+    KafkaProducer kafkaProducer;
     @Test
     void contextLoads() {
         videoService.saveTrendingVideos(6);
@@ -21,4 +23,8 @@ class LingoVideoApplicationTests {
         videoService.saveRecommendedVideos(6);
     }
 
+    @Test
+    void testKafka(){
+        kafkaProducer.sendMessage("测试");
+    }
 }

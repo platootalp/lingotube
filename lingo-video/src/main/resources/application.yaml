@@ -35,13 +35,13 @@ spring:
       retries: 0
       properties:
         linger.ms: 1
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer  # 发送的对象信息变为json格式
     consumer:
-      group-id: lingo.video.consumer
+      group-id: lingo.video
       enable-auto-commit: true
       auto-commit-interval: 100ms
       properties:
         session.timeout.ms: 15000
-
 knife4j:
   enable: true
   openapi:

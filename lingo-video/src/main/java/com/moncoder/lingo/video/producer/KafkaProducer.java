@@ -16,22 +16,21 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 @Component
 public class KafkaProducer {
 
-
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaTemplate<String, Object> kafkaTemplate;
 
-    public void sendMessage(String message) {
-        kafkaTemplate.send(KafkaConstant.VIDEO_TOPIC, message).addCallback(
-                new ListenableFutureCallback<>() {
+    public void sendMessage(Object message) {
+        kafkaTemplate.send(KafkaConstant.VIDEO_TOPIC, message)
+                .addCallback(new ListenableFutureCallback<>() {
                     @Override
                     public void onFailure(Throwable ex) {
                         ex.printStackTrace();
                     }
+
                     @Override
-                    public void onSuccess(SendResult<String, String> result) {
+                    public void onSuccess(SendResult<String, Object> result) {
                         System.out.println("成功");
                     }
-                }
-        );
+                });
     }
 }

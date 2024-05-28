@@ -1,5 +1,6 @@
 package com.moncoder.lingo.video;
 
+import com.moncoder.lingo.entity.VmsVideo;
 import com.moncoder.lingo.video.producer.KafkaProducer;
 import com.moncoder.lingo.video.service.IVmsVideoService;
 import com.moncoder.lingo.video.service.impl.VmsVideoServiceImpl;
@@ -25,6 +26,8 @@ class LingoVideoApplicationTests {
 
     @Test
     void testKafka(){
-        kafkaProducer.sendMessage("测试");
+        VmsVideo vmsVideo = new VmsVideo();
+        vmsVideo.setTitle("测试");
+        kafkaProducer.sendMessage(vmsVideo);
     }
 }

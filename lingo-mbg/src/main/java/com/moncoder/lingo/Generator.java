@@ -39,8 +39,8 @@ public class Generator {
                 .strategyConfig(builder -> {
                     builder
                             // 设置需要生成的表名(所有表)
-                            .addInclude("vms_category")
-                            .addTablePrefix("sys_") // 设置过滤表前缀
+                            .addInclude("wms_word","wms_word_definition","wms_word_example")
+                            .addTablePrefix("sys_","wms_") // 设置过滤表前缀
                             // 1.entity配置
                             .entityBuilder()
                             .enableFileOverride()

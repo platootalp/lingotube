@@ -1,6 +1,7 @@
 package com.moncoder.lingo.video;
 
 import com.moncoder.lingo.entity.VmsVideo;
+import com.moncoder.lingo.video.domain.vo.CategoryVO;
 import com.moncoder.lingo.video.producer.KafkaProducer;
 import com.moncoder.lingo.video.service.IVmsVideoService;
 import com.moncoder.lingo.video.service.impl.VmsVideoServiceImpl;

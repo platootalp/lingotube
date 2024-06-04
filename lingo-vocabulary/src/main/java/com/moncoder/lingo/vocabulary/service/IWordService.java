@@ -2,6 +2,7 @@ package com.moncoder.lingo.vocabulary.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.moncoder.lingo.entity.Word;
+import com.moncoder.lingo.vocabulary.domain.dto.WordCreateDTO;
 
 /**
  * <p>
@@ -13,4 +14,5 @@ import com.moncoder.lingo.entity.Word;
  */
 public interface IWordService extends IService<Word> {
 
+    void create(WordCreateDTO wordCreateDTO);
 }

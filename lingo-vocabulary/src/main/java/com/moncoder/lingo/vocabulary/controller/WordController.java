@@ -1,9 +1,13 @@
 package com.moncoder.lingo.vocabulary.controller;
 
 import com.moncoder.lingo.common.api.Result;
+import com.moncoder.lingo.vocabulary.domain.dto.WordCreateDTO;
+import com.moncoder.lingo.vocabulary.service.IWordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,9 +24,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/word")
 public class WordController {
 
-    @ApiOperation("导入单词")
+    @Autowired
+    private IWordService wordService;
+
+    @ApiOperation("创建单词")
     @PostMapping("/")
-    public Result<String> save(){
-        return Result.failed();
+    public Result<String> create(@RequestBody WordCreateDTO wordCreateDTO){
+        wordService.create(wordCreateDTO);
+        return Result.success();
     }
 }

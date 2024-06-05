@@ -1,8 +1,12 @@
 package com.moncoder.lingo.vocabulary.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.entity.Word;
 import com.moncoder.lingo.vocabulary.domain.dto.WordCreateDTO;
+import com.moncoder.lingo.vocabulary.domain.dto.WordViewPageDTO;
+import com.moncoder.lingo.vocabulary.domain.vo.WordVO;
+import com.moncoder.lingo.vocabulary.domain.vo.WordViewVO;
 
 /**
  * <p>
@@ -15,4 +19,8 @@ import com.moncoder.lingo.vocabulary.domain.dto.WordCreateDTO;
 public interface IWordService extends IService<Word> {
 
     void create(WordCreateDTO wordCreateDTO);
+
+    void importList(String path);
+
+    LPage<WordViewVO> getPageWord(WordViewPageDTO wordViewDTO);
 }

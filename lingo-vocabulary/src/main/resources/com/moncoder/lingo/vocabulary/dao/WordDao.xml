@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.moncoder.lingo.vocabulary.dao.WordDao">
+
+    <resultMap id="wordViewPageVO" type="com.moncoder.lingo.vocabulary.domain.vo.WordVO">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="phoneticUk" column="phonetic_uk"/>
+        <result property="phoneticUs" column="phonetic_us"/>
+        <result property="posEn" column="pos_en"/>
+        <result property="posCn" column="pos_cn"/>
+        <result property="meaning" column="meaning"/>
+    </resultMap>
+
+
+    <select id="selectWordList" resultMap="wordViewPageVO">
+        SELECT
+        w.id,
+        w.name,
+        w.phonetic_uk,
+        w.phonetic_us,
+        wd.pos_en,
+        wd.pos_cn,
+        wd.meaning
+        FROM
+        wms_word w
+        JOIN
+        wms_word_definition wd ON w.id = wd.word_id
+        <where>
+            <if test="keyword != null and keyword != ''">
+                w.name LIKE CONCAT('%', #{keyword}, '%')
+            </if>
+        </where>
+        <if test="sortBy != null">
+            <choose>
+                <when test="sortBy == 1">
+                    ORDER BY w.create_time DESC
+                </when>
+                <when test="sortBy == 2">
+                    ORDER BY w.create_time ASC
+                </when>
+                <otherwise>
+                    ORDER BY w.name ASC
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+
+</mapper>

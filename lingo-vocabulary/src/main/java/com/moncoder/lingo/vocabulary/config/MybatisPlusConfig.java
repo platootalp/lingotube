@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
  * @description mybatis-plus配置
  * @date 2024/3/21 15:56
  */
-@MapperScan({"com.moncoder.lingo.mapper"})
+@MapperScan({"com.moncoder.lingo.mapper","com.moncoder.lingo.vocabulary.dao"})
 @Configuration
 public class MybatisPlusConfig {
     /**

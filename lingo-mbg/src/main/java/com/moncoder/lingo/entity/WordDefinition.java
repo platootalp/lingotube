@@ -42,8 +42,8 @@ public class WordDefinition implements Serializable {
     private String meaning;
 
     @ApiModelProperty("添加时间")
-    private LocalDateTime createdTime;
+    private LocalDateTime createTime;
 
-    @ApiModelProperty("更新时间")
-    private LocalDateTime updatedTime;
+    @ApiModelProperty("最后更新时间")
+    private LocalDateTime updateTime;
 }

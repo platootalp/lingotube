@@ -1,7 +1,11 @@
 package com.moncoder.lingo.vocabulary.controller;
 
+import com.moncoder.lingo.common.api.LPage;
 import com.moncoder.lingo.common.api.Result;
 import com.moncoder.lingo.vocabulary.domain.dto.WordCreateDTO;
+import com.moncoder.lingo.vocabulary.domain.dto.WordViewPageDTO;
+import com.moncoder.lingo.vocabulary.domain.vo.WordVO;
+import com.moncoder.lingo.vocabulary.domain.vo.WordViewVO;
 import com.moncoder.lingo.vocabulary.service.IWordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 
 /**
  * <p>
@@ -29,8 +35,14 @@ public class WordController {
 
     @ApiOperation("创建单词")
     @PostMapping("/")
-    public Result<String> create(@RequestBody WordCreateDTO wordCreateDTO){
+    public Result<String> create(@Valid @RequestBody WordCreateDTO wordCreateDTO){
         wordService.create(wordCreateDTO);
         return Result.success();
+    }
+
+    @ApiOperation("查看单词列表（分页）")
+    @PostMapping("/page")
+    public Result<LPage<WordViewVO>> getPage(@Valid @RequestBody WordViewPageDTO wordViewDTO){
+        return Result.success(wordService.getPageWord(wordViewDTO));
     }
 }

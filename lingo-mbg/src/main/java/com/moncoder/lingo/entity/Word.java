@@ -45,8 +45,8 @@ public class Word implements Serializable {
     private String pronunciationUrlUs;
 
     @ApiModelProperty("添加时间")
-    private LocalDateTime createdTime;
+    private LocalDateTime createTime;
 
     @ApiModelProperty("最后更新时间")
-    private LocalDateTime updatedTime;
+    private LocalDateTime updateTime;
 }

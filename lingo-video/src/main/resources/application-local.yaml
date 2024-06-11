@@ -1,4 +1,8 @@
-hm:
-  db:
-    host: 127.0.0.1 # 修改为你自己的虚拟机IP地址
-    pw: root # 修改为docker中的MySQL密码
+lingo:
+  database:
+    host: 127.0.0.1
+    password: root
+  knife4j:
+    title: lingotube视频模块文档
+    description: "video模块文档"
+    package: com.moncoder.lingo.video.controller

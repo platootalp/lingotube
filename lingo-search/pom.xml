@@ -8,7 +8,6 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
 
-    <groupId>com.moncoder</groupId>
     <artifactId>lingo-search</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>lingo-search</name>
@@ -57,6 +56,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>de.codecentric</groupId>
+            <artifactId>spring-boot-admin-starter-server</artifactId>
+            <version>2.7.12</version>
         </dependency>
     </dependencies>
 

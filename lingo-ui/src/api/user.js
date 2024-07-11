@@ -109,6 +109,18 @@ export const updateAvatar = async (file) => {
   }
 };
 
+/**
+ * 获取二维码url
+ * @returns {Promise<AxiosResponse<any>>}
+ */
+export const getQRCode = async () => {
+  try {
+    return await request.get('/api/user/wx/qrcode');
+  } catch (error) {
+    throw error;
+  }
+};
+
 
 
 

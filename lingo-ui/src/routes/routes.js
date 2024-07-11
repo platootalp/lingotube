@@ -72,6 +72,12 @@ const routes = [
         component: () => import('../views/Upload'),
         meta: {requiresAuth: true}
       },
+      {
+        path: '/upload',
+        name: 'upload',
+        component: () => import('../views/Upload'),
+        meta: {requiresAuth: true}
+      },
       // {
       //   path: '/icons',
       //   name: 'icons',
@@ -90,9 +96,24 @@ const routes = [
         component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Login.vue')
       },
       {
+        path: '/wechat-login',
+        name: 'WeChatLogin',
+        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/WeChatLogin.vue')
+      },
+      {
+        path: '/qrcode',
+        name: 'qrcode',
+        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/QrCodePage.vue')
+      },
+      {
         path: '/register',
         name: 'register',
         component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/Register.vue')
+      },
+      {
+        path: '/reset-password',
+        name: 'reset-password',
+        component: () => import(/* webpackChunkName: "demo" */ '../views/Pages/ResetPassword.vue')
       },
       {
         path: '/reset-password',

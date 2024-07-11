@@ -18,6 +18,10 @@
             <b-card-header class="bg-transparent pb-5">
               <div class="text-muted text-center mt-2 mb-4"><small>通过第三方注册</small></div>
               <div class="text-center">
+                <a class="btn btn-neutral btn-icon" @click="handleQrcode">
+                  <span class="btn-inner--icon"><img src="img/icons/common/wechat.png"></span>
+                  <span class="btn-inner--text">WeChat</span>
+                </a>
                 <a href="#" class="btn btn-neutral btn-icon mr-4">
                   <span class="btn-inner--icon"><img src="img/icons/common/github.svg"></span>
                   <span class="btn-inner--text">Github</span>
@@ -197,6 +201,13 @@ export default {
       } catch (error) {
         this.$toast.error('注册时出现错误，请稍后重试！');
         console.error(error);
+      }
+    },
+    async handleQrcode() {
+      try {
+        await this.$router.push('/wechat-login');
+      } catch (error) {
+        console.error('登录时发生错误：', error);
       }
     },
   },

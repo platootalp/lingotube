@@ -7,11 +7,11 @@
       class="navbar-horizontal navbar-main navbar-top navbar-dark"
       expand="lg"
     >
-<!--      <div slot="brand" class="navbar-wrapper">-->
-<!--        <b-navbar-brand to="/">-->
-<!--          <img src="img/brand/white.png">-->
-<!--        </b-navbar-brand>-->
-<!--      </div>-->
+      <div slot="brand" class="navbar-wrapper">
+        <b-navbar-brand to="/">
+          <img src="img/brand/white.png">
+        </b-navbar-brand>
+      </div>
 
      <template>
        <div class="navbar-collapse-header">

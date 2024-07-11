@@ -16,6 +16,7 @@ import com.moncoder.lingo.common.constant.UserConstant;
 import com.moncoder.lingo.common.exception.*;
 import com.moncoder.lingo.common.exception.IllegalArgumentException;
 import com.moncoder.lingo.common.service.IRedisService;
+import com.moncoder.lingo.common.util.LingoFileUtil;
 import com.moncoder.lingo.common.util.RegexUtil;
 import com.moncoder.lingo.common.util.UserContext;
 import com.moncoder.lingo.entity.UmsUser;
@@ -36,12 +37,16 @@ import com.moncoder.lingo.user.util.JwtTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -293,14 +298,19 @@ public class UserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impleme
                 "UTF-8");
         String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId
                 + "&redirect_uri=" + redirectUri
-                + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+                + "&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect";
         // 2.生成微信授权界面二维码
-        QrConfig qrConfig = new QrConfig(500, 500);
+        QrConfig qrConfig = new QrConfig(300, 300);
         qrConfig.setErrorCorrection(ErrorCorrectionLevel.H);
-        String qrcodeUrl = "D://wxQrCode.png";
-        QrCodeUtil.generate(url, qrConfig, FileUtil.file(qrcodeUrl));
-        return qrcodeUrl;
+        String targetDir = "./WxQRCode.png";
+        File qrCodeFile = QrCodeUtil.generate(url, qrConfig, FileUtil.file(targetDir));
+        // 将 File 转换为 MultipartFile
+        MultipartFile qrCode = LingoFileUtil.convertFileToMultipartFile(qrCodeFile);
+        // 3.上传到公共存储OSS
+        return ossClient.uploadQRCode(qrCode).getData();
     }
+
+
 
     @Override
     public WeChatAccessVO weChatCallback(String code) {
@@ -313,11 +323,10 @@ public class UserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impleme
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<String> response = restTemplate.getForEntity(accessTokenUrl, String.class);
         // 2.解析返回的数据
-        WeChatAccessVO wxAccessVO = JSONUtil.toBean(response.getBody(), WeChatAccessVO.class);
-        if (wxAccessVO == null) {
-            throw new ApiException("微信授权失败！");
+        if(response.getStatusCode() != HttpStatus.OK){
+           throw new ApiException("获取微信access_token失败!");
         }
-        return wxAccessVO;
+        return JSONUtil.toBean(response.getBody(), WeChatAccessVO.class);
     }
 
     @Override
@@ -329,10 +338,9 @@ public class UserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impleme
                 + "&lang=zh_CN";
         ResponseEntity<String> response = restTemplate.getForEntity(userInfoUrl, String.class);
         // 2.解析返回的数据
-        WeChatUserInfoVO weChatUserInfoVO = JSONUtil.toBean(response.getBody(), WeChatUserInfoVO.class);
-        if (weChatUserInfoVO == null){
+        if(response.getStatusCode() != HttpStatus.OK){
             throw new ApiException("获取微信用户信息失败！");
         }
-        return weChatUserInfoVO;
+        return JSONUtil.toBean(response.getBody(), WeChatUserInfoVO.class);
     }
 }

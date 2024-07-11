@@ -114,7 +114,7 @@ public class UserController {
     }
 
     @ApiOperation("生成二维码")
-    @GetMapping("/qr")
+    @GetMapping("/qrcode")
     public Result<String> generateQRCode() throws IOException {
         return Result.success(userService.generateQRCode());
     }
@@ -129,7 +129,7 @@ public class UserController {
     }
 
     @ApiOperation("获取微信登陆二维码")
-    @GetMapping("/wx/qr")
+    @GetMapping("/wx/qrcode")
     public Result<String> getWeChatLoginQRCode() throws UnsupportedEncodingException {
         return Result.success(userService.getWeChatLoginQRCode());
     }

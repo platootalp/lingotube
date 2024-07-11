@@ -25,4 +25,13 @@ public interface OssClient {
      */
     @PostMapping(value = "/oss/upload/user/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     Result<String> uploadUserAvatar(@RequestPart("file") MultipartFile file);
+
+    /**
+     * 上传用户头像
+     *
+     * @param file
+     * @return
+     */
+    @PostMapping(value = "/oss/upload/qrcode", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    Result<String> uploadQRCode(@RequestPart("file") MultipartFile file);
 }

@@ -75,4 +75,11 @@ public class OssController {
         ossService.delete(url);
         return Result.success();
     }
+
+    @ApiOperation("上传二维码")
+    @PostMapping("/upload/qrcode")
+    public Result<String> uploadQRCode(@RequestPart("file") @NotNull MultipartFile file) {
+        String videoUrl = ossService.upload(file, UserConstant.UMS_QRCODE_PREFIX);
+        return Result.success(videoUrl);
+    }
 }

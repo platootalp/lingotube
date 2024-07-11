@@ -38,4 +38,8 @@ public interface UserConstant {
      */
     String UMS_USER_AVATAR_PREFIX = "user_avatar_";
 
+    /**
+     * 二维码url路径
+     */
+    String UMS_QRCODE_PREFIX = "qrcode_";
 }

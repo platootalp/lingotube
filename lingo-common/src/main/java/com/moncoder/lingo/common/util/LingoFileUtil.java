@@ -1,8 +1,10 @@
 package com.moncoder.lingo.common.util;
 
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,7 +17,7 @@ import java.time.format.DateTimeFormatter;
  * @description 文件处理工具类
  * @date 2024/3/26 14:07
  */
-public class FileUtil {
+public class LingoFileUtil {
 
     /**
      * 将文件保存到指定目录下
@@ -54,5 +56,18 @@ public class FileUtil {
         return formattedDateTime + file.getOriginalFilename();
     }
 
+    /**
+     * 将File类型的文件转换成MultipartFile类型
+     *
+     * @param file
+     * @return
+     */
+    public static MultipartFile convertFileToMultipartFile(File file) {
+        try (FileInputStream input = new FileInputStream(file)) {
+            return new LingoMultipartFile(file.getName(), file.getName(), "image/png", input);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to convert File to MultipartFile", e);
+        }
+    }
 }
 

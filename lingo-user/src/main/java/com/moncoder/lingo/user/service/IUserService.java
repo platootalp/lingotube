@@ -8,7 +8,14 @@ import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
 import com.moncoder.lingo.user.domain.vo.UserShowInfoVO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
+import com.moncoder.lingo.user.domain.vo.WeChatAccessVO;
+import com.moncoder.lingo.user.domain.vo.WeChatUserInfoVO;
 import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * <p>
@@ -18,7 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
  * @author moncoder
  * @since 2024-03-20 16:27:25
  */
-public interface IUmsUserService extends IService<UmsUser> {
+public interface IUserService extends IService<UmsUser> {
 
     /**
      * @param email
@@ -95,4 +102,41 @@ public interface IUmsUserService extends IService<UmsUser> {
      */
     UserShowInfoVO getShowInfo(Integer id);
 
+    /**
+     * 生成二维码
+     * @return
+     */
+    String generateQRCode() throws IOException;
+
+    /**
+     * wx签名验证
+     * @param signature
+     * @param timestamp
+     * @param nonce
+     * @param echostr
+     * @return
+     */
+    String wxSignatureCheck(String signature, String timestamp, String nonce, String echostr);
+
+    /**
+     * 微信登录
+     * @return
+     */
+    String getWeChatLoginQRCode() throws UnsupportedEncodingException;
+
+
+    /**
+     * 微信回调函数
+     * @param code
+     * @return
+     */
+    WeChatAccessVO weChatCallback(String code);
+
+    /**
+     * 获取微信登录用户信息
+     * @param accessToken
+     * @param openId
+     * @return
+     */
+    WeChatUserInfoVO getWeChatLoginUserInfo(String accessToken, String openId);
 }

@@ -1,9 +1,15 @@
 package com.moncoder.lingo.user.service.impl;
 
+import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.SecureUtil;
 import cn.hutool.extra.mail.MailUtil;
+import cn.hutool.extra.qrcode.QrCodeUtil;
+import cn.hutool.extra.qrcode.QrConfig;
+import cn.hutool.json.JSONUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
 import com.moncoder.lingo.common.annotation.RequireLogin;
 import com.moncoder.lingo.common.constant.SystemConstant;
 import com.moncoder.lingo.common.constant.UserConstant;
@@ -15,24 +21,33 @@ import com.moncoder.lingo.common.util.UserContext;
 import com.moncoder.lingo.entity.UmsUser;
 import com.moncoder.lingo.mapper.UmsUserMapper;
 import com.moncoder.lingo.user.client.OssClient;
-import com.moncoder.lingo.user.config.JwtProperties;
+import com.moncoder.lingo.user.config.property.JwtProperties;
+import com.moncoder.lingo.user.config.property.WeChatProperties;
 import com.moncoder.lingo.user.domain.dto.UserLoginDTO;
 import com.moncoder.lingo.user.domain.dto.UserPasswordUpdateDTO;
 import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
 import com.moncoder.lingo.user.domain.vo.UserShowInfoVO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
-import com.moncoder.lingo.user.service.IUmsUserService;
+import com.moncoder.lingo.user.domain.vo.WeChatAccessVO;
+import com.moncoder.lingo.user.domain.vo.WeChatUserInfoVO;
+import com.moncoder.lingo.user.service.IUserService;
 import com.moncoder.lingo.user.util.JwtTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -45,7 +60,7 @@ import java.util.List;
  */
 @Slf4j
 @Service
-public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implements IUmsUserService {
+public class UserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implements IUserService {
 
     @Autowired
     private IRedisService redisService;
@@ -57,6 +72,10 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
     private JwtTool jwtTool;
     @Autowired
     private OssClient ossClient;
+    @Autowired
+    private WeChatProperties wxProperties;
+    @Autowired
+    private RestTemplate restTemplate;
 
     /**
      * 发送验证码到邮箱
@@ -230,5 +249,90 @@ public class UmsServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> implemen
         UserShowInfoVO userShowInfoVO = new UserShowInfoVO();
         BeanUtils.copyProperties(user, userShowInfoVO);
         return userShowInfoVO;
+    }
+
+    @Override
+    public String generateQRCode() throws IOException {
+        // 1.设置返回的二维码存储路径
+        String qrcodeUrl = "D://qrcode.png";
+        // 2.生成二维码
+        QrConfig qrConfig = new QrConfig(500, 500);
+        qrConfig.setErrorCorrection(ErrorCorrectionLevel.H);
+
+        QrCodeUtil.generate("https://www.tuhu.cn/", qrConfig, FileUtil.file(qrcodeUrl));
+        // 3.写入的响应值中
+        return qrcodeUrl;
+    }
+
+
+    @Override
+    public String wxSignatureCheck(String signature, String timestamp, String nonce, String echostr) {
+        // 1.对token、timestamp、nonce进行字典序排序
+        String wxToken = "lingo";
+        String[] ss = {wxToken, timestamp, nonce};
+        Arrays.sort(ss);
+        StringBuilder res = new StringBuilder();
+        for (String s : ss) {
+            res.append(s);
+        }
+        String sha1 = SecureUtil.sha1(res.toString());
+        // 2.验证sha1加密后结果是否与signature相等
+        if (sha1.equals(signature)) {
+            log.debug(sha1);
+            log.debug(signature);
+            return echostr;
+        }
+        return null;
+    }
+
+    @Override
+    public String getWeChatLoginQRCode() throws UnsupportedEncodingException {
+        // 1.设置微信扫码跳转地址
+        String appId = wxProperties.getAppId();
+        String redirectUri = URLEncoder.encode(wxProperties.getRedirectUri(),
+                "UTF-8");
+        String url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid=" + appId
+                + "&redirect_uri=" + redirectUri
+                + "&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect";
+        // 2.生成微信授权界面二维码
+        QrConfig qrConfig = new QrConfig(500, 500);
+        qrConfig.setErrorCorrection(ErrorCorrectionLevel.H);
+        String qrcodeUrl = "D://wxQrCode.png";
+        QrCodeUtil.generate(url, qrConfig, FileUtil.file(qrcodeUrl));
+        return qrcodeUrl;
+    }
+
+    @Override
+    public WeChatAccessVO weChatCallback(String code) {
+        // 1.向微信服务器发送请求，通过code换取access_token
+        String accessTokenUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?"
+                + "appid=" + wxProperties.getAppId()
+                + "&secret=" + wxProperties.getAppSecret()
+                + "&code=" + code
+                + "&grant_type=authorization_code";
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.getForEntity(accessTokenUrl, String.class);
+        // 2.解析返回的数据
+        WeChatAccessVO wxAccessVO = JSONUtil.toBean(response.getBody(), WeChatAccessVO.class);
+        if (wxAccessVO == null) {
+            throw new ApiException("微信授权失败！");
+        }
+        return wxAccessVO;
+    }
+
+    @Override
+    public WeChatUserInfoVO getWeChatLoginUserInfo(String accessToken, String openId) {
+        // 1.向微信服务器发送请求
+        String userInfoUrl = "https://api.weixin.qq.com/sns/userinfo?"
+                + "access_token=" + accessToken
+                + "&openid=" +openId
+                + "&lang=zh_CN";
+        ResponseEntity<String> response = restTemplate.getForEntity(userInfoUrl, String.class);
+        // 2.解析返回的数据
+        WeChatUserInfoVO weChatUserInfoVO = JSONUtil.toBean(response.getBody(), WeChatUserInfoVO.class);
+        if (weChatUserInfoVO == null){
+            throw new ApiException("获取微信用户信息失败！");
+        }
+        return weChatUserInfoVO;
     }
 }

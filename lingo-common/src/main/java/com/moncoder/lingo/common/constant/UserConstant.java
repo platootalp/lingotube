@@ -34,7 +34,7 @@ public interface UserConstant {
     String UMS_USER_USERNAME_SUFFIX = "_linger";
 
     /**
-     * 头像存放路径
+     * 头像url路径
      */
     String UMS_USER_AVATAR_PREFIX = "user_avatar_";
 

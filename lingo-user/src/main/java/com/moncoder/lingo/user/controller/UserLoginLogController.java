@@ -13,6 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/user/login/log")
-public class UmsUserLoginLogController {
+public class UserLoginLogController {
 
 }

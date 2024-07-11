@@ -11,3 +11,7 @@ lingo:
       alias: jwt # 秘钥别名
       password: lingotube # 秘钥文件密码
       tokenTTL: 300m # 登录有效期
+wechat:
+  app-id: wx87654d8572c6c372
+  app-secret: 9356b0167b60f5d4a60bfa13bce3b9c6
+  redirect-uri: https://lingotube.mynatapp.cc

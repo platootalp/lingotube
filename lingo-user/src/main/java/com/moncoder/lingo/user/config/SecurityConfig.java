@@ -1,5 +1,6 @@
 package com.moncoder.lingo.user.config;
 
+import com.moncoder.lingo.user.config.property.JwtProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -11,6 +11,6 @@ import com.moncoder.lingo.entity.UmsUserLoginLog;
  * @author moncoder
  * @since 2024-03-20 16:27:25
  */
-public interface IUmsUserLoginLogService extends IService<UmsUserLoginLog> {
+public interface IUserLoginLogService extends IService<UmsUserLoginLog> {
 
 }

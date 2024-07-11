@@ -1,4 +1,4 @@
-package com.moncoder.lingo.user.config;
+package com.moncoder.lingo.user.config.property;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

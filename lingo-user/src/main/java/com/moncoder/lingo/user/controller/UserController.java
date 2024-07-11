@@ -7,7 +7,9 @@ import com.moncoder.lingo.user.domain.dto.UserRegisterDTO;
 import com.moncoder.lingo.user.domain.dto.UserInfoUpdateDTO;
 import com.moncoder.lingo.user.domain.vo.UserShowInfoVO;
 import com.moncoder.lingo.user.domain.vo.UserInfoVO;
-import com.moncoder.lingo.user.service.IUmsUserService;
+import com.moncoder.lingo.user.domain.vo.WeChatAccessVO;
+import com.moncoder.lingo.user.domain.vo.WeChatUserInfoVO;
+import com.moncoder.lingo.user.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 
 /**
  * <p>
@@ -29,10 +33,10 @@ import javax.validation.constraints.NotNull;
 @Api(tags = "用户管理")
 @RestController
 @RequestMapping("/user")
-public class UmsUserController {
+public class UserController {
 
     @Autowired
-    private IUmsUserService userService;
+    private IUserService userService;
 
     @ApiOperation("发送验证码")
     @PostMapping("/verifyCode")
@@ -109,4 +113,38 @@ public class UmsUserController {
         return Result.success(userService.getShowInfo(id));
     }
 
+    @ApiOperation("生成二维码")
+    @GetMapping("/qr")
+    public Result<String> generateQRCode() throws IOException {
+        return Result.success(userService.generateQRCode());
+    }
+
+    @ApiOperation("微信签名验证")
+    @GetMapping("/wx/check")
+    public String weChatSignatureCheck(@RequestParam("signature") String signature,
+                                       @RequestParam("timestamp") String timestamp,
+                                       @RequestParam("nonce") String nonce,
+                                       @RequestParam("echostr")String echostr) {
+        return userService.wxSignatureCheck(signature,timestamp,nonce,echostr);
+    }
+
+    @ApiOperation("获取微信登陆二维码")
+    @GetMapping("/wx/qr")
+    public Result<String> getWeChatLoginQRCode() throws UnsupportedEncodingException {
+        return Result.success(userService.getWeChatLoginQRCode());
+    }
+
+    @ApiOperation("微信回调接口")
+    @GetMapping("/wx/callback")
+    public Result<WeChatAccessVO> weChatCallback(@RequestParam("code") String code) {
+        return Result.success(userService.weChatCallback(code));
+    }
+
+    @ApiOperation("获取微信登陆用户信息")
+    @GetMapping("/wx/userInfo")
+    public Result<WeChatUserInfoVO> getWeChatLoginUserInfo(@RequestParam("accessToken")String accessToken,
+                                                           @RequestParam("openId")String openId){
+        return Result.success(userService.getWeChatLoginUserInfo(accessToken,openId));
+    }
 }
+

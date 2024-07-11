@@ -9,7 +9,7 @@ package com.moncoder.lingo.common.constant;
 public interface UserConstant {
 
     /**
-     * 注册登录验证码前缀
+     * 注册登录验证码 redis key
      */
     String UMS_USER_CODE = "lingo:ums:user:code:";
 
@@ -17,6 +17,16 @@ public interface UserConstant {
      * 注册登录验证码过期时间（秒）
      */
     Long UMS_USER_CODE_EXPIRE = 300L;
+
+    /**
+     * 登录二维码 redis key前缀
+     */
+    String UMS_QRCODE = "lingo:ums:qrcode:";
+
+    /**
+     * 注册登录验证码过期时间（秒）
+     */
+    Long UMS_QRCODE_EXPIRE = 300L;
 
     /**
      * 验证码邮件标题
@@ -42,4 +52,6 @@ public interface UserConstant {
      * 二维码url路径
      */
     String UMS_QRCODE_PREFIX = "qrcode_";
+
+
 }

@@ -37,6 +37,7 @@ import com.moncoder.lingo.user.util.JwtTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,7 +54,9 @@ import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -257,20 +260,6 @@ public class UserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impleme
     }
 
     @Override
-    public String generateQRCode() throws IOException {
-        // 1.设置返回的二维码存储路径
-        String qrcodeUrl = "D://qrcode.png";
-        // 2.生成二维码
-        QrConfig qrConfig = new QrConfig(500, 500);
-        qrConfig.setErrorCorrection(ErrorCorrectionLevel.H);
-
-        QrCodeUtil.generate("https://www.tuhu.cn/", qrConfig, FileUtil.file(qrcodeUrl));
-        // 3.写入的响应值中
-        return qrcodeUrl;
-    }
-
-
-    @Override
     public String wxSignatureCheck(String signature, String timestamp, String nonce, String echostr) {
         // 1.对token、timestamp、nonce进行字典序排序
         String wxToken = "lingo";
@@ -342,5 +331,62 @@ public class UserServiceImpl extends ServiceImpl<UmsUserMapper, UmsUser> impleme
             throw new ApiException("获取微信用户信息失败！");
         }
         return JSONUtil.toBean(response.getBody(), WeChatUserInfoVO.class);
+    }
+
+    @Override
+    public Map<String, String> generateQRCode() throws IOException {
+        // 1.生成UUID，用作二维码唯一标识
+        Long qrcodeId = redisService.incr(SystemConstant.LINGO_QRCODE_COUNT, 1);
+        String qrCodeKey = UserConstant.UMS_QRCODE + qrcodeId;
+
+        // 2.将唯一id与callback路径作为二维码中的值
+        String url = "https://lingotube.mynatapp.cc/api/user/login/scan?qrcode_key=" + qrCodeKey;
+
+        // 3.生成二维码
+        QrConfig qrConfig = new QrConfig(300, 300);
+        qrConfig.setErrorCorrection(ErrorCorrectionLevel.H);
+        String targetDir = "./QRCode.png";
+        File qrCodeFile = QrCodeUtil.generate(url, qrConfig, FileUtil.file(targetDir));
+
+        // 4.上传到公共存储OSS
+        MultipartFile qrCode = LingoFileUtil.convertFileToMultipartFile(qrCodeFile);
+        String qrCodeUrl = ossClient.uploadQRCode(qrCode).getData();
+
+        // 5.将二维码URL存储到Redis，并设置过期时间
+        redisService.set(qrCodeKey, qrCodeUrl, UserConstant.UMS_QRCODE_EXPIRE);
+        HashMap<String, String> resMap = new HashMap<String, String>();
+        resMap.put("qrCodeUrl",qrCodeUrl);
+        resMap.put("qrCodeKey",qrCodeKey);
+        return resMap;
+    }
+
+    @Override
+    public void scanLogin(String qrCodeKey) {
+        // 1.查看redis中的是否存在该qrCodeKey
+        String value = (String)redisService.get(qrCodeKey);
+        if(value  == null){
+           throw new ApiException("二维码已经过期！");
+        }
+        // 2.设置qrCodeKey的值为用户id
+        Integer userId = UserContext.getUser();
+        if(userId == null){
+            throw new ApiException("用户未登录！");
+        }
+        redisService.set(qrCodeKey,userId.toString(),UserConstant.UMS_QRCODE_EXPIRE);
+    }
+
+    @Override
+    public String checkUserLoginStatus(String qrCodeKey) {
+        // 1.获取用户id
+        String userIdStr = (String)redisService.get(qrCodeKey);
+        // 2.查看用户是否存在
+        Integer userId = Integer.valueOf(userIdStr);
+        boolean exist = lambdaQuery().eq(UmsUser::getId, userId)
+                .exists();
+        // 3.返回token
+        if(!exist){
+            throw new ApiException("用户不存在！");
+        }
+        return jwtTool.createToken(Long.valueOf(userId), jwtProperties.getTokenTTL());
     }
 }

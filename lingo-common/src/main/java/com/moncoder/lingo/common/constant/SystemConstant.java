@@ -14,6 +14,11 @@ public interface SystemConstant {
     String LINGO_USER_COUNT = "lingo:sys:user:count:";
 
     /**
+     * 系统二维码数量前缀
+     */
+    String LINGO_QRCODE_COUNT = "lingo:sys:qrcode:count:";
+
+    /**
      * 系统默认文件存放路径
      */
     String LINGO_DEFAULT_FILE_PATH = "uploads/default/";

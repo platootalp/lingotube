@@ -21,6 +21,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 /**
  * <p>
@@ -109,14 +110,8 @@ public class UserController {
 
     @ApiOperation("根据id获取用户展示信息")
     @GetMapping("/show/info/{id}")
-    public Result<UserShowInfoVO> getUserShowInfo(@PathVariable("id")@NotNull Integer id) {
+    public Result<UserShowInfoVO> getUserShowInfo(@PathVariable("id") @NotNull Integer id) {
         return Result.success(userService.getShowInfo(id));
-    }
-
-    @ApiOperation("生成二维码")
-    @GetMapping("/qrcode")
-    public Result<String> generateQRCode() throws IOException {
-        return Result.success(userService.generateQRCode());
     }
 
     @ApiOperation("微信签名验证")
@@ -124,8 +119,8 @@ public class UserController {
     public String weChatSignatureCheck(@RequestParam("signature") String signature,
                                        @RequestParam("timestamp") String timestamp,
                                        @RequestParam("nonce") String nonce,
-                                       @RequestParam("echostr")String echostr) {
-        return userService.wxSignatureCheck(signature,timestamp,nonce,echostr);
+                                       @RequestParam("echostr") String echostr) {
+        return userService.wxSignatureCheck(signature, timestamp, nonce, echostr);
     }
 
     @ApiOperation("获取微信登陆二维码")
@@ -142,9 +137,29 @@ public class UserController {
 
     @ApiOperation("获取微信登陆用户信息")
     @GetMapping("/wx/userInfo")
-    public Result<WeChatUserInfoVO> getWeChatLoginUserInfo(@RequestParam("accessToken")String accessToken,
-                                                           @RequestParam("openId")String openId){
-        return Result.success(userService.getWeChatLoginUserInfo(accessToken,openId));
+    public Result<WeChatUserInfoVO> getWeChatLoginUserInfo(@RequestParam("accessToken") String accessToken,
+                                                           @RequestParam("openId") String openId) {
+        return Result.success(userService.getWeChatLoginUserInfo(accessToken, openId));
+    }
+
+    @ApiOperation("生成二维码")
+    @GetMapping("/qrcode")
+    public Result<Map<String, String>> generateQRCode() throws IOException {
+        return Result.success(userService.generateQRCode());
+    }
+
+    @ApiOperation("扫码登录回调接口")
+    @GetMapping("/login/scan")
+    public Result<String> scanLogin(@RequestParam("qrcode_key") @NotBlank String qrCodeKey) throws IOException {
+        userService.scanLogin(qrCodeKey);
+        return Result.success();
+    }
+
+    @ApiOperation("检查扫码登录状态")
+    @GetMapping("/login/check")
+    public Result<String> checkUserLoginStatus(@RequestParam("qrcode_key") @NotBlank String qrCodeKey) throws IOException {
+        userService.checkUserLoginStatus(qrCodeKey);
+        return Result.success();
     }
 }
 

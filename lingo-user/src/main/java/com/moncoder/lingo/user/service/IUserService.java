@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 /**
  * <p>
@@ -103,12 +104,6 @@ public interface IUserService extends IService<UmsUser> {
     UserShowInfoVO getShowInfo(Integer id);
 
     /**
-     * 生成二维码
-     * @return
-     */
-    String generateQRCode() throws IOException;
-
-    /**
      * wx签名验证
      * @param signature
      * @param timestamp
@@ -139,4 +134,14 @@ public interface IUserService extends IService<UmsUser> {
      * @return
      */
     WeChatUserInfoVO getWeChatLoginUserInfo(String accessToken, String openId);
+
+    /**
+     * 生成二维码
+     * @return
+     */
+    Map<String, String> generateQRCode() throws IOException;
+
+    void scanLogin(String qrCodeKey);
+
+    String checkUserLoginStatus(String qrCodeKey);
 }

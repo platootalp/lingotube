@@ -37,7 +37,7 @@
       <module name="lingo-user" options="-parameters" />
       <module name="lingo-video" options="-parameters" />
       <module name="lingo-vocabulary" options="-parameters" />
-      <module name="lingotube" options="-parameters" />
+      <module name="lingotube" options="" />
     </option>
   </component>
 </project>
